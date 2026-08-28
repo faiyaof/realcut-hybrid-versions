@@ -6,8 +6,10 @@
 import json, os, sys, uuid, shutil
 from pathlib import Path
 
-SRC = Path(r'D:/10  jianyin/JianyingPro Drafts/风格2模板/template.json.bak')
-DST_DIR = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft\模板')
+DEFAULT_DRAFT_ROOT = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft'))
+STYLE_LIB = Path(os.environ.get('REALCUT_STYLE_LIB', r'D:/10  jianyin/JianyingPro Drafts'))
+SRC = STYLE_LIB / '风格2模板' / 'template.json.bak'
+DST_DIR = DEFAULT_DRAFT_ROOT / '模板'
 
 # 10.0独有字段，5.9不需要
 DROP_FIELDS = ['is_drop_frame_timecode', 'function_assistant_info', 'smart_ads_info',

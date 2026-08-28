@@ -2,7 +2,9 @@
 """Shared FunASR recognition helpers for real-cut scripts."""
 import os
 
-os.environ.setdefault('MODELSCOPE_CACHE', r'D:\.cache\modelscope')
+from _runtime_deps import import_external
+
+os.environ.setdefault('MODELSCOPE_CACHE', os.environ.get('REALCUT_MODELSCOPE_CACHE', r'D:\.cache\modelscope'))
 os.environ.setdefault('HF_ENDPOINT', 'https://hf-mirror.com')
 os.environ['HF_HUB_DISABLE_SYMLINKS_WARNING'] = '1'
 os.environ.setdefault('MODELSCOPE_LOG_LEVEL', '40')
@@ -16,7 +18,7 @@ _MODEL = None
 def load_model():
     global _MODEL
     if _MODEL is None:
-        from funasr import AutoModel
+        AutoModel = import_external('funasr').AutoModel
         print('加载 FunASR: SeACo-Paraformer-zh + FSMN-VAD + CT-Punc ...')
         _MODEL = AutoModel(
             model='paraformer-zh',

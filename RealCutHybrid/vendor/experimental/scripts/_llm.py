@@ -9,6 +9,8 @@ from __future__ import annotations
 import os
 from typing import Optional
 
+from _runtime_deps import import_external
+
 DEEPSEEK_BASE_URL = os.environ.get('DEEPSEEK_BASE_URL', 'https://api.deepseek.com').rstrip('/')
 DEEPSEEK_MODEL = os.environ.get('DEEPSEEK_MODEL', 'deepseek-chat')
 QWEN_FALLBACK_MODEL = os.environ.get('QWEN_FALLBACK_MODEL', 'qwen-plus')
@@ -47,7 +49,7 @@ def _deepseek_text(
 
     for attempt in range(max_retries + 1):
         try:
-            import requests
+            requests = import_external('requests')
             r = requests.post(url, headers=headers, json=payload, timeout=timeout)
             if r.status_code == 400 and json_mode:
                 payload.pop('response_format', None)
@@ -79,8 +81,8 @@ def _qwen_text(
     if not key:
         return None
     try:
-        import dashscope
-        from dashscope import Generation
+        dashscope = import_external('dashscope')
+        Generation = dashscope.Generation
     except ImportError:
         print('  [LLM] dashscope 未安装，无法回退')
         return None

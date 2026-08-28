@@ -19,7 +19,7 @@ ensure_utf8_stdout()
 
 
 def ffmpeg_bin():
-    return shutil.which('ffmpeg') or r'C:\ffmpeg\bin\ffmpeg.exe'
+    return shutil.which('ffmpeg') or os.environ.get('FFMPEG_BIN', r'C:\ffmpeg\bin\ffmpeg.exe')
 
 
 def _local_material_path(dp, mat):

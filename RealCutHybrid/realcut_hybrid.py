@@ -35,11 +35,11 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
-from manifest import ManifestStore
 from manifest import ManifestStore, resolve_officecli
 import postprocess
+from runtime_layout import application_root, entrypoint_command, entrypoint_exists
 
-ROOT = Path(__file__).resolve().parent
+ROOT = application_root(__file__)
 VENDOR = ROOT / "vendor" / "experimental"
 SCRIPTS = VENDOR / "scripts"
 STATE_DIR = ROOT / "state"
@@ -50,12 +50,20 @@ MANIFEST_DIR = ROOT / "manifests"
 DEFAULT_MANIFEST = MANIFEST_DIR / "realcut-batch.xlsx"
 
 DEFAULT_DRAFT_ROOT = Path(
-    r"C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft"
+    os.environ.get(
+        "REALCUT_DRAFT_ROOT",
+        r"C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft",
+    )
 )
 DEFAULT_JIANYING_EXE = Path(
-    r"C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe"
+    os.environ.get(
+        "REALCUT_JIANYING_EXE",
+        r"C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe",
+    )
 )
-DEFAULT_KEYWORD_FILE = Path(r"C:\Users\JT\Documents\剪辑\highlight_keywords.txt")
+DEFAULT_KEYWORD_FILE = Path(
+    os.environ.get("REALCUT_KEYWORD_FILE", str(ROOT / "config" / "highlight_keywords.txt"))
+)
 
 SCHEMA_VERSION = 1
 
@@ -533,7 +541,11 @@ def run_step_once(
             restore_snapshot(snapshot, draft, task_id, step.label)
         cmd = build_args(step, video, draft, opts)
         log(f"[{step.label}] 第 {attempt}/{max_attempts} 次", task_id)
-        returncode, output = run_process([str(sys.executable), str(script_path(step))] + cmd, task_id, step.label)
+        returncode, output = run_process(
+            entrypoint_command(script_path(step), cmd, root=ROOT),
+            task_id,
+            step.label,
+        )
         output_tail = output[-3000:]
         success = returncode == 0
         if success:
@@ -826,9 +838,20 @@ def run_task(opts: argparse.Namespace, video_path: Path) -> int:
 def check_environment() -> int:
     checks: list[tuple[str, bool, str]] = []
     checks.append(("项目结构", SCRIPTS.is_dir(), str(SCRIPTS)))
-    missing_scripts = [s.script for s in STEPS if not (SCRIPTS / s.script).is_file()]
+    missing_scripts = [
+        s.script for s in STEPS if not entrypoint_exists(SCRIPTS / s.script, ROOT)
+    ]
     checks.append(("real-cut 脚本完整", not missing_scripts, "; ".join(missing_scripts) or "ok"))
     checks.append(("字幕词表", (ROOT / "config" / "subtitle_glossary.json").is_file(), str(ROOT / "config" / "subtitle_glossary.json")))
+
+    if str(SCRIPTS) not in sys.path:
+        sys.path.insert(0, str(SCRIPTS))
+    try:
+        from _runtime_deps import configure_external_runtime
+
+        configure_external_runtime()
+    except ImportError:
+        pass
 
     import importlib.util
 
@@ -1444,7 +1467,7 @@ def claude_command_for_group(
     items: list[Path],
 ) -> list[str]:
     manifest = Path(getattr(opts, "manifest", None) or DEFAULT_MANIFEST).resolve()
-    cmd = [sys.executable, str(ROOT / "realcut_hybrid.py"), command]
+    cmd = entrypoint_command(ROOT / "realcut_hybrid.py", [command], root=ROOT)
     cmd.extend(str(p) for p in items)
     run_root = getattr(opts, "run_root", None)
     if run_root:

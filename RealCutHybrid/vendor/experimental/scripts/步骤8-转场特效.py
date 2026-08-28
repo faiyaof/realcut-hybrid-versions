@@ -1,4 +1,4 @@
-from _utils import write_draft
+from _utils import write_draft, rewrite_pkg_asset_paths
 """
 步骤8：转场特效
 - 保留草稿已有转场素材（用户添加的不覆盖）
@@ -7,10 +7,10 @@ from _utils import write_draft
 
 用法: python "步骤8-转场特效.py" <草稿路径>
 """
-import json, sys, uuid, shutil, random
+import json, os, sys, uuid, shutil, random
 from pathlib import Path
 
-SCRIPT_DIR = Path(__file__).parent
+SCRIPT_DIR = Path(os.environ.get('REALCUT_SCRIPT_DATA_DIR', Path(__file__).parent))
 
 def add_transitions(draft_path):
     dp = Path(draft_path)
@@ -31,7 +31,7 @@ def add_transitions(draft_path):
     
     # 强制用模板文件（用户最新添加的转场效果）
     if tmpl.get('transitions'):
-        trans_mats = [dict(t) for t in tmpl['transitions']]
+        trans_mats = rewrite_pkg_asset_paths([dict(t) for t in tmpl['transitions']])
         for t in trans_mats:
             t['id'] = str(uuid.uuid4()).upper()
     else:

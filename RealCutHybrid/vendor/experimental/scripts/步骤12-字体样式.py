@@ -8,11 +8,11 @@
   2. 对每条字幕，匹配关键词并标记 subtitle_keywords.range
   3. 字号改为 10，字幕 Y 位置 = -0.4167
 """
-import json, sys, re, copy
+import json, sys, re, copy, os
 from pathlib import Path
 from _utils import write_draft
 
-FONT_PATH = 'C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/1654203/50957d5102cb4f2ea1459e140826eb0c/HelloFont ID JiangHuTi.ttf'
+FONT_PATH = os.environ.get('REALCUT_FONT_PATH', 'C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/1654203/50957d5102cb4f2ea1459e140826eb0c/HelloFont ID JiangHuTi.ttf')
 FONT_ID = '7080097079397192228'
 FONT_LIST = [{'category_id':'favoured','category_name':'我的收藏','effect_id':FONT_ID,'file_uri':'','id':'9342442C-5214-4f90-87C0-FE6B41367998','path':'','request_id':'','resource_id':'','team_id':'','title':'江湖体'}]
 
@@ -86,7 +86,7 @@ def build_base_content(text, font_id, font_path, size):
 
 
 # ── 外挂关键词库路径 ──
-KEYWORD_FILE = Path(r'C:/Users/JT/Documents/剪辑/highlight_keywords.txt')
+KEYWORD_FILE = Path(os.environ.get('REALCUT_KEYWORD_FILE', r'C:/Users/JT/Documents/剪辑/highlight_keywords.txt'))
 
 
 def load_keywords():
@@ -367,7 +367,7 @@ def _resolve_style_template():
     style = _os.environ.get('REALCUT_STYLE', '')
     # 2. style_config.json
     if not style:
-        cfg_file = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\style_config.json')
+        cfg_file = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')).parent / 'style_config.json'
         if cfg_file.exists():
             try:
                 with open(cfg_file, 'r', encoding='utf-8') as f:
@@ -378,19 +378,19 @@ def _resolve_style_template():
     # 3. 解析模板目录
     if style:
         if style == '\u6a21\u677f1':
-            tmpl = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft') / '\u6a21\u677f1'
+            tmpl = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')) / '\u6a21\u677f1'
             if tmpl.exists() and (tmpl / 'draft_content.json').exists():
                 _STYLE_TEMPLATE_DIR = tmpl
                 print(f'[模板] 使用风格模板: {tmpl.name}')
                 return tmpl
-        styles_dir = Path(r'D:/10  jianyin/JianyingPro Drafts')
+        styles_dir = Path(os.environ.get('REALCUT_STYLE_LIB', r'D:/10  jianyin/JianyingPro Drafts'))
         tmpl = styles_dir / f'{style}模板'
         if tmpl.exists() and (tmpl / 'draft_content.json').exists():
             _STYLE_TEMPLATE_DIR = tmpl
             print(f'[模板] 使用风格模板: {tmpl.name}')
             return tmpl
     # 回退
-    _STYLE_TEMPLATE_DIR = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft\模板')
+    _STYLE_TEMPLATE_DIR = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')) / '模板'
     return _STYLE_TEMPLATE_DIR
 
 
@@ -405,7 +405,8 @@ def _load_template_json(tmpl_dir):
         return None
     raw = dc.read_bytes()[:10]
     if raw.startswith(b'{'):
-        return json.load(open(dc, encoding='utf-8'))
+        from _utils import rewrite_pkg_asset_paths
+        return rewrite_pkg_asset_paths(json.load(open(dc, encoding='utf-8')))
     # 加密 → 依次尝试明文兜底
     for fn in ['template.json.bak', 'draft_info.json']:
         p = tmpl_dir / fn

@@ -12,7 +12,7 @@ from _utils import write_draft, ensure_utf8_stdout
 
 ensure_utf8_stdout()
 
-DRAFT_DIR = r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft'
+DRAFT_DIR = os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')
 
 def get_ffprobe(path, arg):
     r = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', arg,
@@ -221,7 +221,7 @@ def create_draft(video_path, auto_open=True, draft_name_override=None):
     print(f'打开剪映 -> 本地草稿 查看')
     
     # 自动打开剪映草稿验证
-    jy_path = r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe'
+    jy_path = os.environ.get('REALCUT_JIANYING_EXE', r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe')
     script_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'scripts')
     open_py = os.path.join(script_dir, 'open_draft.py')
     if auto_open:

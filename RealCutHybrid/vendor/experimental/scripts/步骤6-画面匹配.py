@@ -25,6 +25,7 @@ import glob
 
 from _utils import write_draft
 from _video_assign import assign_video_sources
+from _runtime_deps import import_external
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 from pathlib import Path
@@ -97,7 +98,7 @@ def get_frame_actions(src_video, draft_path):
             try:
                 with open(fp, 'rb') as f:
                     img_b64 = base64.b64encode(f.read()).decode('utf-8')
-                from dashscope import MultiModalConversation
+                MultiModalConversation = import_external('dashscope').MultiModalConversation
                 resp = MultiModalConversation.call(
                     model='qwen-vl-plus',
                     messages=[{'role': 'user', 'content': [
@@ -182,7 +183,7 @@ def match_video(draft_path, auto_open=True):
 
     api_available = True
     try:
-        import dashscope
+        import_external('dashscope')
         if not os.environ.get('DASHSCOPE_API_KEY', ''):
             api_available = False
             print('API Key not set, skip visual check')
@@ -261,7 +262,7 @@ def match_video(draft_path, auto_open=True):
     print('  视频段:', len(video_segs))
 
     if auto_open:
-        jy_path = r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe'
+        jy_path = os.environ.get('REALCUT_JIANYING_EXE', r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe')
         script_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'scripts')
         open_py = os.path.join(script_dir, 'open_draft.py')
         print('打开剪映验证...')

@@ -10,18 +10,25 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import random
 import subprocess
 import sys
 from pathlib import Path
 from typing import Callable, Optional
+from runtime_layout import application_root, entrypoint_command
 
-ROOT = Path(__file__).resolve().parent
+ROOT = application_root(__file__)
 SCRIPTS = ROOT / "vendor" / "experimental" / "scripts"
 DEFAULT_DRAFT_ROOT = Path(
-    r"C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft"
+    os.environ.get(
+        "REALCUT_DRAFT_ROOT",
+        r"C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft",
+    )
 )
-STYLE_LIB = Path(r"D:\10  jianyin\JianyingPro Drafts")
+STYLE_LIB = Path(
+    os.environ.get("REALCUT_STYLE_LIB", r"D:\10  jianyin\JianyingPro Drafts")
+)
 
 LogFn = Callable[[str], None]
 
@@ -49,7 +56,7 @@ def run_script(
 ) -> str:
     """Run an experimental engine script and return its combined output."""
     script = SCRIPTS / script_name
-    cmd = [sys.executable, str(script), *args]
+    cmd = entrypoint_command(script, args, root=ROOT)
     log(f"[postprocess] 执行: {script_name} {' '.join(args)}")
     proc = subprocess.run(
         cmd,

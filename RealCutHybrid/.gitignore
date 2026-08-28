@@ -5,3 +5,7 @@ logs/
 snapshots/
 reports/
 manifests/
+build/
+dist/
+.venv-build/
+*.iss.sig

@@ -182,10 +182,29 @@ def read_draft(dp):
 
 
 # 模板草稿库（10.0 风格模板）
-STYLE_LIB = Path(r'D:/10  jianyin/JianyingPro Drafts')
+STYLE_LIB = Path(os.environ.get('REALCUT_STYLE_LIB', r'D:/10  jianyin/JianyingPro Drafts'))
 # 5.9 模板草稿（com.lveditor.draft 下按风格名分目录）
-DRAFT_ROOT = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')
+DRAFT_ROOT = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft'))
 STYLE_CONFIG_FILE = DRAFT_ROOT.parent / 'style_config.json'
+
+PKG_ASSETS_PLACEHOLDER = '##_pkg_assets_'
+
+
+def rewrite_pkg_asset_paths(value):
+    """Replace portable asset placeholders with this installation's path."""
+    if isinstance(value, str):
+        if PKG_ASSETS_PLACEHOLDER not in value:
+            return value
+        root = os.environ.get('REALCUT_ASSETS_ROOT', '').strip().rstrip('\\/')
+        if not root:
+            fallback = Path(os.environ.get('REALCUT_ROOT', Path(__file__).resolve().parents[3]))
+            root = str(fallback / 'assets')
+        return value.replace(PKG_ASSETS_PLACEHOLDER, root.replace('\\', '/'))
+    if isinstance(value, list):
+        return [rewrite_pkg_asset_paths(item) for item in value]
+    if isinstance(value, dict):
+        return {key: rewrite_pkg_asset_paths(item) for key, item in value.items()}
+    return value
 
 
 def resolve_template_dir():

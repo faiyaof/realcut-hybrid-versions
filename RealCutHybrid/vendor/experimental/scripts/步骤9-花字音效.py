@@ -17,9 +17,9 @@ ensure_utf8_stdout()
 # 模板草稿：优先用当前风格的模板（style_config.json），找不到再回退 com.lveditor.draft/草稿
 TEMPLATE, _tmpl_name = resolve_template_dir()
 if TEMPLATE is None:
-    TEMPLATE = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft\草稿')
-BACKUP_TMPL = Path(r'D:\JianyingPro Drafts\草稿')
-FALLBACK_MATERIAL_TMPL = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft\草稿')
+    TEMPLATE = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')) / '草稿'
+BACKUP_TMPL = Path(os.environ.get('REALCUT_STYLE_LIB', r'D:\JianyingPro Drafts')) / '草稿'
+FALLBACK_MATERIAL_TMPL = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')) / '草稿'
 
 def _has_huazi_materials(tmpl_dir):
     dc = tmpl_dir / 'draft_content.json'

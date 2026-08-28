@@ -28,6 +28,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any, Optional
 from urllib.parse import parse_qs, unquote, urlsplit
+from runtime_layout import application_root, entrypoint_command
 
 from realcut_hybrid import (
     LOG_DIR,
@@ -40,7 +41,7 @@ from realcut_hybrid import (
     atomic_write_text,
 )
 
-ROOT = Path(__file__).resolve().parent
+ROOT = application_root(__file__)
 WEB_DIR = ROOT / "web"
 ORCHESTRATOR = ROOT / "realcut_hybrid.py"
 DEFAULT_PORT = 8765
@@ -280,7 +281,11 @@ class TaskQueue:
 
     def _run_item(self, item: QueueItem) -> None:
         append_log(item.task_id, "后台队列开始执行任务")
-        cmd = [sys.executable, str(ORCHESTRATOR), "run", item.video]
+        cmd = entrypoint_command(
+            ORCHESTRATOR,
+            ["run", item.video],
+            root=ROOT,
+        )
         opts = item.options or {}
         if opts.get("draft"):
             cmd += ["--draft", str(opts["draft"])]
@@ -608,7 +613,7 @@ def run_environment_check() -> dict:
     env["PYTHONUTF8"] = "1"
     try:
         proc = subprocess.run(
-            [sys.executable, str(ORCHESTRATOR), "check"],
+            entrypoint_command(ORCHESTRATOR, ["check"], root=ROOT),
             capture_output=True,
             text=True,
             encoding="utf-8",

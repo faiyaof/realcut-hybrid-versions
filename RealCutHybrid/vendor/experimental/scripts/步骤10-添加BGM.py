@@ -1,10 +1,10 @@
-from _utils import write_draft, resolve_template_dir, ensure_utf8_stdout
+from _utils import write_draft, resolve_template_dir, ensure_utf8_stdout, rewrite_pkg_asset_paths
 """
 步骤10：添加BGM — 从草稿模板挑选BGM或自定义本地音频，音量-15dB，自动匹配画面/音频时长
 用法: python "步骤10-添加BGM.py" <草稿路径> [--bgm 6|7|8|9|10|11|12|13]
 """
 
-import json, sys, uuid, shutil, copy, argparse, subprocess, io
+import json, os, sys, uuid, shutil, copy, argparse, subprocess, io
 from pathlib import Path
 
 ensure_utf8_stdout()
@@ -12,8 +12,8 @@ ensure_utf8_stdout()
 # 模板草稿：优先用当前风格模板，找不到回退 com.lveditor.draft/草稿
 TEMPLATE, _tmpl_name = resolve_template_dir()
 if TEMPLATE is None:
-    TEMPLATE = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft\草稿')
-FALLBACK_BGM_TMPL = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft\草稿')
+    TEMPLATE = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')) / '草稿'
+FALLBACK_BGM_TMPL = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')) / '草稿'
 
 def _supports_default_bgm(tmpl_dir):
     dc = tmpl_dir / 'draft_content.json'
@@ -32,10 +32,11 @@ if not _supports_default_bgm(TEMPLATE):
         TEMPLATE = FALLBACK_BGM_TMPL
 
 # 自定义 BGM 音频文件（用户额外添加）
+_CUSTOM_BGM_DIR = Path(os.environ.get('REALCUT_BGM_DIR', r'D:\工作空间\精剪\音频'))
 CUSTOM_BGM_FILES = {
-    11: {'path': r'D:\工作空间\精剪\音频\悠闲.MP3',  'name': '悠闲'},
-    12: {'path': r'D:\工作空间\精剪\音频\烟雨入画.MP3', 'name': '烟雨入画'},
-    13: {'path': r'D:\工作空间\精剪\音频\爱的魔法.MP3', 'name': '爱的魔法'},
+    11: {'path': str(_CUSTOM_BGM_DIR / '悠闲.MP3'),  'name': '悠闲'},
+    12: {'path': str(_CUSTOM_BGM_DIR / '烟雨入画.MP3'), 'name': '烟雨入画'},
+    13: {'path': str(_CUSTOM_BGM_DIR / '爱的魔法.MP3'), 'name': '爱的魔法'},
 }
 
 BGM_NAMES = {
@@ -172,6 +173,7 @@ def add_bgm(draft_path, bgm_track_idx=10):
     else:
         with open(TEMPLATE / 'draft_content.json', 'r', encoding='utf-8') as f:
             tmpl = json.load(f)
+            tmpl = rewrite_pkg_asset_paths(tmpl)
 
         if bgm_track_idx < 0 or bgm_track_idx >= len(tmpl['tracks']):
             print(f'BGM 轨道索引 {bgm_track_idx} 越界，回退到默认 10')

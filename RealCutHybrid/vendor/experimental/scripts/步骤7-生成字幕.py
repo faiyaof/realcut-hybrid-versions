@@ -6,6 +6,7 @@ import json, sys, subprocess, re, os, shutil, io
 from datetime import datetime
 from pathlib import Path
 from _funasr import recognize_audio
+from _runtime_deps import import_external
 
 # 保证 stdout 以 UTF-8 输出中文（父进程按 UTF-8 读取）
 try:
@@ -140,7 +141,7 @@ def ai_segment_text(text, max_chars=10, max_retries=2):
 
 def _split_long_sub(sub, max_chars):
     """超长子句按 jieba 词边界拆段。返回拆分后的片段列表。"""
-    import jieba
+    jieba = import_external('jieba')
     # 预分词，得到 (词, 起点, 终点) 列表；标点/空白作为独立边界符处理
     tokens = []
     pos = 0
@@ -376,7 +377,7 @@ def fix_typos(text):
     return text
 
 
-HYBRID_ROOT = Path(__file__).resolve().parents[3]
+HYBRID_ROOT = Path(os.environ.get('REALCUT_ROOT', Path(__file__).resolve().parents[3]))
 GLOSSARY_FILE = HYBRID_ROOT / 'config' / 'subtitle_glossary.json'
 OVERRIDE_FILE = HYBRID_ROOT / 'config' / 'subtitle_overrides.json'
 
@@ -1086,7 +1087,7 @@ print(f'\n共{len(subs)}条字幕')
 
 # ── AI 关键词回写关键词库（供步骤12标黄）──
 if ai_keywords_all:
-    kw_file = Path(r'C:/Users/JT/Documents/剪辑/highlight_keywords.txt')
+    kw_file = Path(os.environ.get('REALCUT_KEYWORD_FILE', r'C:/Users/JT/Documents/剪辑/highlight_keywords.txt'))
     try:
         # 过滤噪声关键词：单字、虚词、无意义互动词
         noise = set('的了着过在和与是就把被地得而或有那就才也很啊哦嗯吧吗呢么上下中间')
@@ -1139,12 +1140,14 @@ with open(dp / '字幕.txt', 'w', encoding='utf-8-sig') as f:
 # ── 导入到剪映草稿 ──
 import os as _os
 _local_import = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '导入字幕.py')
-_subtitle_import = _local_import if _os.path.exists(_local_import) else r'C:\Users\JT\.openclaw\workspace\openclaw\导入字幕.py'
-_r = subprocess.run([
-    sys.executable,
-    _subtitle_import,
-    str(dp)
-], capture_output=True, text=True, encoding='utf-8')
+_bin_dir = Path(_os.environ.get('REALCUT_BIN_DIR', HYBRID_ROOT / 'bin'))
+_subtitle_binary = _bin_dir / '导入字幕.exe'
+if _subtitle_binary.is_file():
+    _subtitle_cmd = [str(_subtitle_binary), str(dp)]
+else:
+    _subtitle_import = _local_import if _os.path.exists(_local_import) else _os.environ.get('REALCUT_IMPORT_SUBTITLE_SCRIPT', _local_import)
+    _subtitle_cmd = [sys.executable, _subtitle_import, str(dp)]
+_r = subprocess.run(_subtitle_cmd, capture_output=True, text=True, encoding='utf-8')
 if _r.returncode != 0:
     print('导入字幕失败（退出码 %s）:' % _r.returncode)
     print((_r.stdout or '')[-500:])

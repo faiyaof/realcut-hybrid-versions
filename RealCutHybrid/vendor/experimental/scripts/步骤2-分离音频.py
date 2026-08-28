@@ -168,7 +168,7 @@ def separate_audio(draft_path, auto_open=True):
     
     # 自动打开剪映草稿验证
     draft_name = os.path.basename(str(draft_path))
-    jy_path = r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe'
+    jy_path = os.environ.get('REALCUT_JIANYING_EXE', r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe')
     script_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'scripts')
     open_py = os.path.join(script_dir, 'open_draft.py')
     if auto_open:

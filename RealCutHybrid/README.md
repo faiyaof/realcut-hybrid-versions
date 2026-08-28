@@ -375,3 +375,18 @@ POST /api/tasks/<id>/cancel
   下一轮可把 `/api/batch` 接到 `batch/restyle/force-font/fill-gaps` + 同一 manifest。
 - Web 工作台目前仍直接读项目根的 `state/` 和 `reports/`；Claude CLI 独立批次必须使用
   `--run-root`，不要为了复用 Web 前端而把 `web_server.py` 指向 `runs/` 下的状态。
+
+## 编译交接包
+
+`packaging/build_handover.ps1` 使用 Nuitka multidist 把 Web、CLI 和全部剪辑步骤编译成
+共享运行目录，再复用已验证部署包中的第三方 Python 依赖、FunASR 模型、FFmpeg、剪映、
+OfficeCLI 和素材。交付目录不包含 RealCut Hybrid 自有 Python 源码。
+
+```powershell
+.\packaging\build_handover.ps1 `
+  -RuntimeSource ..\RealCutHybrid_Deploy_20260826 `
+  -Version 2026.08.28
+```
+
+构建产物位于 `dist/RealCutHybrid-Handover-<版本>/`，Inno Setup 分卷安装包位于
+`dist/installer/`。详细使用和代码保护边界见 `packaging/README_HANDOVER.md`。

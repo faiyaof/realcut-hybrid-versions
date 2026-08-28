@@ -12,7 +12,7 @@ from _utils import write_draft, resolve_template_dir, ensure_utf8_stdout
 前提: 需已完成步骤10
 """
 
-import json, sys, uuid, shutil, copy, io
+import json, os, sys, uuid, shutil, copy, io
 from pathlib import Path
 
 ensure_utf8_stdout()
@@ -25,7 +25,7 @@ if len(sys.argv) < 2 or "--force" not in sys.argv:
 # 模板草稿：优先用当前风格模板，找不到回退 com.lveditor.draft/草稿
 TEMPLATE, _tmpl_name = resolve_template_dir()
 if TEMPLATE is None:
-    TEMPLATE = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft\草稿')
+    TEMPLATE = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')) / '草稿'
 print(f'水印 使用模板: {TEMPLATE}')
 
 # 模板中水印所在的轨道索引（草稿模板的 track[2] 和 track[3]）

@@ -20,8 +20,10 @@ r"""
 import json, sys, os, subprocess, time
 from pathlib import Path
 
+from _runtime_deps import import_external
+
 # 模型缓存放 D 盘，复用已下载模型；抑制无关日志
-os.environ.setdefault('MODELSCOPE_CACHE', r'D:\.cache\modelscope')
+os.environ.setdefault('MODELSCOPE_CACHE', os.environ.get('REALCUT_MODELSCOPE_CACHE', r'D:\.cache\modelscope'))
 os.environ.setdefault('HF_ENDPOINT', 'https://hf-mirror.com')
 os.environ['HF_HUB_DISABLE_SYMLINKS_WARNING'] = '1'
 os.environ.setdefault('MODELSCOPE_LOG_LEVEL', '40')
@@ -30,7 +32,7 @@ os.environ.setdefault('MODELSCOPE_LOG_LEVEL', '40')
 _PUNCT = set('，。？！、,.!?；;：:…—－–～~﹏「」『』（）()【】《》<>“”‘’"\'`·。 \u3000\r\n\t')
 _SENT_END = set('。？！.!?')
 
-JY_PATH = r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe'
+JY_PATH = os.environ.get('REALCUT_JIANYING_EXE', r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe')
 
 _MODEL = None
 
@@ -38,7 +40,7 @@ _MODEL = None
 def _load_model():
     global _MODEL
     if _MODEL is None:
-        from funasr import AutoModel
+        AutoModel = import_external('funasr').AutoModel
         print('加载 FunASR: SeACo-Paraformer-zh + FSMN-VAD + CT-Punc ...')
         _MODEL = AutoModel(
             model='paraformer-zh',

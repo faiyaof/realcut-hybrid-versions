@@ -18,7 +18,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 # 字语圆体配置
 YUAN_TI_FONT_ID = '7495689259223880202'
-YUAN_TI_PATH = 'C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf'
+YUAN_TI_PATH = os.environ.get('REALCUT_FONT_PATH', 'C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf')
 YUAN_TI_FONTS = [{
     'category_id': 'preset', 'category_name': '剪映预设',
     'effect_id': '7495689259223880202', 'file_uri': '',
@@ -28,11 +28,9 @@ YUAN_TI_FONTS = [{
     'team_id': '', 'title': '字语圆体',
 }]
 
-# 解密DLL（支持环境变量 JY_DLL 覆盖；默认路径已验证有效）
-JY_DLL = os.environ.get(
-    'JY_DLL',
-    r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\videoeditor.dll',
-)
+# 解密DLL（支持环境变量 JY_DLL / REALCUT_JIANYING_EXE 覆盖）
+_JY_EXE = os.environ.get('REALCUT_JIANYING_EXE', r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe')
+JY_DLL = os.environ.get('JY_DLL', str(Path(_JY_EXE).parent / 'videoeditor.dll'))
 DECRYPT_NAME = (
     "?decrypt@EncryptUtils@lvve@@QEAA?AV?$basic_string@DU?$char_traits@D@std@@"
     "V?$allocator@D@2@@std@@AEBV34@0AEA_N@Z"
@@ -231,7 +229,7 @@ def process_draft(name: str, base: Path, backup: bool = True):
 
 
 def main():
-    base = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')
+    base = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft'))
     drafts = []
     if '--all' in sys.argv:
         drafts = [str(n) for n in range(2, 47)]

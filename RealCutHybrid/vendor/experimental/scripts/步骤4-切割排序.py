@@ -4,6 +4,7 @@ import json, sys, os, uuid, subprocess, shutil, re, copy, time, base64
 from _utils import write_draft
 from _llm import llm_text_with_provider
 from _price_roles import detect_price_roles
+from _runtime_deps import import_external
 from pathlib import Path
 
 MAX_VIDEO_DURATION_MS = 30000  # 成片最长不超过30秒
@@ -27,7 +28,7 @@ def visual_check_clothing_display(draft_path, sentences, discarded_indices, src_
     if not discarded_indices or not src_video or not os.path.exists(src_video):
         return []
     try:
-        from dashscope import MultiModalConversation
+        MultiModalConversation = import_external('dashscope').MultiModalConversation
     except ImportError:
         print('  [VL] dashscope not installed, skip visual check')
         return []
@@ -484,7 +485,7 @@ def main(dp_str, auto_open=True):
         return True
 
     draft_name = os.path.basename(str(Path(sys.argv[1])))
-    jy_path = r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe'
+    jy_path = os.environ.get('REALCUT_JIANYING_EXE', r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe')
     script_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'scripts')
     open_py = os.path.join(script_dir, 'open_draft.py')
     print('\n打开剪映验证...')

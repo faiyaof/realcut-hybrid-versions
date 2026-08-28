@@ -5,11 +5,11 @@
 """
 import json, sys, os, uuid, shutil, io
 from pathlib import Path
-from _utils import write_draft, ensure_utf8_stdout
+from _utils import write_draft, ensure_utf8_stdout, rewrite_pkg_asset_paths
 
 ensure_utf8_stdout()
 
-DEFAULT_TEMPLATE = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft\模板')
+DEFAULT_TEMPLATE = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')) / '模板'
 
 
 def uid():
@@ -87,6 +87,7 @@ def apply(dp_str, tmpl_str=None):
 
     draft = json.load(open(dc, encoding='utf-8'))
     tmpl = json.load(open(tdc, encoding='utf-8'))
+    tmpl = rewrite_pkg_asset_paths(tmpl)
     total_dur = draft.get('duration', 0)
     print(f'成品时长: {total_dur}us, 模板时长: {tmpl.get("duration")}us')
 

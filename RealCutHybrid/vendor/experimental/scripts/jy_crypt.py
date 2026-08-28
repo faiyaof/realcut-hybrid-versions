@@ -12,11 +12,9 @@ import sys
 import json
 from pathlib import Path
 
-# 剪映 videoeditor.dll（支持环境变量 JY_DLL 覆盖；默认路径已验证有效）
-JY_DLL = os.environ.get(
-    'JY_DLL',
-    r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\videoeditor.dll',
-)
+# 剪映 videoeditor.dll（支持环境变量 JY_DLL / REALCUT_JIANYING_EXE 覆盖）
+_JY_EXE = os.environ.get('REALCUT_JIANYING_EXE', r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe')
+JY_DLL = os.environ.get('JY_DLL', str(Path(_JY_EXE).parent / 'videoeditor.dll'))
 
 # C++ mangled 导出名
 DECRYPT_NAME = (

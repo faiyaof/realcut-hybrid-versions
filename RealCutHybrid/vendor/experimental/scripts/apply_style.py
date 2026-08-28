@@ -11,12 +11,12 @@
 """
 import json, sys, os, uuid, shutil, argparse, copy, io, random, re
 from pathlib import Path
-from _utils import write_draft, read_draft, ensure_jianying_closed, ensure_utf8_stdout
+from _utils import write_draft, read_draft, ensure_jianying_closed, ensure_utf8_stdout, rewrite_pkg_asset_paths
 
-DRAFT_ROOT = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')
-CONFIG_FILE = Path(r'C:\Users\JT\AppData\Local\JianyingPro\User Data\style_config.json')
+DRAFT_ROOT = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft'))
+CONFIG_FILE = DRAFT_ROOT.parent / 'style_config.json'
 # 模板库：10.0风格模板放这里
-STYLE_LIB = Path(r'D:/10  jianyin/JianyingPro Drafts')
+STYLE_LIB = Path(os.environ.get('REALCUT_STYLE_LIB', r'D:/10  jianyin/JianyingPro Drafts'))
 
 ensure_utf8_stdout()
 
@@ -177,6 +177,7 @@ def apply_style(dp_str, style_name=None, tmpl_path=None):
             print('模板无法读取（非明文且无template.json.bak）')
             return False
         print('已从10.0模板转换')
+    tmpl = rewrite_pkg_asset_paths(tmpl)
 
     # 读取成品草稿（明文/加密统一入口，写坏即成品损坏，异常直接抛出不让调用方误判成功）
     try:
