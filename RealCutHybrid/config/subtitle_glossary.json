@@ -1,0 +1,66 @@
+{
+  "preserve": [
+    "天丝",
+    "桑蚕丝",
+    "莱赛尔",
+    "开骨",
+    "全包边",
+    "内衬",
+    "饰品",
+    "真丝",
+    "羊绒",
+    "工艺"
+  ],
+  "replace": [
+    {
+      "wrong": "棉七的天",
+      "right": "棉质天丝",
+      "force": true,
+      "category": "面料"
+    },
+    {
+      "wrong": "棉气的天",
+      "right": "棉质天丝",
+      "force": true,
+      "category": "面料"
+    },
+    {
+      "wrong": "棉漆",
+      "right": "棉质",
+      "force": true,
+      "category": "面料"
+    },
+    {
+      "wrong": "棉七",
+      "right": "棉质",
+      "force": true,
+      "category": "面料"
+    },
+    {
+      "wrong": "平平营的",
+      "right": "平价的",
+      "force": true,
+      "category": "口语"
+    },
+    {
+      "wrong": "平营的",
+      "right": "平价的",
+      "force": true,
+      "category": "口语"
+    },
+    {
+      "wrong": "开普",
+      "right": "开骨",
+      "force": true,
+      "category": "工艺"
+    }
+  ],
+  "suspicious": [
+    "小屁帘",
+    "小屁莲",
+    "金骨感",
+    "金骨",
+    "金工",
+    "拿开骨全包"
+  ]
+}

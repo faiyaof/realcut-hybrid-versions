@@ -1,0 +1,39 @@
+# This repository publishes the three RealCut Hybrid source variants only.
+# Unrelated RealCut Auto packages and local archives stay outside Git history.
+RealCutAuto_*/
+RealCutAuto_*.zip
+RealCutHybrid_Deploy_20260826.zip
+
+# Python and editor caches
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.DS_Store
+**/Thumbs.db
+
+# Local credentials and machine-specific environment files
+**/.env
+**/.env.*
+!**/.env.example
+**/*.pem
+**/*.key
+
+# Generated jobs and personal working data
+**/state/
+**/logs/
+**/snapshots/
+**/reports/
+**/manifests/
+**/runs/
+**/archive/
+**/web_queue.json
+**/web_queue_shot.png
+**/web_server*.log
+
+# Downloaded model caches and bundled third-party runtimes are release assets,
+# not source. The deployment README explains how these are supplied.
+**/models_cache/
+RealCutHybrid_Deploy_20260826/runtime/
+

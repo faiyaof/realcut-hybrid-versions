@@ -1,0 +1,32 @@
+{
+    "transitions": [
+        {
+            "category_id": "123456",
+            "category_name": "转场效果",
+            "duration": 533333,
+            "effect_id": "7347582471111709236",
+            "id": "",
+            "is_overlap": false,
+            "name": "放大左移",
+            "path": "##_pkg_assets_/style_assets/effects/a2c4ddc0f96c5694e941d738ed52cdf4",
+            "platform": "all",
+            "request_id": "",
+            "resource_id": "7347582471111709236",
+            "type": "transition"
+        },
+        {
+            "category_id": "123456",
+            "category_name": "转场效果",
+            "duration": 466666,
+            "effect_id": "6724239388189921806",
+            "id": "",
+            "is_overlap": false,
+            "name": "闪黑",
+            "path": "##_pkg_assets_/style_assets/effects/3bca53e9f3dfa2c184fbee96438ea097",
+            "platform": "all",
+            "request_id": "",
+            "resource_id": "6724239388189921806",
+            "type": "transition"
+        }
+    ]
+}

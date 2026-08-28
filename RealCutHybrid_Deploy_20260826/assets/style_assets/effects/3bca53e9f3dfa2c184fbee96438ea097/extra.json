@@ -1,0 +1,7 @@
+{
+    "internal_ie":"shenkai.krist",
+    "transition": { 
+            "defaultDura": 0.5,
+            "isOverlap": false
+        }
+}

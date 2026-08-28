@@ -1,0 +1,7 @@
+﻿interface:
+  display_name: "Real Cut 带货切片剪辑"
+  short_description: "剪映带货切片全自动剪辑：12步流水线，jieba断句+关键字标黄"
+  default_prompt: "使用 Real Cut 剪辑带货视频：导入->ASR->AI切割->画面匹配->字幕->关键字标黄->BGM"
+
+policy:
+  allow_implicit_invocation: true

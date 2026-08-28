@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RealCut Hybrid</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/modal.css" />
+  <link rel="stylesheet" href="/hybrid.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"><span class="brand-dot"></span><span class="brand-wave"></span></div>
+        <div><strong>RealCut</strong><small>Hybrid Studio</small></div>
+      </div>
+      <div class="workspace-label">工作台</div>
+      <nav class="nav-list" aria-label="主导航">
+        <button class="nav-item active" data-tab="queue"><i data-lucide="layers-3"></i><span>任务队列</span><b id="queue-count">0</b></button>
+        <button class="nav-item" data-tab="details"><i data-lucide="list-checks"></i><span>任务详情</span></button>
+        <button class="nav-item" data-tab="logs"><i data-lucide="scroll-text"></i><span>运行日志</span></button>
+        <button class="nav-item" data-tab="settings"><i data-lucide="stethoscope"></i><span>环境检查</span></button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-foot"><span class="status-dot ok"></span><span id="service-state">本地服务已连接</span><span class="version">v0.1</span></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div><p class="eyebrow">real-cut + 任务调度</p><h1 id="page-title">任务队列</h1></div>
+        <div class="topbar-actions"><span class="sync-label"><i data-lucide="wifi"></i> 本地服务在线</span><button class="icon-button" id="refresh-btn" title="刷新数据"><i data-lucide="refresh-cw"></i></button></div>
+      </header>
+
+      <section id="queue-tab" class="tab-panel active">
+        <div class="hero-row">
+          <div><h2>把视频交给 RealCut 流水线</h2><p>持久化后台队列，支持断点续跑、字幕阶段重跑和最多 3 个并行任务。</p></div>
+          <div class="queue-hero-actions">
+            <button class="primary-button" id="add-video-btn"><i data-lucide="plus"></i>投入新素材</button>
+          </div>
+        </div>
+        <div class="queue-settings-card">
+          <div class="queue-setting-copy">
+            <label class="switch-line"><input type="checkbox" id="parallel-enabled"><span>并行处理</span></label>
+            <small>关闭后单任务顺序执行；开启后最多同时跑 3 个任务。</small>
+          </div>
+          <label class="queue-select">最大并发
+            <select id="max-concurrency">
+              <option value="1">1 个</option>
+              <option value="2">2 个</option>
+              <option value="3">3 个</option>
+            </select>
+          </label>
+          <span class="queue-persist-badge"><i data-lucide="database"></i>队列已持久化，重启自动恢复</span>
+        </div>
+        <div class="metric-grid">
+          <div class="metric-card"><span class="metric-label">待处理</span><strong id="metric-queued">0</strong><small>已入队</small></div>
+          <div class="metric-card"><span class="metric-label">处理中</span><strong id="metric-running">0</strong><small>运行中 / 最多 1</small></div>
+          <div class="metric-card"><span class="metric-label">已完成</span><strong id="metric-completed">0</strong><small>草稿已处理</small></div>
+          <div class="metric-card warning"><span class="metric-label">失败</span><strong id="metric-failed">0</strong><small>可续跑或重试</small></div>
+        </div>
+        <div class="section-heading"><div><h3>最近任务</h3><span id="queue-caption">按更新时间倒序</span></div></div>
+        <div class="job-table-wrap">
+          <table class="job-table">
+            <thead><tr><th>任务</th><th>状态</th><th>进度</th><th>更新时间</th><th></th></tr></thead>
+            <tbody id="job-list"></tbody>
+          </table>
+          <div class="empty-state visible" id="empty-state">
+            <div class="empty-icon"><i data-lucide="inbox"></i></div>
+            <h3>还没有任务</h3>
+            <p>选择视频或素材目录后，RealCut 会按 12 步流水线处理。</p>
+            <button class="secondary-button" id="empty-add-btn"><i data-lucide="plus"></i>选择素材</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="details-tab" class="tab-panel">
+        <div class="panel-heading"><div><p class="eyebrow">步骤断点与报告</p><h2>任务详情</h2><p>查看步骤状态、失败现场、日志和 Markdown 报告。</p></div></div>
+        <div class="detail-toolbar">
+          <select id="detail-job-select" aria-label="选择任务"></select>
+          <button class="secondary-button" id="refresh-detail-btn"><i data-lucide="refresh-cw"></i>刷新详情</button>
+          <button class="secondary-button" id="open-report-btn"><i data-lucide="file-text"></i>查看报告</button>
+          <button class="secondary-button" id="open-review-btn"><i data-lucide="list-checks"></i>字幕复核</button>
+          <button class="secondary-button" id="fix-gaps-btn"><i data-lucide="align-justify"></i>补字幕空隙</button>
+        </div>
+        <div id="detail-summary" class="detail-summary"><div class="empty-state visible"><div class="empty-icon"><i data-lucide="list-checks"></i></div><h3>选择任务查看详情</h3></div></div>
+        <div id="detail-steps" class="detail-card" hidden></div>
+        <div id="detail-subtitle-review" class="detail-card" hidden>
+          <div class="section-heading"><div><h3>字幕复核清单</h3><span id="subtitle-review-summary">暂无清单</span></div></div>
+          <div id="subtitle-review-list" class="subtitle-review-list"></div>
+        </div>
+        <div id="detail-report" class="detail-card" hidden>
+          <div class="section-heading"><div><h3>Markdown 报告</h3><span>reports/ 目录同步生成</span></div></div>
+          <pre id="report-content" class="report-pre">暂无报告</pre>
+        </div>
+      </section>
+
+      <section id="logs-tab" class="tab-panel">
+        <div class="panel-heading"><div><p class="eyebrow">可审计运行记录</p><h2>运行日志</h2><p>选择任务后查看日志尾部。</p></div></div>
+        <div class="log-toolbar">
+          <select id="log-job-select"><option value="">选择任务</option></select>
+          <button class="secondary-button" id="refresh-log-btn"><i data-lucide="refresh-cw"></i>刷新日志</button>
+        </div>
+        <pre id="log-content" class="log-content">暂无日志</pre>
+      </section>
+
+      <section id="settings-tab" class="tab-panel">
+        <div class="panel-heading"><div><p class="eyebrow">本地运行条件</p><h2>环境检查</h2><p>检查脚本、依赖、剪映路径和关键词库。</p></div></div>
+        <div class="settings-card">
+          <h3>环境预检</h3>
+          <div id="environment-list" class="environment-list"></div>
+          <button class="secondary-button" id="recheck-btn"><i data-lucide="stethoscope"></i>重新检查</button>
+        </div>
+        <div class="settings-card">
+          <h3>项目路径</h3>
+          <div id="project-paths" class="project-paths"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="job-modal" aria-hidden="true">
+    <div class="modal">
+      <div class="modal-header"><div><p class="eyebrow">创建 RealCut 任务</p><h2>投入新素材</h2></div><button class="icon-button" id="close-modal-btn"><i data-lucide="x"></i></button></div>
+      <div class="selected-file">
+        <span class="file-icon"><i data-lucide="file-video-2"></i></span>
+        <div><strong id="modal-video-name">尚未选择素材</strong><small id="modal-video-path">选择单个视频或包含视频的文件夹</small></div>
+        <div class="source-actions">
+          <button class="secondary-button" id="modal-choose-video-btn"><i data-lucide="file-video-2"></i>选择视频</button>
+          <button class="secondary-button" id="modal-choose-folder-btn"><i data-lucide="folder-plus"></i>选择文件夹</button>
+        </div>
+      </div>
+      <label class="manual-path-label">视频或文件夹完整路径<input id="manual-job-path" type="text" placeholder="例如 D:\素材\sample.mp4"></label>
+      <div class="form-grid modal-form">
+        <label>运行模式<select id="job-mode"><option value="full">完整剪辑</option><option value="phase2">仅字幕阶段（需已有草稿）</option></select></label>
+        <label>已有草稿（可选）<input id="job-draft" type="text" placeholder="草稿名或完整路径"></label>
+        <button class="secondary-button draft-load-btn" id="load-drafts-btn" type="button" hidden><i data-lucide="folder-search"></i>读取剪映已有草稿</button>
+        <label>BGM 序号<select id="job-bgm">
+          <option value="10" selected>10（默认）</option>
+          <option value="0">关闭</option>
+          <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="11">11</option><option value="12">12</option><option value="13">13</option>
+        </select></label>
+        <label>快照模式<select id="job-snapshot"><option value="json">JSON 轻量</option><option value="copy">完整目录</option><option value="off">关闭</option></select></label>
+        <label>单步最大重试<select id="job-max-attempts"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
+        <label>风格模板（可选）<input id="job-style" type="text" placeholder="例如 我的风格"></label>
+      </div>
+      <div id="draft-picker" class="draft-picker" hidden>
+        <div class="draft-picker-head">
+          <strong>剪映已有草稿</strong>
+          <span id="draft-count">0 个已选</span>
+          <button class="secondary-button draft-clear-btn" id="clear-drafts-btn" type="button">清空</button>
+        </div>
+        <div id="draft-list" class="draft-list"></div>
+      </div>
+      <div class="option-grid">
+        <label class="switch-line"><input type="checkbox" id="job-recursive" checked><span>扫描目录子文件夹</span></label>
+        <label class="switch-line"><input type="checkbox" id="job-watermark"><span>添加水印</span></label>
+        <label class="switch-line"><input type="checkbox" id="job-flower"><span>花字音效</span></label>
+        <label class="switch-line"><input type="checkbox" id="job-smooth-audio" checked><span>音频平滑</span></label>
+        <label class="switch-line"><input type="checkbox" id="job-review-subtitles" checked><span>字幕复核清单</span></label>
+        <label class="switch-line"><input type="checkbox" id="job-dry-run"><span>Dry Run 预演</span></label>
+        <label class="switch-line"><input type="checkbox" id="job-no-close"><span>不自动关闭剪映</span></label>
+        <label class="switch-line"><input type="checkbox" id="job-no-restore"><span>失败不恢复快照</span></label>
+      </div>
+      <div class="modal-note"><i data-lucide="shield-check"></i><span><b>完整剪辑</b>：按 real-cut 12 步规则处理草稿。<b>仅字幕阶段</b>：可读取剪映已有草稿并多选，批量跑 60ms 淡入淡出、音频平滑、步骤 7+12、BGM 和字体后处理。</span></div>
+      <div class="modal-actions"><button class="secondary-button" id="cancel-modal-btn">取消</button><button class="primary-button" id="submit-job-btn"><i data-lucide="play"></i>加入任务队列</button></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="path-modal" aria-hidden="true">
+    <div class="modal path-modal-card" role="dialog" aria-modal="true" aria-labelledby="path-modal-title">
+      <div class="modal-header"><div><p class="eyebrow">本机磁盘浏览器</p><h2 id="path-modal-title">选择本地路径</h2></div><button class="icon-button" id="close-path-modal-btn" aria-label="关闭路径选择器"><i data-lucide="x"></i></button></div>
+      <div class="path-toolbar"><button class="secondary-button" id="path-roots-btn">磁盘</button><button class="secondary-button" id="path-parent-btn">上一级</button><input id="path-current-input" type="text" placeholder="输入完整目录后按回车"></div>
+      <div class="path-list" id="path-list"></div>
+      <div class="modal-actions path-actions"><span id="path-picker-help">双击文件夹进入</span><button class="primary-button" id="select-current-folder-btn">选择当前目录</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="/vendor/lucide.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

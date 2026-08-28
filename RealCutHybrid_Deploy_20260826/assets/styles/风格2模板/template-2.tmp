@@ -1,0 +1,3127 @@
+{
+    "canvas_config": {
+        "height": 1920,
+        "ratio": "original",
+        "width": 1080
+    },
+    "color_space": 0,
+    "config": {
+        "adjust_max_index": 1,
+        "attachment_info": [],
+        "combination_max_index": 1,
+        "export_range": null,
+        "extract_audio_last_index": 1,
+        "lyrics_recognition_id": "",
+        "lyrics_sync": true,
+        "lyrics_taskinfo": [],
+        "maintrack_adsorb": true,
+        "material_save_mode": 0,
+        "multi_language_current": "none",
+        "multi_language_list": [],
+        "multi_language_main": "none",
+        "multi_language_mode": "none",
+        "original_sound_last_index": 1,
+        "record_audio_last_index": 1,
+        "sticker_max_index": 1,
+        "subtitle_keywords_config": {
+            "font_size_ratio": 1.3,
+            "styles": "{\"styles\":[{\"fill\":{\"alpha\":1.0,\"content\":{\"render_type\":\"solid\",\"solid\":{\"alpha\":1.0,\"color\":[1.0,0.8705882430076599,0.0]}}},\"range\":[0,11],\"size\":10.4,\"strokes\":[{\"alpha\":1.0,\"content\":{\"render_type\":\"solid\",\"solid\":{\"alpha\":1.0,\"color\":[0.0,0.0,0.0]}},\"width\":0.06}],\"useLetterColor\":true}],\"text\":\"placeholder\"}",
+            "subtitle_template_keywords_original_font_size": 0.0,
+            "subtitle_template_original_font_size": 0.0
+        },
+        "subtitle_recognition_id": "",
+        "subtitle_sync": true,
+        "subtitle_taskinfo": [
+            {
+                "id": "6a76e887ffea1801b4c32ceb_8_2",
+                "language": "zh-CN",
+                "remove_invalid_task_id": "",
+                "type": 10
+            }
+        ],
+        "system_font_list": [],
+        "video_mute": false,
+        "zoom_info_params": {
+            "offset_x": 0.0,
+            "offset_y": 0.0,
+            "zoom_ratio": 0.99999
+        }
+    },
+    "cover": null,
+    "create_time": 0,
+    "duration": 13166666,
+    "extra_info": {
+        "text_to_video": null,
+        "track_info": null
+    },
+    "fps": 30.0,
+    "free_render_index_mode_on": false,
+    "group_container": null,
+    "id": "163F97C6-B594-4c29-9C57-DC8F798407E2",
+    "keyframe_graph_list": [],
+    "keyframes": {
+        "adjusts": [],
+        "audios": [],
+        "effects": [],
+        "filters": [],
+        "handwrites": [],
+        "stickers": [],
+        "texts": [],
+        "videos": []
+    },
+    "last_modified_platform": {
+        "app_id": 3704,
+        "app_source": "lv",
+        "app_version": "5.9.0",
+        "device_id": "b01238e1fc97414f875e2ee6ba075927",
+        "hard_disk_id": "50cecedb853a64668e01e31bfe54f1b8",
+        "mac_address": "caccf53d4db2884dd5fa2bd859d9f637,e87250536431648dd738420ccf6195ca",
+        "os": "windows",
+        "os_version": "10.0.19045"
+    },
+    "materials": {
+        "ai_translates": [],
+        "audio_balances": [],
+        "audio_effects": [],
+        "audio_fades": [
+            {
+                "fade_in_duration": 200000,
+                "fade_out_duration": 200000,
+                "fade_type": 0,
+                "id": "596A3E01-821F-45f4-BC5C-1D88AEA5C26E",
+                "type": "audio_fade"
+            }
+        ],
+        "audio_track_indexes": [],
+        "audios": [
+            {
+                "app_id": 1775,
+                "category_id": "0",
+                "category_name": "search_audio",
+                "check_flag": 1,
+                "copyright_limit_type": "none",
+                "duration": 130300000,
+                "effect_id": "",
+                "formula_id": "",
+                "id": "D3C5B063-1674-4766-B5D5-DA6303CD3D28",
+                "intensifies_path": "",
+                "is_ai_clone_tone": false,
+                "is_text_edit_overdub": false,
+                "is_ugc": false,
+                "local_material_id": "",
+                "music_id": "7546618847622580250",
+                "name": "爱的魔法（心动版）（Aria打打 Remix）",
+                "path": "##_pkg_assets_/style_assets/music/a5d394e344bb609b6f705305e07283f7.mp3",
+                "query": "",
+                "request_id": "",
+                "resource_id": "7546618847622580250",
+                "search_id": "",
+                "source_from": "",
+                "source_platform": 0,
+                "team_id": "",
+                "text_id": "",
+                "tone_category_id": "",
+                "tone_category_name": "",
+                "tone_effect_id": "",
+                "tone_effect_name": "",
+                "tone_platform": "",
+                "tone_second_category_id": "",
+                "tone_second_category_name": "",
+                "tone_speaker": "",
+                "tone_type": "",
+                "type": "music",
+                "video_id": "",
+                "wave_points": []
+            }
+        ],
+        "beats": [
+            {
+                "ai_beats": {
+                    "beat_speed_infos": [],
+                    "beats_path": "##_draftpath_placeholder_0E685133-18CE-45ED-8CB8-2904A212EC80_##/materials/beat/361777168304f673d4b138bfdafb241c.beat",
+                    "beats_url": "https://lf6-lv-music-tos.faceu.com/obj/tos-cn-v-2774c002/ocVrOfAAIICwX2ACxii1fGdEfIvhIqAeAKRLFm",
+                    "melody_path": "",
+                    "melody_percents": [
+                        0.600000023841858
+                    ],
+                    "melody_url": ""
+                },
+                "enable_ai_beats": false,
+                "gear": 404,
+                "gear_count": 0,
+                "id": "B6AA31B3-CF73-477e-BE8E-B06D6DEB7CF9",
+                "mode": 404,
+                "type": "beats",
+                "user_beats": [],
+                "user_delete_ai_beats": null
+            }
+        ],
+        "canvases": [
+            {
+                "album_image": "",
+                "blur": 0.0,
+                "color": "",
+                "id": "46ACC699-5579-4a0e-9835-5DCF459EF40E",
+                "image": "",
+                "image_id": "",
+                "image_name": "",
+                "source_platform": 0,
+                "team_id": "",
+                "type": "canvas_color"
+            },
+            {
+                "album_image": "",
+                "blur": 0.0,
+                "color": "",
+                "id": "E1E831CF-5A22-4414-BCB9-76F26902ADC6",
+                "image": "",
+                "image_id": "",
+                "image_name": "",
+                "source_platform": 0,
+                "team_id": "",
+                "type": "canvas_color"
+            }
+        ],
+        "chromas": [],
+        "color_curves": [],
+        "digital_humans": [],
+        "drafts": [],
+        "effects": [],
+        "flowers": [],
+        "green_screens": [],
+        "handwrites": [],
+        "hsl": [],
+        "images": [],
+        "log_color_wheels": [],
+        "loudnesses": [],
+        "manual_deformations": [],
+        "masks": [],
+        "material_animations": [
+            {
+                "animations": [],
+                "id": "7C44F41C-0D4A-4b07-8B9E-372D30272CAC",
+                "multi_language_current": "none",
+                "type": "sticker_animation"
+            },
+            {
+                "animations": [],
+                "id": "B1EB8E96-6970-4a17-9274-027085C8E4E3",
+                "multi_language_current": "none",
+                "type": "sticker_animation"
+            },
+            {
+                "animations": [],
+                "id": "8549C455-5965-4539-8F58-451CE2614FB3",
+                "multi_language_current": "none",
+                "type": "sticker_animation"
+            },
+            {
+                "animations": [],
+                "id": "64AF02DE-131B-48a9-8227-16665FF51F4E",
+                "multi_language_current": "none",
+                "type": "sticker_animation"
+            },
+            {
+                "animations": [],
+                "id": "DAC85E8D-56D1-45b3-A89B-3AF09845F4A0",
+                "multi_language_current": "none",
+                "type": "sticker_animation"
+            },
+            {
+                "animations": [],
+                "id": "9981796A-019B-4095-A511-731EB687CFC3",
+                "multi_language_current": "none",
+                "type": "sticker_animation"
+            },
+            {
+                "animations": [],
+                "id": "A1260C7B-9509-40d4-BB79-7A8EC61D7282",
+                "multi_language_current": "none",
+                "type": "sticker_animation"
+            },
+            {
+                "animations": [],
+                "id": "D1213115-E4CF-4c6a-8E67-14E1CAA83BD7",
+                "multi_language_current": "none",
+                "type": "sticker_animation"
+            },
+            {
+                "animations": [],
+                "id": "E080EA57-78C0-4eab-9866-35B776ADD99D",
+                "multi_language_current": "none",
+                "type": "sticker_animation"
+            },
+            {
+                "animations": [],
+                "id": "E7D1E13E-EC7C-406a-A22F-6CC4EAD2D2C0",
+                "multi_language_current": "none",
+                "type": "sticker_animation"
+            }
+        ],
+        "material_colors": [],
+        "multi_language_refs": [],
+        "placeholders": [],
+        "plugin_effects": [],
+        "primary_color_wheels": [],
+        "realtime_denoises": [],
+        "shapes": [],
+        "smart_crops": [],
+        "smart_relights": [],
+        "sound_channel_mappings": [
+            {
+                "audio_channel_mapping": 0,
+                "id": "583E685B-4E30-4b08-8245-6CD99FC38BEA",
+                "is_config_open": false,
+                "type": "none"
+            },
+            {
+                "audio_channel_mapping": 0,
+                "id": "D21918C7-6B72-4168-8085-25BEC5E89207",
+                "is_config_open": false,
+                "type": "none"
+            },
+            {
+                "audio_channel_mapping": 0,
+                "id": "BE383322-8E4B-4e58-BD79-FB093C8EE46E",
+                "is_config_open": false,
+                "type": "none"
+            }
+        ],
+        "speeds": [
+            {
+                "curve_speed": null,
+                "id": "027BF331-C529-46f9-9BA4-B1D3B1FBB043",
+                "mode": 0,
+                "speed": 1.0,
+                "type": "speed"
+            },
+            {
+                "curve_speed": null,
+                "id": "A0170121-E3A8-4966-A734-564B9E6003A5",
+                "mode": 0,
+                "speed": 1.0,
+                "type": "speed"
+            },
+            {
+                "curve_speed": null,
+                "id": "D031254E-E36B-471a-830C-6323AA7FAEEA",
+                "mode": 0,
+                "speed": 1.0,
+                "type": "speed"
+            }
+        ],
+        "stickers": [
+            {
+                "aigc_type": "none",
+                "background_alpha": 1.0,
+                "background_color": "",
+                "border_color": "",
+                "border_line_style": 0,
+                "border_width": 0.0,
+                "category_id": "heycan_search_sticker",
+                "category_name": "heycan_search_sticker",
+                "check_flag": 1,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "cycle_setting": true,
+                "formula_id": "",
+                "global_alpha": 1.0,
+                "has_shadow": false,
+                "icon_url": "https://p3-heycan-jy-sign.byteimg.com/tos-cn-i-3jr8j4ixpe/904f44f0912f4ae38fdbce97f667fe59~tplv-3jr8j4ixpe-resize:200:200.png?x-expires=1816134679&x-signature=8FKrKV5NWB6xUKaoyWpA8Qi1V6I%3D",
+                "id": "8534F088-5913-4547-9C28-959C28B4EB57",
+                "multi_language_current": "none",
+                "name": "白色闪光亮晶晶元素",
+                "original_size": [],
+                "path": "##_pkg_assets_/style_assets/stickers/b47b43ca0f8282c8c6730a5b0cc7edfa",
+                "platform": "all",
+                "preview_cover_url": "https://p3-heycan-jy-sign.byteimg.com/tos-cn-i-3jr8j4ixpe/904f44f0912f4ae38fdbce97f667fe59~tplv-3jr8j4ixpe-resize:200:200.png?x-expires=1816134679&x-signature=8FKrKV5NWB6xUKaoyWpA8Qi1V6I%3D",
+                "radius": {
+                    "bottom_left": 0.0,
+                    "bottom_right": 0.0,
+                    "top_left": 0.0,
+                    "top_right": 0.0
+                },
+                "request_id": "20260721093749010233029224073F260",
+                "resource_id": "6923230730151628039",
+                "sequence_type": false,
+                "shadow_alpha": 0.8,
+                "shadow_angle": 0.0,
+                "shadow_color": "",
+                "shadow_distance": 0.0,
+                "shadow_point": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "shadow_smoothing": 0.0,
+                "shape_param": {
+                    "custom_points": [],
+                    "roundness": [],
+                    "shape_size": [],
+                    "shape_type": 0
+                },
+                "source_platform": 1,
+                "sticker_id": "6923230730151628039",
+                "sub_type": 0,
+                "team_id": "",
+                "type": "sticker",
+                "unicode": ""
+            },
+            {
+                "aigc_type": "none",
+                "background_alpha": 1.0,
+                "background_color": "",
+                "border_color": "",
+                "border_line_style": 0,
+                "border_width": 0.0,
+                "category_id": "10523",
+                "category_name": "👍互动",
+                "check_flag": 1,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "cycle_setting": true,
+                "formula_id": "",
+                "global_alpha": 1.0,
+                "has_shadow": false,
+                "icon_url": "https://p3-heycan-jy-sign.byteimg.com/tos-cn-i-3jr8j4ixpe/09044924bb29455f895d08e802b90ad8~tplv-3jr8j4ixpe-resize:200:200.png?x-expires=1816137655&x-signature=RbuAOyq6r8J%2FNjqJzd33AQqZcHA%3D",
+                "id": "4F627071-B89F-4721-9FB0-6E751D9006FD",
+                "multi_language_current": "none",
+                "name": "呆萌小猫",
+                "original_size": [],
+                "path": "##_pkg_assets_/style_assets/stickers/198b343ec51426fb572b69132e7b4db5",
+                "platform": "all",
+                "preview_cover_url": "https://p3-heycan-jy-sign.byteimg.com/tos-cn-i-3jr8j4ixpe/09044924bb29455f895d08e802b90ad8~tplv-3jr8j4ixpe-resize:200:200.png?x-expires=1816137655&x-signature=RbuAOyq6r8J%2FNjqJzd33AQqZcHA%3D",
+                "radius": {
+                    "bottom_left": 0.0,
+                    "bottom_right": 0.0,
+                    "top_left": 0.0,
+                    "top_right": 0.0
+                },
+                "request_id": "2026072110372724CEE23033927C073459",
+                "resource_id": "7592228401017277721",
+                "sequence_type": false,
+                "shadow_alpha": 0.8,
+                "shadow_angle": 0.0,
+                "shadow_color": "",
+                "shadow_distance": 0.0,
+                "shadow_point": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "shadow_smoothing": 0.0,
+                "shape_param": {
+                    "custom_points": [],
+                    "roundness": [],
+                    "shape_size": [],
+                    "shape_type": 0
+                },
+                "source_platform": 1,
+                "sticker_id": "7592228401017277721",
+                "sub_type": 0,
+                "team_id": "",
+                "type": "sticker",
+                "unicode": ""
+            }
+        ],
+        "tail_leaders": [],
+        "text_templates": [],
+        "texts": [
+            {
+                "add_type": 0,
+                "alignment": 1,
+                "background_alpha": 1.0,
+                "background_color": "",
+                "background_height": 0.14,
+                "background_horizontal_offset": 0.0,
+                "background_round_radius": 0.0,
+                "background_style": 0,
+                "background_vertical_offset": 0.0,
+                "background_width": 0.14,
+                "base_content": "",
+                "bold_width": 0.0,
+                "border_alpha": 1.0,
+                "border_color": "",
+                "border_width": 0.08,
+                "caption_template_info": {
+                    "category_id": "",
+                    "category_name": "",
+                    "effect_id": "",
+                    "is_new": false,
+                    "path": "",
+                    "request_id": "",
+                    "resource_id": "",
+                    "resource_name": "",
+                    "source_platform": 0
+                },
+                "check_flag": 39,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "content": "{\"text\":\"-精致主义-简约穿搭-\",\"styles\":[{\"fill\":{\"content\":{\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"path\":\"##_pkg_assets_/style_assets/fonts/HelloFont ID JiangHuTi.ttf\",\"id\":\"7080097079397192228\"},\"size\":15,\"shadows\":[{\"diffuse\":0.02500000037252903,\"alpha\":0.899999976158142,\"distance\":4.9999995231628418,\"content\":{\"solid\":{\"color\":[0,0,0]}},\"angle\":-45}],\"range\":[0,11]}]}",
+                "fixed_height": -1.0,
+                "fixed_width": -1.0,
+                "font_category_id": "",
+                "font_category_name": "",
+                "font_id": "",
+                "font_name": "",
+                "font_path": "##_pkg_assets_/style_assets/fonts/HelloFont ID JiangHuTi.ttf",
+                "font_resource_id": "7080097079397192228",
+                "font_size": 15.0,
+                "font_source_platform": 0,
+                "font_team_id": "",
+                "font_title": "none",
+                "font_url": "",
+                "fonts": [
+                    {
+                        "category_id": "",
+                        "category_name": "",
+                        "effect_id": "7080097079397192228",
+                        "file_uri": "",
+                        "id": "CD263552-373F-4b8f-B3AB-971D4ACCCD92",
+                        "path": "##_pkg_assets_/style_assets/fonts/HelloFont ID JiangHuTi.ttf",
+                        "request_id": "20260721090951826B043C693A20E8C06A",
+                        "resource_id": "7080097079397192228",
+                        "source_platform": 0,
+                        "team_id": "",
+                        "title": "江湖体"
+                    }
+                ],
+                "force_apply_line_max_width": false,
+                "global_alpha": 1.0,
+                "group_id": "",
+                "has_shadow": true,
+                "id": "F8BBEC6F-DD7B-46b2-B731-7AB9F34508B1",
+                "initial_scale": 1.0,
+                "inner_padding": -1.0,
+                "is_rich_text": false,
+                "italic_degree": 0,
+                "ktv_color": "",
+                "language": "",
+                "layer_weight": 1,
+                "letter_spacing": 0.0,
+                "line_feed": 1,
+                "line_max_width": 0.82,
+                "line_spacing": 0.02,
+                "multi_language_current": "none",
+                "name": "",
+                "original_size": [],
+                "preset_category": "",
+                "preset_category_id": "",
+                "preset_has_set_alignment": false,
+                "preset_id": "",
+                "preset_index": 0,
+                "preset_name": "",
+                "recognize_task_id": "",
+                "recognize_type": 0,
+                "relevance_segment": [],
+                "shadow_alpha": 0.899999976158142,
+                "shadow_angle": -45.0,
+                "shadow_color": "#000000",
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.636396103067893,
+                    "y": -0.636396103067893
+                },
+                "shadow_smoothing": 0.450000017881393,
+                "shape_clip_x": false,
+                "shape_clip_y": false,
+                "source_from": "",
+                "style_name": "",
+                "sub_type": 0,
+                "subtitle_keywords": null,
+                "subtitle_template_original_fontsize": 0.0,
+                "text_alpha": 1.0,
+                "text_color": "#FFFFFF",
+                "text_curve": null,
+                "text_preset_resource_id": "",
+                "text_size": 30,
+                "text_to_audio_ids": [],
+                "tts_auto_update": false,
+                "type": "text",
+                "typesetting": 0,
+                "underline": false,
+                "underline_offset": 0.22,
+                "underline_width": 0.05,
+                "use_effect_default_color": true,
+                "words": {
+                    "end_time": [],
+                    "start_time": [],
+                    "text": []
+                }
+            },
+            {
+                "add_type": 0,
+                "alignment": 1,
+                "background_alpha": 1.0,
+                "background_color": "",
+                "background_height": 0.14,
+                "background_horizontal_offset": 0.0,
+                "background_round_radius": 0.0,
+                "background_style": 0,
+                "background_vertical_offset": 0.0,
+                "background_width": 0.14,
+                "base_content": "",
+                "bold_width": 0.0,
+                "border_alpha": 1.0,
+                "border_color": "",
+                "border_width": 0.08,
+                "caption_template_info": {
+                    "category_id": "",
+                    "category_name": "",
+                    "effect_id": "",
+                    "is_new": false,
+                    "path": "",
+                    "request_id": "",
+                    "resource_id": "",
+                    "resource_name": "",
+                    "source_platform": 0
+                },
+                "check_flag": 39,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "content": "{\"text\":\"BOSS姐奢品   165cm | 55kg\",\"styles\":[{\"fill\":{\"content\":{\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"path\":\"##_pkg_assets_/style_assets/fonts/HelloFont ID JiangHuTi.ttf\",\"id\":\"7080097079397192228\"},\"size\":15,\"shadows\":[{\"diffuse\":0.02500000037252903,\"alpha\":0.899999976158142,\"distance\":4.9999995231628418,\"content\":{\"solid\":{\"color\":[0,0,0]}},\"angle\":-45}],\"range\":[0,9]},{\"fill\":{\"content\":{\"solid\":{\"color\":[0.71764707565307617,0.10980392247438431,0.10980392247438431]}}},\"font\":{\"path\":\"##_pkg_assets_/style_assets/fonts/HelloFont ID JiangHuTi.ttf\",\"id\":\"7080097079397192228\"},\"size\":15,\"useLetterColor\":true,\"shadows\":[{\"diffuse\":0.02500000037252903,\"alpha\":0.899999976158142,\"distance\":4.9999995231628418,\"content\":{\"solid\":{\"color\":[0,0,0]}},\"angle\":-45}],\"range\":[9,22]}]}",
+                "fixed_height": -1.0,
+                "fixed_width": -1.0,
+                "font_category_id": "",
+                "font_category_name": "",
+                "font_id": "",
+                "font_name": "",
+                "font_path": "##_pkg_assets_/style_assets/fonts/HelloFont ID JiangHuTi.ttf",
+                "font_resource_id": "7080097079397192228",
+                "font_size": 15.0,
+                "font_source_platform": 0,
+                "font_team_id": "",
+                "font_title": "none",
+                "font_url": "",
+                "fonts": [
+                    {
+                        "category_id": "favoured",
+                        "category_name": "我的收藏",
+                        "effect_id": "7080097079397192228",
+                        "file_uri": "",
+                        "id": "B4112BEA-67A6-403d-A6B3-AF43CE641A1D",
+                        "path": "##_pkg_assets_/style_assets/fonts/HelloFont ID JiangHuTi.ttf",
+                        "request_id": "20260721090951826B043C693A20E8C06A",
+                        "resource_id": "7080097079397192228",
+                        "source_platform": 0,
+                        "team_id": "",
+                        "title": "江湖体"
+                    }
+                ],
+                "force_apply_line_max_width": false,
+                "global_alpha": 1.0,
+                "group_id": "",
+                "has_shadow": true,
+                "id": "4C4D0190-60DF-4ab9-B02D-11C8676FABBC",
+                "initial_scale": 1.0,
+                "inner_padding": -1.0,
+                "is_rich_text": true,
+                "italic_degree": 0,
+                "ktv_color": "",
+                "language": "",
+                "layer_weight": 1,
+                "letter_spacing": 0.0,
+                "line_feed": 1,
+                "line_max_width": 0.82,
+                "line_spacing": 0.02,
+                "multi_language_current": "none",
+                "name": "",
+                "original_size": [],
+                "preset_category": "",
+                "preset_category_id": "",
+                "preset_has_set_alignment": false,
+                "preset_id": "",
+                "preset_index": 0,
+                "preset_name": "",
+                "recognize_task_id": "",
+                "recognize_type": 0,
+                "relevance_segment": [],
+                "shadow_alpha": 0.899999976158142,
+                "shadow_angle": -45.0,
+                "shadow_color": "#000000",
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.636396103067893,
+                    "y": -0.636396103067893
+                },
+                "shadow_smoothing": 0.450000017881393,
+                "shape_clip_x": false,
+                "shape_clip_y": false,
+                "source_from": "",
+                "style_name": "",
+                "sub_type": 0,
+                "subtitle_keywords": null,
+                "subtitle_template_original_fontsize": 0.0,
+                "text_alpha": 1.0,
+                "text_color": "#b71c1c",
+                "text_curve": null,
+                "text_preset_resource_id": "",
+                "text_size": 30,
+                "text_to_audio_ids": [],
+                "tts_auto_update": false,
+                "type": "text",
+                "typesetting": 0,
+                "underline": false,
+                "underline_offset": 0.22,
+                "underline_width": 0.05,
+                "use_effect_default_color": false,
+                "words": {
+                    "end_time": [],
+                    "start_time": [],
+                    "text": []
+                }
+            },
+            {
+                "add_type": 1,
+                "alignment": 1,
+                "background_alpha": 1.0,
+                "background_color": "",
+                "background_height": 0.14,
+                "background_horizontal_offset": 0.0,
+                "background_round_radius": 0.0,
+                "background_style": 0,
+                "background_vertical_offset": 0.0,
+                "background_width": 0.14,
+                "base_content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[0,10],\"size\":10}],\"text\":\"这个衣长是83的这个\"}",
+                "bold_width": 0.0,
+                "border_alpha": 1.0,
+                "border_color": "",
+                "border_width": 0.08,
+                "caption_template_info": {
+                    "category_id": "",
+                    "category_name": "",
+                    "effect_id": "",
+                    "is_new": false,
+                    "path": "",
+                    "request_id": "",
+                    "resource_id": "",
+                    "resource_name": "",
+                    "source_platform": 0
+                },
+                "check_flag": 7,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[0,5],\"size\":10},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,0.87058824300766,0]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[5,7],\"size\":10.399999618530273,\"strokes\":[{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[0,0,0]}},\"mode\":0,\"width\":0.0599999986588955}],\"useLetterColor\":true},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[7,10],\"size\":10}],\"text\":\"这个衣长是83的这个\"}",
+                "fixed_height": -1.0,
+                "fixed_width": -1.0,
+                "font_category_id": "",
+                "font_category_name": "",
+                "font_id": "",
+                "font_name": "",
+                "font_path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "font_size": 10.0,
+                "font_source_platform": 1,
+                "font_team_id": "",
+                "font_title": "字语圆体",
+                "font_url": "",
+                "fonts": [
+                    {
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "effect_id": "7495689259223880202",
+                        "file_uri": "",
+                        "id": "893B0C3F-32BD-4039-9160-8A495DCB1C4C",
+                        "path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                        "request_id": "202608081626418ED1576E8D95026F8566",
+                        "resource_id": "7495689259223880202",
+                        "source_platform": 1,
+                        "team_id": "",
+                        "title": "字语圆体"
+                    }
+                ],
+                "force_apply_line_max_width": false,
+                "global_alpha": 1.0,
+                "group_id": "Auto_1786177672814",
+                "has_shadow": false,
+                "id": "2A11EC5C-E94A-48f3-8AF7-23DBCE55C72B",
+                "initial_scale": 1.0,
+                "inner_padding": -1.0,
+                "is_rich_text": false,
+                "italic_degree": 0,
+                "ktv_color": "",
+                "language": "",
+                "layer_weight": 1,
+                "letter_spacing": 0.0,
+                "line_feed": 1,
+                "line_max_width": 0.82,
+                "line_spacing": 0.02,
+                "multi_language_current": "none",
+                "name": "",
+                "original_size": [],
+                "preset_category": "",
+                "preset_category_id": "",
+                "preset_has_set_alignment": false,
+                "preset_id": "",
+                "preset_index": 0,
+                "preset_name": "",
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "recognize_type": 0,
+                "relevance_segment": [],
+                "shadow_alpha": 0.9,
+                "shadow_angle": -45.0,
+                "shadow_color": "",
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_smoothing": 0.45,
+                "shape_clip_x": false,
+                "shape_clip_y": false,
+                "source_from": "",
+                "style_name": "",
+                "sub_type": 0,
+                "subtitle_keywords": {
+                    "range": [
+                        {
+                            "length": 2,
+                            "location": 5
+                        }
+                    ]
+                },
+                "subtitle_template_original_fontsize": 0.0,
+                "text_alpha": 1.0,
+                "text_color": "#FFFFFF",
+                "text_curve": null,
+                "text_preset_resource_id": "",
+                "text_size": 30,
+                "text_to_audio_ids": [],
+                "tts_auto_update": false,
+                "type": "subtitle",
+                "typesetting": 0,
+                "underline": false,
+                "underline_offset": 0.22,
+                "underline_width": 0.05,
+                "use_effect_default_color": true,
+                "words": {
+                    "end_time": [
+                        280,
+                        640,
+                        840,
+                        1440,
+                        1640,
+                        1880
+                    ],
+                    "start_time": [
+                        0,
+                        280,
+                        640,
+                        840,
+                        1440,
+                        1640
+                    ],
+                    "text": [
+                        "这个",
+                        "衣长",
+                        "是",
+                        "83",
+                        "的",
+                        "这个"
+                    ]
+                }
+            },
+            {
+                "add_type": 1,
+                "alignment": 1,
+                "background_alpha": 1.0,
+                "background_color": "",
+                "background_height": 0.14,
+                "background_horizontal_offset": 0.0,
+                "background_round_radius": 0.0,
+                "background_style": 0,
+                "background_vertical_offset": 0.0,
+                "background_width": 0.14,
+                "base_content": "{\"styles\":[{\"fill\":{\"alpha\":1.0,\"content\":{\"render_type\":\"solid\",\"solid\":{\"alpha\":1.0,\"color\":[1.0,1.0,1.0]}}},\"font\":{\"id\":\"\",\"path\":\"##_pkg_assets_/style_assets/fonts/zh-hans.ttf\"},\"range\":[0,4],\"size\":8.0}],\"text\":\"你看裙摆\"}",
+                "bold_width": 0.0,
+                "border_alpha": 1.0,
+                "border_color": "",
+                "border_width": 0.08,
+                "caption_template_info": {
+                    "category_id": "",
+                    "category_name": "",
+                    "effect_id": "",
+                    "is_new": false,
+                    "path": "",
+                    "request_id": "",
+                    "resource_id": "",
+                    "resource_name": "",
+                    "source_platform": 0
+                },
+                "check_flag": 7,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[0,4],\"size\":10}],\"text\":\"你看裙摆\"}",
+                "fixed_height": -1.0,
+                "fixed_width": -1.0,
+                "font_category_id": "",
+                "font_category_name": "",
+                "font_id": "",
+                "font_name": "",
+                "font_path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "font_size": 10.0,
+                "font_source_platform": 1,
+                "font_team_id": "",
+                "font_title": "字语圆体",
+                "font_url": "",
+                "fonts": [
+                    {
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "effect_id": "7495689259223880202",
+                        "file_uri": "",
+                        "id": "6E7D757D-C212-43aa-9014-E13F0532E861",
+                        "path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                        "request_id": "202608081626418ED1576E8D95026F8566",
+                        "resource_id": "7495689259223880202",
+                        "source_platform": 1,
+                        "team_id": "",
+                        "title": "字语圆体"
+                    }
+                ],
+                "force_apply_line_max_width": false,
+                "global_alpha": 1.0,
+                "group_id": "Auto_1786177672814",
+                "has_shadow": false,
+                "id": "A813BA1C-E4AD-445d-9998-0A4ED0447901",
+                "initial_scale": 1.0,
+                "inner_padding": -1.0,
+                "is_rich_text": false,
+                "italic_degree": 0,
+                "ktv_color": "",
+                "language": "",
+                "layer_weight": 1,
+                "letter_spacing": 0.0,
+                "line_feed": 1,
+                "line_max_width": 0.82,
+                "line_spacing": 0.02,
+                "multi_language_current": "none",
+                "name": "",
+                "original_size": [],
+                "preset_category": "",
+                "preset_category_id": "",
+                "preset_has_set_alignment": false,
+                "preset_id": "",
+                "preset_index": 0,
+                "preset_name": "",
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "recognize_type": 0,
+                "relevance_segment": [],
+                "shadow_alpha": 0.9,
+                "shadow_angle": -45.0,
+                "shadow_color": "",
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_smoothing": 0.45,
+                "shape_clip_x": false,
+                "shape_clip_y": false,
+                "source_from": "",
+                "style_name": "",
+                "sub_type": 0,
+                "subtitle_keywords": {
+                    "range": []
+                },
+                "subtitle_template_original_fontsize": 0.0,
+                "text_alpha": 1.0,
+                "text_color": "#FFFFFF",
+                "text_curve": null,
+                "text_preset_resource_id": "",
+                "text_size": 30,
+                "text_to_audio_ids": [],
+                "tts_auto_update": false,
+                "type": "subtitle",
+                "typesetting": 0,
+                "underline": false,
+                "underline_offset": 0.22,
+                "underline_width": 0.05,
+                "use_effect_default_color": true,
+                "words": {
+                    "end_time": [
+                        200,
+                        400,
+                        1000
+                    ],
+                    "start_time": [
+                        0,
+                        200,
+                        480
+                    ],
+                    "text": [
+                        "你",
+                        "看",
+                        "裙摆"
+                    ]
+                }
+            },
+            {
+                "add_type": 1,
+                "alignment": 1,
+                "background_alpha": 1.0,
+                "background_color": "",
+                "background_height": 0.14,
+                "background_horizontal_offset": 0.0,
+                "background_round_radius": 0.0,
+                "background_style": 0,
+                "background_vertical_offset": 0.0,
+                "background_width": 0.14,
+                "base_content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[0,10],\"size\":10}],\"text\":\"它裙摆是一个不规则的\"}",
+                "bold_width": 0.0,
+                "border_alpha": 1.0,
+                "border_color": "",
+                "border_width": 0.08,
+                "caption_template_info": {
+                    "category_id": "",
+                    "category_name": "",
+                    "effect_id": "",
+                    "is_new": false,
+                    "path": "",
+                    "request_id": "",
+                    "resource_id": "",
+                    "resource_name": "",
+                    "source_platform": 0
+                },
+                "check_flag": 7,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[0,1],\"size\":10},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,0.87058824300766,0]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[1,3],\"size\":10.399999618530273,\"strokes\":[{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[0,0,0]}},\"mode\":0,\"width\":0.0599999986588955}],\"useLetterColor\":true},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[3,10],\"size\":10}],\"text\":\"它裙摆是一个不规则的\"}",
+                "fixed_height": -1.0,
+                "fixed_width": -1.0,
+                "font_category_id": "",
+                "font_category_name": "",
+                "font_id": "",
+                "font_name": "",
+                "font_path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "font_size": 10.0,
+                "font_source_platform": 1,
+                "font_team_id": "",
+                "font_title": "字语圆体",
+                "font_url": "",
+                "fonts": [
+                    {
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "effect_id": "7495689259223880202",
+                        "file_uri": "",
+                        "id": "1646BB57-AE44-406f-88A9-066CA91748EE",
+                        "path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                        "request_id": "202608081626418ED1576E8D95026F8566",
+                        "resource_id": "7495689259223880202",
+                        "source_platform": 1,
+                        "team_id": "",
+                        "title": "字语圆体"
+                    }
+                ],
+                "force_apply_line_max_width": false,
+                "global_alpha": 1.0,
+                "group_id": "Auto_1786177672814",
+                "has_shadow": false,
+                "id": "DDE6C2A4-2317-4c81-B099-9EB63762A327",
+                "initial_scale": 1.0,
+                "inner_padding": -1.0,
+                "is_rich_text": false,
+                "italic_degree": 0,
+                "ktv_color": "",
+                "language": "",
+                "layer_weight": 1,
+                "letter_spacing": 0.0,
+                "line_feed": 1,
+                "line_max_width": 0.82,
+                "line_spacing": 0.02,
+                "multi_language_current": "none",
+                "name": "",
+                "original_size": [],
+                "preset_category": "",
+                "preset_category_id": "",
+                "preset_has_set_alignment": false,
+                "preset_id": "",
+                "preset_index": 0,
+                "preset_name": "",
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "recognize_type": 0,
+                "relevance_segment": [],
+                "shadow_alpha": 0.9,
+                "shadow_angle": -45.0,
+                "shadow_color": "",
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_smoothing": 0.45,
+                "shape_clip_x": false,
+                "shape_clip_y": false,
+                "source_from": "",
+                "style_name": "",
+                "sub_type": 0,
+                "subtitle_keywords": {
+                    "range": [
+                        {
+                            "length": 2,
+                            "location": 1
+                        }
+                    ]
+                },
+                "subtitle_template_original_fontsize": 0.0,
+                "text_alpha": 1.0,
+                "text_color": "#FFFFFF",
+                "text_curve": null,
+                "text_preset_resource_id": "",
+                "text_size": 30,
+                "text_to_audio_ids": [],
+                "tts_auto_update": false,
+                "type": "subtitle",
+                "typesetting": 0,
+                "underline": false,
+                "underline_offset": 0.22,
+                "underline_width": 0.05,
+                "use_effect_default_color": true,
+                "words": {
+                    "end_time": [
+                        80,
+                        480,
+                        680,
+                        840,
+                        1320,
+                        1560
+                    ],
+                    "start_time": [
+                        0,
+                        240,
+                        520,
+                        680,
+                        840,
+                        1320
+                    ],
+                    "text": [
+                        "它",
+                        "裙摆",
+                        "是",
+                        "一个",
+                        "不规则",
+                        "的"
+                    ]
+                }
+            },
+            {
+                "add_type": 1,
+                "alignment": 1,
+                "background_alpha": 1.0,
+                "background_color": "",
+                "background_height": 0.14,
+                "background_horizontal_offset": 0.0,
+                "background_round_radius": 0.0,
+                "background_style": 0,
+                "background_vertical_offset": 0.0,
+                "background_width": 0.14,
+                "base_content": "{\"styles\":[{\"fill\":{\"alpha\":1.0,\"content\":{\"render_type\":\"solid\",\"solid\":{\"alpha\":1.0,\"color\":[1.0,1.0,1.0]}}},\"font\":{\"id\":\"\",\"path\":\"##_pkg_assets_/style_assets/fonts/zh-hans.ttf\"},\"range\":[0,6],\"size\":8.0}],\"text\":\"它跟这样子吧\"}",
+                "bold_width": 0.0,
+                "border_alpha": 1.0,
+                "border_color": "",
+                "border_width": 0.08,
+                "caption_template_info": {
+                    "category_id": "",
+                    "category_name": "",
+                    "effect_id": "",
+                    "is_new": false,
+                    "path": "",
+                    "request_id": "",
+                    "resource_id": "",
+                    "resource_name": "",
+                    "source_platform": 0
+                },
+                "check_flag": 7,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[0,6],\"size\":10}],\"text\":\"它跟这样子吧\"}",
+                "fixed_height": -1.0,
+                "fixed_width": -1.0,
+                "font_category_id": "",
+                "font_category_name": "",
+                "font_id": "",
+                "font_name": "",
+                "font_path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "font_size": 10.0,
+                "font_source_platform": 1,
+                "font_team_id": "",
+                "font_title": "字语圆体",
+                "font_url": "",
+                "fonts": [
+                    {
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "effect_id": "7495689259223880202",
+                        "file_uri": "",
+                        "id": "E853111C-01D0-41b8-9852-9BFEC60DDE3A",
+                        "path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                        "request_id": "202608081626418ED1576E8D95026F8566",
+                        "resource_id": "7495689259223880202",
+                        "source_platform": 1,
+                        "team_id": "",
+                        "title": "字语圆体"
+                    }
+                ],
+                "force_apply_line_max_width": false,
+                "global_alpha": 1.0,
+                "group_id": "Auto_1786177672814",
+                "has_shadow": false,
+                "id": "D71707D0-0EC1-43dc-BBCF-734A25830A98",
+                "initial_scale": 1.0,
+                "inner_padding": -1.0,
+                "is_rich_text": false,
+                "italic_degree": 0,
+                "ktv_color": "",
+                "language": "",
+                "layer_weight": 1,
+                "letter_spacing": 0.0,
+                "line_feed": 1,
+                "line_max_width": 0.82,
+                "line_spacing": 0.02,
+                "multi_language_current": "none",
+                "name": "",
+                "original_size": [],
+                "preset_category": "",
+                "preset_category_id": "",
+                "preset_has_set_alignment": false,
+                "preset_id": "",
+                "preset_index": 0,
+                "preset_name": "",
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "recognize_type": 0,
+                "relevance_segment": [],
+                "shadow_alpha": 0.9,
+                "shadow_angle": -45.0,
+                "shadow_color": "",
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_smoothing": 0.45,
+                "shape_clip_x": false,
+                "shape_clip_y": false,
+                "source_from": "",
+                "style_name": "",
+                "sub_type": 0,
+                "subtitle_keywords": {
+                    "range": []
+                },
+                "subtitle_template_original_fontsize": 0.0,
+                "text_alpha": 1.0,
+                "text_color": "#FFFFFF",
+                "text_curve": null,
+                "text_preset_resource_id": "",
+                "text_size": 30,
+                "text_to_audio_ids": [],
+                "tts_auto_update": false,
+                "type": "subtitle",
+                "typesetting": 0,
+                "underline": false,
+                "underline_offset": 0.22,
+                "underline_width": 0.05,
+                "use_effect_default_color": true,
+                "words": {
+                    "end_time": [
+                        80,
+                        280,
+                        1640,
+                        1720,
+                        2000
+                    ],
+                    "start_time": [
+                        0,
+                        120,
+                        1240,
+                        1640,
+                        1720
+                    ],
+                    "text": [
+                        "它",
+                        "跟",
+                        "这样",
+                        "子",
+                        "吧"
+                    ]
+                }
+            },
+            {
+                "add_type": 1,
+                "alignment": 1,
+                "background_alpha": 1.0,
+                "background_color": "",
+                "background_height": 0.14,
+                "background_horizontal_offset": 0.0,
+                "background_round_radius": 0.0,
+                "background_style": 0,
+                "background_vertical_offset": 0.0,
+                "background_width": 0.14,
+                "base_content": "{\"text\":\"249块钱上车\",\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\",\"id\":\"7495689259223880202\"},\"size\":10,\"range\":[0,7]}]}",
+                "bold_width": 0.0,
+                "border_alpha": 1.0,
+                "border_color": "",
+                "border_width": 0.08,
+                "caption_template_info": {
+                    "category_id": "",
+                    "category_name": "",
+                    "effect_id": "",
+                    "is_new": false,
+                    "path": "",
+                    "request_id": "",
+                    "resource_id": "",
+                    "resource_name": "",
+                    "source_platform": 0
+                },
+                "check_flag": 7,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "content": "{\"text\":\"249块钱上车\",\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\",\"id\":\"7495689259223880202\"},\"size\":10,\"range\":[0,3]},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,0.87058824300766,0]}}},\"font\":{\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\",\"id\":\"7495689259223880202\"},\"strokes\":[{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[0,0,0]}},\"width\":0.0599999986588955,\"mode\":0}],\"size\":10.399999618530273,\"useLetterColor\":true,\"range\":[3,7]}]}",
+                "fixed_height": -1.0,
+                "fixed_width": -1.0,
+                "font_category_id": "",
+                "font_category_name": "",
+                "font_id": "",
+                "font_name": "",
+                "font_path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "font_size": 10.0,
+                "font_source_platform": 1,
+                "font_team_id": "",
+                "font_title": "none",
+                "font_url": "",
+                "fonts": [
+                    {
+                        "category_id": "",
+                        "category_name": "",
+                        "effect_id": "7495689259223880202",
+                        "file_uri": "",
+                        "id": "BA7C361E-C2C3-4be0-877D-B8FC8FF364E1",
+                        "path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                        "request_id": "202608081626418ED1576E8D95026F8566",
+                        "resource_id": "7495689259223880202",
+                        "source_platform": 1,
+                        "team_id": "",
+                        "title": "字语圆体"
+                    }
+                ],
+                "force_apply_line_max_width": false,
+                "global_alpha": 1.0,
+                "group_id": "Auto_1786177672814",
+                "has_shadow": false,
+                "id": "124E1BFE-B34A-4122-8F94-D1333E4FCE00",
+                "initial_scale": 1.0,
+                "inner_padding": -1.0,
+                "is_rich_text": false,
+                "italic_degree": 0,
+                "ktv_color": "",
+                "language": "",
+                "layer_weight": 1,
+                "letter_spacing": 0.0,
+                "line_feed": 1,
+                "line_max_width": 0.82,
+                "line_spacing": 0.02,
+                "multi_language_current": "none",
+                "name": "",
+                "original_size": [],
+                "preset_category": "",
+                "preset_category_id": "",
+                "preset_has_set_alignment": false,
+                "preset_id": "",
+                "preset_index": 0,
+                "preset_name": "",
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "recognize_type": 0,
+                "relevance_segment": [],
+                "shadow_alpha": 0.9,
+                "shadow_angle": -45.0,
+                "shadow_color": "",
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_smoothing": 0.45,
+                "shape_clip_x": false,
+                "shape_clip_y": false,
+                "source_from": "",
+                "style_name": "",
+                "sub_type": 0,
+                "subtitle_keywords": {
+                    "range": [
+                        {
+                            "length": 4,
+                            "location": 3
+                        }
+                    ]
+                },
+                "subtitle_template_original_fontsize": 0.0,
+                "text_alpha": 1.0,
+                "text_color": "#FFFFFF",
+                "text_curve": null,
+                "text_preset_resource_id": "",
+                "text_size": 30,
+                "text_to_audio_ids": [],
+                "tts_auto_update": false,
+                "type": "subtitle",
+                "typesetting": 0,
+                "underline": false,
+                "underline_offset": 0.22,
+                "underline_width": 0.05,
+                "use_effect_default_color": true,
+                "words": {
+                    "end_time": [
+                        920,
+                        1080,
+                        1160,
+                        1640
+                    ],
+                    "start_time": [
+                        0,
+                        920,
+                        1080,
+                        1160
+                    ],
+                    "text": [
+                        "249",
+                        "块",
+                        "钱",
+                        "上车"
+                    ]
+                }
+            },
+            {
+                "add_type": 1,
+                "alignment": 1,
+                "background_alpha": 1.0,
+                "background_color": "",
+                "background_height": 0.14,
+                "background_horizontal_offset": 0.0,
+                "background_round_radius": 0.0,
+                "background_style": 0,
+                "background_vertical_offset": 0.0,
+                "background_width": 0.14,
+                "base_content": "{\"styles\":[{\"fill\":{\"alpha\":1.0,\"content\":{\"render_type\":\"solid\",\"solid\":{\"alpha\":1.0,\"color\":[1.0,1.0,1.0]}}},\"font\":{\"id\":\"\",\"path\":\"##_pkg_assets_/style_assets/fonts/zh-hans.ttf\"},\"range\":[0,10],\"size\":8.0}],\"text\":\"整个的这个裙子的做工\"}",
+                "bold_width": 0.0,
+                "border_alpha": 1.0,
+                "border_color": "",
+                "border_width": 0.08,
+                "caption_template_info": {
+                    "category_id": "",
+                    "category_name": "",
+                    "effect_id": "",
+                    "is_new": false,
+                    "path": "",
+                    "request_id": "",
+                    "resource_id": "",
+                    "resource_name": "",
+                    "source_platform": 0
+                },
+                "check_flag": 7,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[0,10],\"size\":10}],\"text\":\"整个的这个裙子的做工\"}",
+                "fixed_height": -1.0,
+                "fixed_width": -1.0,
+                "font_category_id": "",
+                "font_category_name": "",
+                "font_id": "",
+                "font_name": "",
+                "font_path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "font_size": 10.0,
+                "font_source_platform": 1,
+                "font_team_id": "",
+                "font_title": "字语圆体",
+                "font_url": "",
+                "fonts": [
+                    {
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "effect_id": "7495689259223880202",
+                        "file_uri": "",
+                        "id": "4CBD8956-737B-4e3e-AE82-44B30A67A46B",
+                        "path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                        "request_id": "202608081626418ED1576E8D95026F8566",
+                        "resource_id": "7495689259223880202",
+                        "source_platform": 1,
+                        "team_id": "",
+                        "title": "字语圆体"
+                    }
+                ],
+                "force_apply_line_max_width": false,
+                "global_alpha": 1.0,
+                "group_id": "Auto_1786177672814",
+                "has_shadow": false,
+                "id": "461AB698-078D-437e-9565-75B8C5694CBC",
+                "initial_scale": 1.0,
+                "inner_padding": -1.0,
+                "is_rich_text": false,
+                "italic_degree": 0,
+                "ktv_color": "",
+                "language": "",
+                "layer_weight": 1,
+                "letter_spacing": 0.0,
+                "line_feed": 1,
+                "line_max_width": 0.82,
+                "line_spacing": 0.02,
+                "multi_language_current": "none",
+                "name": "",
+                "original_size": [],
+                "preset_category": "",
+                "preset_category_id": "",
+                "preset_has_set_alignment": false,
+                "preset_id": "",
+                "preset_index": 0,
+                "preset_name": "",
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "recognize_type": 0,
+                "relevance_segment": [],
+                "shadow_alpha": 0.9,
+                "shadow_angle": -45.0,
+                "shadow_color": "",
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_smoothing": 0.45,
+                "shape_clip_x": false,
+                "shape_clip_y": false,
+                "source_from": "",
+                "style_name": "",
+                "sub_type": 0,
+                "subtitle_keywords": {
+                    "range": []
+                },
+                "subtitle_template_original_fontsize": 0.0,
+                "text_alpha": 1.0,
+                "text_color": "#FFFFFF",
+                "text_curve": null,
+                "text_preset_resource_id": "",
+                "text_size": 30,
+                "text_to_audio_ids": [],
+                "tts_auto_update": false,
+                "type": "subtitle",
+                "typesetting": 0,
+                "underline": false,
+                "underline_offset": 0.22,
+                "underline_width": 0.05,
+                "use_effect_default_color": true,
+                "words": {
+                    "end_time": [
+                        240,
+                        400,
+                        640,
+                        960,
+                        1200,
+                        1560
+                    ],
+                    "start_time": [
+                        0,
+                        240,
+                        400,
+                        640,
+                        960,
+                        1200
+                    ],
+                    "text": [
+                        "整个",
+                        "的",
+                        "这个",
+                        "裙子",
+                        "的",
+                        "做工"
+                    ]
+                }
+            },
+            {
+                "add_type": 1,
+                "alignment": 1,
+                "background_alpha": 1.0,
+                "background_color": "",
+                "background_height": 0.14,
+                "background_horizontal_offset": 0.0,
+                "background_round_radius": 0.0,
+                "background_style": 0,
+                "background_vertical_offset": 0.0,
+                "background_width": 0.14,
+                "base_content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[0,11],\"size\":10}],\"text\":\"大家一定要看清楚哦真的\"}",
+                "bold_width": 0.0,
+                "border_alpha": 1.0,
+                "border_color": "",
+                "border_width": 0.08,
+                "caption_template_info": {
+                    "category_id": "",
+                    "category_name": "",
+                    "effect_id": "",
+                    "is_new": false,
+                    "path": "",
+                    "request_id": "",
+                    "resource_id": "",
+                    "resource_name": "",
+                    "source_platform": 0
+                },
+                "check_flag": 7,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[0,5],\"size\":10},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,0.87058824300766,0]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[5,8],\"size\":10.399999618530273,\"strokes\":[{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[0,0,0]}},\"mode\":0,\"width\":0.0599999986588955}],\"useLetterColor\":true},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[8,11],\"size\":10}],\"text\":\"大家一定要看清楚哦真的\"}",
+                "fixed_height": -1.0,
+                "fixed_width": -1.0,
+                "font_category_id": "",
+                "font_category_name": "",
+                "font_id": "",
+                "font_name": "",
+                "font_path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "font_size": 10.0,
+                "font_source_platform": 1,
+                "font_team_id": "",
+                "font_title": "字语圆体",
+                "font_url": "",
+                "fonts": [
+                    {
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "effect_id": "7495689259223880202",
+                        "file_uri": "",
+                        "id": "E29872EC-EB68-449e-B7ED-41085A03377B",
+                        "path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                        "request_id": "202608081626418ED1576E8D95026F8566",
+                        "resource_id": "7495689259223880202",
+                        "source_platform": 1,
+                        "team_id": "",
+                        "title": "字语圆体"
+                    }
+                ],
+                "force_apply_line_max_width": false,
+                "global_alpha": 1.0,
+                "group_id": "Auto_1786177672814",
+                "has_shadow": false,
+                "id": "7E57B9CB-D635-4d11-A5C0-C79220A850B5",
+                "initial_scale": 1.0,
+                "inner_padding": -1.0,
+                "is_rich_text": false,
+                "italic_degree": 0,
+                "ktv_color": "",
+                "language": "",
+                "layer_weight": 1,
+                "letter_spacing": 0.0,
+                "line_feed": 1,
+                "line_max_width": 0.82,
+                "line_spacing": 0.02,
+                "multi_language_current": "none",
+                "name": "",
+                "original_size": [],
+                "preset_category": "",
+                "preset_category_id": "",
+                "preset_has_set_alignment": false,
+                "preset_id": "",
+                "preset_index": 0,
+                "preset_name": "",
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "recognize_type": 0,
+                "relevance_segment": [],
+                "shadow_alpha": 0.9,
+                "shadow_angle": -45.0,
+                "shadow_color": "",
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_smoothing": 0.45,
+                "shape_clip_x": false,
+                "shape_clip_y": false,
+                "source_from": "",
+                "style_name": "",
+                "sub_type": 0,
+                "subtitle_keywords": {
+                    "range": [
+                        {
+                            "length": 3,
+                            "location": 5
+                        }
+                    ]
+                },
+                "subtitle_template_original_fontsize": 0.0,
+                "text_alpha": 1.0,
+                "text_color": "#FFFFFF",
+                "text_curve": null,
+                "text_preset_resource_id": "",
+                "text_size": 30,
+                "text_to_audio_ids": [],
+                "tts_auto_update": false,
+                "type": "subtitle",
+                "typesetting": 0,
+                "underline": false,
+                "underline_offset": 0.22,
+                "underline_width": 0.05,
+                "use_effect_default_color": true,
+                "words": {
+                    "end_time": [
+                        240,
+                        400,
+                        520,
+                        720,
+                        960,
+                        1080,
+                        1320,
+                        1720
+                    ],
+                    "start_time": [
+                        0,
+                        240,
+                        400,
+                        520,
+                        720,
+                        1000,
+                        1160,
+                        1320
+                    ],
+                    "text": [
+                        "大家",
+                        "一定",
+                        "要",
+                        "看",
+                        "清楚",
+                        "哦",
+                        "真",
+                        "的"
+                    ]
+                }
+            },
+            {
+                "add_type": 1,
+                "alignment": 1,
+                "background_alpha": 1.0,
+                "background_color": "",
+                "background_height": 0.14,
+                "background_horizontal_offset": 0.0,
+                "background_round_radius": 0.0,
+                "background_style": 0,
+                "background_vertical_offset": 0.0,
+                "background_width": 0.14,
+                "base_content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[0,11],\"size\":10}],\"text\":\"你们如果看不明白玩不明\"}",
+                "bold_width": 0.0,
+                "border_alpha": 1.0,
+                "border_color": "",
+                "border_width": 0.08,
+                "caption_template_info": {
+                    "category_id": "",
+                    "category_name": "",
+                    "effect_id": "",
+                    "is_new": false,
+                    "path": "",
+                    "request_id": "",
+                    "resource_id": "",
+                    "resource_name": "",
+                    "source_platform": 0
+                },
+                "check_flag": 7,
+                "combo_info": {
+                    "text_templates": []
+                },
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[0,6],\"size\":10},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,0.87058824300766,0]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[6,8],\"size\":10.399999618530273,\"strokes\":[{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[0,0,0]}},\"mode\":0,\"width\":0.0599999986588955}],\"useLetterColor\":true},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"##_pkg_assets_/style_assets/fonts/字语圆体.ttf\"},\"range\":[8,11],\"size\":10}],\"text\":\"你们如果看不明白玩不明\"}",
+                "fixed_height": -1.0,
+                "fixed_width": -1.0,
+                "font_category_id": "",
+                "font_category_name": "",
+                "font_id": "",
+                "font_name": "",
+                "font_path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "font_size": 10.0,
+                "font_source_platform": 1,
+                "font_team_id": "",
+                "font_title": "字语圆体",
+                "font_url": "",
+                "fonts": [
+                    {
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "effect_id": "7495689259223880202",
+                        "file_uri": "",
+                        "id": "94E61B91-C201-416a-B5AB-D8E2D453486A",
+                        "path": "##_pkg_assets_/style_assets/fonts/字语圆体.ttf",
+                        "request_id": "202608081626418ED1576E8D95026F8566",
+                        "resource_id": "7495689259223880202",
+                        "source_platform": 1,
+                        "team_id": "",
+                        "title": "字语圆体"
+                    }
+                ],
+                "force_apply_line_max_width": false,
+                "global_alpha": 1.0,
+                "group_id": "Auto_1786177672814",
+                "has_shadow": false,
+                "id": "150E4034-3F33-4fb9-95C8-5B27E69FAC3B",
+                "initial_scale": 1.0,
+                "inner_padding": -1.0,
+                "is_rich_text": false,
+                "italic_degree": 0,
+                "ktv_color": "",
+                "language": "",
+                "layer_weight": 1,
+                "letter_spacing": 0.0,
+                "line_feed": 1,
+                "line_max_width": 0.82,
+                "line_spacing": 0.02,
+                "multi_language_current": "none",
+                "name": "",
+                "original_size": [],
+                "preset_category": "",
+                "preset_category_id": "",
+                "preset_has_set_alignment": false,
+                "preset_id": "",
+                "preset_index": 0,
+                "preset_name": "",
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "recognize_type": 0,
+                "relevance_segment": [],
+                "shadow_alpha": 0.9,
+                "shadow_angle": -45.0,
+                "shadow_color": "",
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_smoothing": 0.45,
+                "shape_clip_x": false,
+                "shape_clip_y": false,
+                "source_from": "",
+                "style_name": "",
+                "sub_type": 0,
+                "subtitle_keywords": {
+                    "range": [
+                        {
+                            "length": 2,
+                            "location": 6
+                        }
+                    ]
+                },
+                "subtitle_template_original_fontsize": 0.0,
+                "text_alpha": 1.0,
+                "text_color": "#FFFFFF",
+                "text_curve": null,
+                "text_preset_resource_id": "",
+                "text_size": 30,
+                "text_to_audio_ids": [],
+                "tts_auto_update": false,
+                "type": "subtitle",
+                "typesetting": 0,
+                "underline": false,
+                "underline_offset": 0.22,
+                "underline_width": 0.05,
+                "use_effect_default_color": true,
+                "words": {
+                    "end_time": [
+                        320,
+                        560,
+                        760,
+                        920,
+                        1200,
+                        1520,
+                        2080
+                    ],
+                    "start_time": [
+                        0,
+                        320,
+                        560,
+                        760,
+                        920,
+                        1320,
+                        1520
+                    ],
+                    "text": [
+                        "你们",
+                        "如果",
+                        "看",
+                        "不",
+                        "明白",
+                        "玩",
+                        "不明"
+                    ]
+                }
+            }
+        ],
+        "time_marks": [],
+        "transitions": [],
+        "video_effects": [],
+        "video_trackings": [],
+        "videos": [
+            {
+                "aigc_type": "none",
+                "audio_fade": null,
+                "cartoon_path": "",
+                "category_id": "",
+                "category_name": "local",
+                "check_flag": 62978047,
+                "crop": {
+                    "lower_left_x": 0.0,
+                    "lower_left_y": 1.0,
+                    "lower_right_x": 1.0,
+                    "lower_right_y": 1.0,
+                    "upper_left_x": 0.0,
+                    "upper_left_y": 0.0,
+                    "upper_right_x": 1.0,
+                    "upper_right_y": 0.0
+                },
+                "crop_ratio": "free",
+                "crop_scale": 1.0,
+                "duration": 35833333,
+                "extra_type_option": 0,
+                "formula_id": "",
+                "freeze": null,
+                "has_audio": true,
+                "height": 1920,
+                "id": "E2A934CD-AC30-4633-A16F-FEDE54F3FAE2",
+                "intensifies_audio_path": "",
+                "intensifies_path": "",
+                "is_ai_generate_content": false,
+                "is_copyright": false,
+                "is_text_edit_overdub": false,
+                "is_unified_beauty_mode": false,
+                "local_id": "",
+                "local_material_id": "987eefb6-db9f-43e9-9370-f276fb2f2a6e",
+                "material_id": "",
+                "material_name": "223.mp4",
+                "material_url": "",
+                "matting": {
+                    "flag": 0,
+                    "has_use_quick_brush": false,
+                    "has_use_quick_eraser": false,
+                    "interactiveTime": [],
+                    "path": "",
+                    "strokes": []
+                },
+                "media_path": "",
+                "object_locked": null,
+                "origin_material_id": "",
+                "path": "##_pkg_assets_/style_assets/sample/223.mp4",
+                "picture_from": "none",
+                "picture_set_category_id": "",
+                "picture_set_category_name": "",
+                "request_id": "",
+                "reverse_intensifies_path": "",
+                "reverse_path": "",
+                "smart_motion": null,
+                "source": 0,
+                "source_platform": 0,
+                "stable": {
+                    "matrix_path": "",
+                    "stable_level": 0,
+                    "time_range": {
+                        "duration": 0,
+                        "start": 0
+                    }
+                },
+                "team_id": "",
+                "type": "video",
+                "video_algorithm": {
+                    "algorithms": [],
+                    "complement_frame_config": null,
+                    "deflicker": null,
+                    "gameplay_configs": [],
+                    "motion_blur_config": null,
+                    "noise_reduction": null,
+                    "path": "",
+                    "quality_enhance": null,
+                    "time_range": null
+                },
+                "width": 1080
+            },
+            {
+                "aigc_type": "none",
+                "audio_fade": null,
+                "cartoon_path": "",
+                "category_id": "",
+                "category_name": "local",
+                "check_flag": 62978047,
+                "crop": {
+                    "lower_left_x": 0.0,
+                    "lower_left_y": 1.0,
+                    "lower_right_x": 1.0,
+                    "lower_right_y": 1.0,
+                    "upper_left_x": 0.0,
+                    "upper_left_y": 0.0,
+                    "upper_right_x": 1.0,
+                    "upper_right_y": 0.0
+                },
+                "crop_ratio": "free",
+                "crop_scale": 1.0,
+                "duration": 35833333,
+                "extra_type_option": 0,
+                "formula_id": "",
+                "freeze": null,
+                "has_audio": true,
+                "height": 1920,
+                "id": "659ED302-226E-4978-85A2-D265485E9185",
+                "intensifies_audio_path": "",
+                "intensifies_path": "",
+                "is_ai_generate_content": false,
+                "is_copyright": false,
+                "is_text_edit_overdub": false,
+                "is_unified_beauty_mode": false,
+                "local_id": "",
+                "local_material_id": "987eefb6-db9f-43e9-9370-f276fb2f2a6e",
+                "material_id": "",
+                "material_name": "223.mp4",
+                "material_url": "",
+                "matting": {
+                    "flag": 0,
+                    "has_use_quick_brush": false,
+                    "has_use_quick_eraser": false,
+                    "interactiveTime": [],
+                    "path": "",
+                    "strokes": []
+                },
+                "media_path": "",
+                "object_locked": null,
+                "origin_material_id": "",
+                "path": "##_pkg_assets_/style_assets/sample/223.mp4",
+                "picture_from": "none",
+                "picture_set_category_id": "",
+                "picture_set_category_name": "",
+                "request_id": "",
+                "reverse_intensifies_path": "",
+                "reverse_path": "",
+                "smart_motion": null,
+                "source": 0,
+                "source_platform": 0,
+                "stable": {
+                    "matrix_path": "",
+                    "stable_level": 0,
+                    "time_range": {
+                        "duration": 0,
+                        "start": 0
+                    }
+                },
+                "team_id": "",
+                "type": "video",
+                "video_algorithm": {
+                    "algorithms": [],
+                    "complement_frame_config": null,
+                    "deflicker": null,
+                    "gameplay_configs": [],
+                    "motion_blur_config": null,
+                    "noise_reduction": null,
+                    "path": "",
+                    "quality_enhance": null,
+                    "time_range": null
+                },
+                "width": 1080
+            }
+        ],
+        "vocal_beautifys": [],
+        "vocal_separations": [
+            {
+                "choice": 0,
+                "id": "5BE61C22-C4D0-48c4-857E-D375AC15D54D",
+                "production_path": "",
+                "time_range": null,
+                "type": "vocal_separation"
+            },
+            {
+                "choice": 0,
+                "id": "054F0475-289F-435e-8014-DB6F0C6681C3",
+                "production_path": "",
+                "time_range": null,
+                "type": "vocal_separation"
+            },
+            {
+                "choice": 0,
+                "id": "B88F4C2B-7449-4d61-A924-958278547EF5",
+                "production_path": "",
+                "time_range": null,
+                "type": "vocal_separation"
+            }
+        ]
+    },
+    "mutable_config": null,
+    "name": "",
+    "new_version": "110.0.0",
+    "platform": {
+        "app_id": 3704,
+        "app_source": "lv",
+        "app_version": "5.9.0",
+        "device_id": "b01238e1fc97414f875e2ee6ba075927",
+        "hard_disk_id": "50cecedb853a64668e01e31bfe54f1b8",
+        "mac_address": "caccf53d4db2884dd5fa2bcd7f6cd120",
+        "os": "Windows",
+        "os_version": "10.0.19045"
+    },
+    "relationships": [],
+    "render_index_track_mode_on": true,
+    "retouch_cover": null,
+    "source": "default",
+    "static_cover_image_path": "",
+    "time_marks": null,
+    "tracks": [
+        {
+            "attribute": 0,
+            "flag": 0,
+            "id": "544BCB9D-F66A-452b-876C-5C5FDB2DE169",
+            "is_default_name": true,
+            "name": "",
+            "segments": [
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": 0.0
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": true,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": true,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "027BF331-C529-46f9-9BA4-B1D3B1FBB043",
+                        "46ACC699-5579-4a0e-9835-5DCF459EF40E",
+                        "583E685B-4E30-4b08-8245-6CD99FC38BEA",
+                        "5BE61C22-C4D0-48c4-857E-D375AC15D54D"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": {
+                        "intensity": 1.0,
+                        "mode": 1,
+                        "nits": 1000
+                    },
+                    "id": "8E671313-63D1-4d77-BB28-95BD62E7D61B",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "E2A934CD-AC30-4633-A16F-FEDE54F3FAE2",
+                    "render_index": 0,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": {
+                        "duration": 5333334,
+                        "start": 6466666
+                    },
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 5333333,
+                        "start": 0
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 0,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                },
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": 0.0
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": true,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": true,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "A0170121-E3A8-4966-A734-564B9E6003A5",
+                        "E1E831CF-5A22-4414-BCB9-76F26902ADC6",
+                        "D21918C7-6B72-4168-8085-25BEC5E89207",
+                        "054F0475-289F-435e-8014-DB6F0C6681C3"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": {
+                        "intensity": 1.0,
+                        "mode": 1,
+                        "nits": 1000
+                    },
+                    "id": "87EAEC3D-0D3B-47de-9FB9-2F8D4250F607",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "659ED302-226E-4978-85A2-D265485E9185",
+                    "render_index": 0,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": {
+                        "duration": 7833333,
+                        "start": 16433333
+                    },
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 7833333,
+                        "start": 5333333
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 0,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                }
+            ],
+            "type": "video"
+        },
+        {
+            "attribute": 0,
+            "flag": 0,
+            "id": "18F60AC4-DFFE-4352-8F7A-94ED6648CC13",
+            "is_default_name": true,
+            "name": "",
+            "segments": [
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 1.202671580201338,
+                            "y": 1.202671580201338
+                        },
+                        "transform": {
+                            "x": 0.820305745554369,
+                            "y": 0.77770830981454
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "63968BFE-58C1-4aff-B2C2-30382242254C",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "8534F088-5913-4547-9C28-959C28B4EB57",
+                    "render_index": 14012,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 13166666,
+                        "start": 0
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 1,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                }
+            ],
+            "type": "sticker"
+        },
+        {
+            "attribute": 0,
+            "flag": 0,
+            "id": "426BDD6B-D554-46f3-98DF-9AFFA6EC3829",
+            "is_default_name": true,
+            "name": "",
+            "segments": [
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 0.909250247005686,
+                            "y": 0.909250247005686
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": 0.782401172199349
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "7C44F41C-0D4A-4b07-8B9E-372D30272CAC"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "684920C9-1446-4387-945F-6DC8234100CE",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "F8BBEC6F-DD7B-46b2-B731-7AB9F34508B1",
+                    "render_index": 14010,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 13166666,
+                        "start": 0
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 2,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                }
+            ],
+            "type": "text"
+        },
+        {
+            "attribute": 0,
+            "flag": 0,
+            "id": "B87BC668-6986-40af-85D6-EE16281AA641",
+            "is_default_name": true,
+            "name": "",
+            "segments": [
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 0.573222981807933,
+                            "y": 0.573222981807933
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": 0.697395833333333
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "B1EB8E96-6970-4a17-9274-027085C8E4E3"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "FE374987-BB3C-4076-9486-72EB98BF954A",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "4C4D0190-60DF-4ab9-B02D-11C8676FABBC",
+                    "render_index": 14011,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 13166666,
+                        "start": 0
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 3,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                }
+            ],
+            "type": "text"
+        },
+        {
+            "attribute": 0,
+            "flag": 0,
+            "id": "753B6B60-1632-46b1-8C90-4B533AD3BE70",
+            "is_default_name": true,
+            "name": "",
+            "segments": [
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 0.713956449009353,
+                            "y": 0.713956449009353
+                        },
+                        "transform": {
+                            "x": 0.684963500083879,
+                            "y": -0.844017013907432
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "0B620FEF-B877-4b79-B058-56F381AB54A1",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "4F627071-B89F-4721-9FB0-6E751D9006FD",
+                    "render_index": 14015,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 13166666,
+                        "start": 0
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 4,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                }
+            ],
+            "type": "sticker"
+        },
+        {
+            "attribute": 0,
+            "flag": 1,
+            "id": "04373E93-D0FA-43ea-A18A-B78FE68A21F0",
+            "is_default_name": true,
+            "name": "",
+            "segments": [
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "8549C455-5965-4539-8F58-451CE2614FB3"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "FB592C64-6DB5-4b5b-BA7F-46B9961D3929",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "2A11EC5C-E94A-48f3-8AF7-23DBCE55C72B",
+                    "render_index": 14016,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 2100000,
+                        "start": 0
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 5,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                },
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "64AF02DE-131B-48a9-8227-16665FF51F4E"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "CF461414-5390-47be-9A1B-A72ACA3BFAFB",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "A813BA1C-E4AD-445d-9998-0A4ED0447901",
+                    "render_index": 14017,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 1266666,
+                        "start": 2100000
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 5,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                },
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "DAC85E8D-56D1-45b3-A89B-3AF09845F4A0"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "C4FA8CAB-4805-45dc-B192-EAD188FF5F63",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "DDE6C2A4-2317-4c81-B099-9EB63762A327",
+                    "render_index": 14018,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 1566667,
+                        "start": 3366666
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 5,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                },
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "9981796A-019B-4095-A511-731EB687CFC3"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "7D175028-39DE-4878-92F7-EC0DAC9EAAD5",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "D71707D0-0EC1-43dc-BBCF-734A25830A98",
+                    "render_index": 14019,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 1000000,
+                        "start": 4933333
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 5,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                },
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "A1260C7B-9509-40d4-BB79-7A8EC61D7282"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "5F24AEDD-7681-476f-A32B-3E6B29877267",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "124E1BFE-B34A-4122-8F94-D1333E4FCE00",
+                    "render_index": 14020,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 2066667,
+                        "start": 5933333
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 5,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                },
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "D1213115-E4CF-4c6a-8E67-14E1CAA83BD7"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "0BE06EE8-7BA0-4c08-B428-534E2F907214",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "461AB698-078D-437e-9565-75B8C5694CBC",
+                    "render_index": 14021,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 1566666,
+                        "start": 8000000
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 5,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                },
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "E080EA57-78C0-4eab-9866-35B776ADD99D"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "10D256FC-FF27-4c94-A10D-C9BD0C75A4E3",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "7E57B9CB-D635-4d11-A5C0-C79220A850B5",
+                    "render_index": 14022,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 1733334,
+                        "start": 9566666
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 5,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                },
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": {
+                        "alpha": 1.0,
+                        "flip": {
+                            "horizontal": false,
+                            "vertical": false
+                        },
+                        "rotation": 0.0,
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        }
+                    },
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "E7D1E13E-EC7C-406a-A22F-6CC4EAD2D2C0"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "F317FFFD-0A42-4e97-9B64-907ECEBAB476",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "150E4034-3F33-4fb9-95C8-5B27E69FAC3B",
+                    "render_index": 14023,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": null,
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 1800000,
+                        "start": 11366666
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 5,
+                    "uniform_scale": {
+                        "on": true,
+                        "value": 1.0
+                    },
+                    "visible": true,
+                    "volume": 1.0
+                }
+            ],
+            "type": "text"
+        },
+        {
+            "attribute": 0,
+            "flag": 0,
+            "id": "F4EF11DB-F3A0-4d5d-B2C6-C1A1C1401C42",
+            "is_default_name": true,
+            "name": "",
+            "segments": [
+                {
+                    "caption_info": null,
+                    "cartoon": false,
+                    "clip": null,
+                    "common_keyframes": [],
+                    "enable_adjust": false,
+                    "enable_color_correct_adjust": false,
+                    "enable_color_curves": true,
+                    "enable_color_match_adjust": false,
+                    "enable_color_wheels": true,
+                    "enable_lut": false,
+                    "enable_smart_color_adjust": false,
+                    "extra_material_refs": [
+                        "D031254E-E36B-471a-830C-6323AA7FAEEA",
+                        "596A3E01-821F-45f4-BC5C-1D88AEA5C26E",
+                        "B6AA31B3-CF73-477e-BE8E-B06D6DEB7CF9",
+                        "BE383322-8E4B-4e58-BD79-FB093C8EE46E",
+                        "B88F4C2B-7449-4d61-A924-958278547EF5"
+                    ],
+                    "group_id": "",
+                    "hdr_settings": null,
+                    "id": "F518270F-34AA-4c9f-B375-0238A092B57C",
+                    "intensifies_audio": false,
+                    "is_placeholder": false,
+                    "is_tone_modify": false,
+                    "keyframe_refs": [],
+                    "last_nonzero_volume": 1.0,
+                    "material_id": "D3C5B063-1674-4766-B5D5-DA6303CD3D28",
+                    "render_index": 0,
+                    "responsive_layout": {
+                        "enable": false,
+                        "horizontal_pos_layout": 0,
+                        "size_layout": 0,
+                        "target_follow": "",
+                        "vertical_pos_layout": 0
+                    },
+                    "reverse": false,
+                    "source_timerange": {
+                        "duration": 13166666,
+                        "start": 0
+                    },
+                    "speed": 1.0,
+                    "target_timerange": {
+                        "duration": 13166666,
+                        "start": 0
+                    },
+                    "template_id": "",
+                    "template_scene": "default",
+                    "track_attribute": 0,
+                    "track_render_index": 0,
+                    "uniform_scale": null,
+                    "visible": true,
+                    "volume": 0.17713280022144318
+                }
+            ],
+            "type": "audio"
+        }
+    ],
+    "update_time": 0,
+    "version": 360000
+}

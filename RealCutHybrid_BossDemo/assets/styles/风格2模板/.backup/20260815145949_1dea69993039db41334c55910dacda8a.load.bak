@@ -1,0 +1,1717 @@
+{
+    "id": "163F97C6-B594-4c29-9C57-DC8F798407E2",
+    "version": 360000,
+    "new_version": "110.0.0",
+    "duration": 13166666,
+    "color_space": 0,
+    "config": {
+        "subtitle_taskinfo": [
+            {
+                "id": "6a76e887ffea1801b4c32ceb_8_2",
+                "type": 10,
+                "language": "zh-CN",
+                "content": "{\"attribute\":{\"extra\":{\"asr_id\":\"b1dbf5f1-ba89-4f56-8987-a55fcbc3925c\",\"language\":\"zh-CN\"}},\"utterances\":[{\"end_time\":2100,\"start_time\":200,\"text\":\"这个衣长是83的这个\",\"words\":[{\"end_time\":480,\"start_time\":200,\"text\":\"这个\"},{\"end_time\":840,\"start_time\":480,\"text\":\"衣长\"},{\"end_time\":1040,\"start_time\":840,\"text\":\"是\"},{\"end_time\":1640,\"start_time\":1040,\"text\":\"83\"},{\"end_time\":1840,\"start_time\":1640,\"text\":\"的\"},{\"end_time\":2080,\"start_time\":1840,\"text\":\"这个\"}]},{\"end_time\":3100,\"start_time\":2100,\"text\":\"你看裙摆\",\"words\":[{\"end_time\":2300,\"start_time\":2100,\"text\":\"你\"},{\"end_time\":2500,\"start_time\":2300,\"text\":\"看\"},{\"end_time\":3100,\"start_time\":2580,\"text\":\"裙摆\"}]},{\"end_time\":4933,\"start_time\":3366,\"text\":\"它裙摆是一个不规则的\",\"words\":[{\"end_time\":3446,\"start_time\":3366,\"text\":\"它\"},{\"end_time\":3846,\"start_time\":3606,\"text\":\"裙摆\"},{\"end_time\":4046,\"start_time\":3886,\"text\":\"是\"},{\"end_time\":4206,\"start_time\":4046,\"text\":\"一个\"},{\"end_time\":4686,\"start_time\":4206,\"text\":\"不规则\"},{\"end_time\":4926,\"start_time\":4686,\"text\":\"的\"}]},{\"end_time\":5333,\"start_time\":4933,\"text\":\"它跟这样子吧\",\"words\":[{\"end_time\":5013,\"start_time\":4933,\"text\":\"它\"},{\"end_time\":5213,\"start_time\":5053,\"text\":\"跟\"},{\"end_time\":6573,\"start_time\":6173,\"text\":\"这样\"},{\"end_time\":6653,\"start_time\":6573,\"text\":\"子\"},{\"end_time\":6933,\"start_time\":6653,\"text\":\"吧\"}]},{\"end_time\":7566,\"start_time\":5933,\"text\":\"249块钱上车\",\"words\":[{\"end_time\":6853,\"start_time\":5933,\"text\":\"249\"},{\"end_time\":7013,\"start_time\":6853,\"text\":\"块\"},{\"end_time\":7093,\"start_time\":7013,\"text\":\"钱\"},{\"end_time\":7573,\"start_time\":7093,\"text\":\"上车\"}]},{\"end_time\":9566,\"start_time\":8000,\"text\":\"整个的这个裙子的做工\",\"words\":[{\"end_time\":8240,\"start_time\":8000,\"text\":\"整个\"},{\"end_time\":8400,\"start_time\":8240,\"text\":\"的\"},{\"end_time\":8640,\"start_time\":8400,\"text\":\"这个\"},{\"end_time\":8960,\"start_time\":8640,\"text\":\"裙子\"},{\"end_time\":9200,\"start_time\":8960,\"text\":\"的\"},{\"end_time\":9560,\"start_time\":9200,\"text\":\"做工\"}]},{\"end_time\":11299,\"start_time\":9566,\"text\":\"大家一定要看清楚哦真的\",\"words\":[{\"end_time\":9806,\"start_time\":9566,\"text\":\"大家\"},{\"end_time\":9966,\"start_time\":9806,\"text\":\"一定\"},{\"end_time\":10086,\"start_time\":9966,\"text\":\"要\"},{\"end_time\":10286,\"start_time\":10086,\"text\":\"看\"},{\"end_time\":10526,\"start_time\":10286,\"text\":\"清楚\"},{\"end_time\":10646,\"start_time\":10566,\"text\":\"哦\"},{\"end_time\":10886,\"start_time\":10726,\"text\":\"真\"},{\"end_time\":11286,\"start_time\":10886,\"text\":\"的\"}]},{\"end_time\":13166,\"start_time\":11366,\"text\":\"你们如果看不明白玩不明\",\"words\":[{\"end_time\":11686,\"start_time\":11366,\"text\":\"你们\"},{\"end_time\":11926,\"start_time\":11686,\"text\":\"如果\"},{\"end_time\":12126,\"start_time\":11926,\"text\":\"看\"},{\"end_time\":12286,\"start_time\":12126,\"text\":\"不\"},{\"end_time\":12566,\"start_time\":12286,\"text\":\"明白\"},{\"end_time\":12886,\"start_time\":12686,\"text\":\"玩\"},{\"end_time\":13446,\"start_time\":12886,\"text\":\"不明\"}]}]}",
+                "ai_accurate_recognize_enable": true,
+                "supplies_commit_id": "948AFCDD-8EA5-4B81-94E4-2D80DAF17E58"
+            }
+        ],
+        "zoom_info_params": {
+            "zoom_ratio": 0.99999
+        },
+        "subtitle_keywords_config": {
+            "styles": "{\"styles\":[{\"fill\":{\"alpha\":1.0,\"content\":{\"render_type\":\"solid\",\"solid\":{\"alpha\":1.0,\"color\":[1.0,0.8705882430076599,0.0]}}},\"range\":[0,11],\"size\":10.4,\"strokes\":[{\"alpha\":1.0,\"content\":{\"render_type\":\"solid\",\"solid\":{\"alpha\":1.0,\"color\":[0.0,0.0,0.0]}},\"width\":0.06}],\"useLetterColor\":true}],\"text\":\"placeholder\"}",
+            "font_size_ratio": 1.3
+        }
+    },
+    "canvas_config": {
+        "height": 1920,
+        "ratio": "original",
+        "width": 1080
+    },
+    "tracks": [
+        {
+            "id": "544BCB9D-F66A-452b-876C-5C5FDB2DE169",
+            "type": "video",
+            "segments": [
+                {
+                    "id": "8E671313-63D1-4d77-BB28-95BD62E7D61B",
+                    "source_timerange": {
+                        "start": 6466666,
+                        "duration": 5333334
+                    },
+                    "target_timerange": {
+                        "duration": 5333333
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "E2A934CD-AC30-4633-A16F-FEDE54F3FAE2",
+                    "extra_material_refs": [
+                        "027BF331-C529-46f9-9BA4-B1D3B1FBB043",
+                        "338F51F8-E8F8-4ed1-BB99-50142E35C379",
+                        "46ACC699-5579-4a0e-9835-5DCF459EF40E",
+                        "583E685B-4E30-4b08-8245-6CD99FC38BEA",
+                        "9FE5F746-A3AD-4481-A06B-D1EDE666FFA1",
+                        "5BE61C22-C4D0-48c4-857E-D375AC15D54D"
+                    ],
+                    "enable_hsl": false,
+                    "hdr_settings": {
+                        "mode": 1
+                    },
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                },
+                {
+                    "id": "87EAEC3D-0D3B-47de-9FB9-2F8D4250F607",
+                    "source_timerange": {
+                        "start": 16433333,
+                        "duration": 7833333
+                    },
+                    "target_timerange": {
+                        "start": 5333333,
+                        "duration": 7833333
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "659ED302-226E-4978-85A2-D265485E9185",
+                    "extra_material_refs": [
+                        "A0170121-E3A8-4966-A734-564B9E6003A5",
+                        "524AEC7C-BB00-46d1-904C-8D0C87CB4193",
+                        "E1E831CF-5A22-4414-BCB9-76F26902ADC6",
+                        "D21918C7-6B72-4168-8085-25BEC5E89207",
+                        "F53416A0-D2BE-422c-92E4-58DBD1397AEC",
+                        "054F0475-289F-435e-8014-DB6F0C6681C3"
+                    ],
+                    "enable_hsl": false,
+                    "hdr_settings": {
+                        "mode": 1
+                    },
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                }
+            ],
+            "is_default_name": true
+        },
+        {
+            "id": "18F60AC4-DFFE-4352-8F7A-94ED6648CC13",
+            "type": "sticker",
+            "segments": [
+                {
+                    "id": "63968BFE-58C1-4aff-B2C2-30382242254C",
+                    "target_timerange": {
+                        "duration": 13166666
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 1.202671580201338,
+                            "y": 1.202671580201338
+                        },
+                        "transform": {
+                            "x": 0.820305745554369,
+                            "y": 0.77770830981454
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "8534F088-5913-4547-9C28-959C28B4EB57",
+                    "render_index": 14012,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 1,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                }
+            ],
+            "is_default_name": true
+        },
+        {
+            "id": "426BDD6B-D554-46f3-98DF-9AFFA6EC3829",
+            "type": "text",
+            "segments": [
+                {
+                    "id": "684920C9-1446-4387-945F-6DC8234100CE",
+                    "target_timerange": {
+                        "duration": 13166666
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 0.909250247005686,
+                            "y": 0.909250247005686
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": 0.782401172199349
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "F8BBEC6F-DD7B-46b2-B731-7AB9F34508B1",
+                    "extra_material_refs": [
+                        "7C44F41C-0D4A-4b07-8B9E-372D30272CAC"
+                    ],
+                    "render_index": 14010,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 2,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                }
+            ],
+            "is_default_name": true
+        },
+        {
+            "id": "B87BC668-6986-40af-85D6-EE16281AA641",
+            "type": "text",
+            "segments": [
+                {
+                    "id": "FE374987-BB3C-4076-9486-72EB98BF954A",
+                    "target_timerange": {
+                        "duration": 13166666
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 0.573222981807933,
+                            "y": 0.573222981807933
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": 0.697395833333333
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "4C4D0190-60DF-4ab9-B02D-11C8676FABBC",
+                    "extra_material_refs": [
+                        "B1EB8E96-6970-4a17-9274-027085C8E4E3"
+                    ],
+                    "render_index": 14011,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 3,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                }
+            ],
+            "is_default_name": true
+        },
+        {
+            "id": "753B6B60-1632-46b1-8C90-4B533AD3BE70",
+            "type": "sticker",
+            "segments": [
+                {
+                    "id": "0B620FEF-B877-4b79-B058-56F381AB54A1",
+                    "target_timerange": {
+                        "duration": 13166666
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 0.713956449009353,
+                            "y": 0.713956449009353
+                        },
+                        "transform": {
+                            "x": 0.684963500083879,
+                            "y": -0.844017013907432
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "4F627071-B89F-4721-9FB0-6E751D9006FD",
+                    "render_index": 14015,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 4,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                }
+            ],
+            "is_default_name": true
+        },
+        {
+            "id": "04373E93-D0FA-43ea-A18A-B78FE68A21F0",
+            "type": "text",
+            "segments": [
+                {
+                    "id": "FB592C64-6DB5-4b5b-BA7F-46B9961D3929",
+                    "target_timerange": {
+                        "duration": 2100000
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "2A11EC5C-E94A-48f3-8AF7-23DBCE55C72B",
+                    "extra_material_refs": [
+                        "8549C455-5965-4539-8F58-451CE2614FB3"
+                    ],
+                    "render_index": 14016,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 5,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                },
+                {
+                    "id": "CF461414-5390-47be-9A1B-A72ACA3BFAFB",
+                    "target_timerange": {
+                        "start": 2100000,
+                        "duration": 1266666
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "A813BA1C-E4AD-445d-9998-0A4ED0447901",
+                    "extra_material_refs": [
+                        "64AF02DE-131B-48a9-8227-16665FF51F4E"
+                    ],
+                    "render_index": 14017,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 5,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                },
+                {
+                    "id": "C4FA8CAB-4805-45dc-B192-EAD188FF5F63",
+                    "target_timerange": {
+                        "start": 3366666,
+                        "duration": 1566667
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "DDE6C2A4-2317-4c81-B099-9EB63762A327",
+                    "extra_material_refs": [
+                        "DAC85E8D-56D1-45b3-A89B-3AF09845F4A0"
+                    ],
+                    "render_index": 14018,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 5,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                },
+                {
+                    "id": "7D175028-39DE-4878-92F7-EC0DAC9EAAD5",
+                    "target_timerange": {
+                        "start": 4933333,
+                        "duration": 1000000
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "D71707D0-0EC1-43dc-BBCF-734A25830A98",
+                    "extra_material_refs": [
+                        "9981796A-019B-4095-A511-731EB687CFC3"
+                    ],
+                    "render_index": 14019,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 5,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                },
+                {
+                    "id": "5F24AEDD-7681-476f-A32B-3E6B29877267",
+                    "target_timerange": {
+                        "start": 5933333,
+                        "duration": 2066667
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "124E1BFE-B34A-4122-8F94-D1333E4FCE00",
+                    "extra_material_refs": [
+                        "A1260C7B-9509-40d4-BB79-7A8EC61D7282"
+                    ],
+                    "render_index": 14020,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 5,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                },
+                {
+                    "id": "0BE06EE8-7BA0-4c08-B428-534E2F907214",
+                    "target_timerange": {
+                        "start": 8000000,
+                        "duration": 1566666
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "461AB698-078D-437e-9565-75B8C5694CBC",
+                    "extra_material_refs": [
+                        "D1213115-E4CF-4c6a-8E67-14E1CAA83BD7"
+                    ],
+                    "render_index": 14021,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 5,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                },
+                {
+                    "id": "10D256FC-FF27-4c94-A10D-C9BD0C75A4E3",
+                    "target_timerange": {
+                        "start": 9566666,
+                        "duration": 1733334
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "7E57B9CB-D635-4d11-A5C0-C79220A850B5",
+                    "extra_material_refs": [
+                        "E080EA57-78C0-4eab-9866-35B776ADD99D"
+                    ],
+                    "render_index": 14022,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 5,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                },
+                {
+                    "id": "F317FFFD-0A42-4e97-9B64-907ECEBAB476",
+                    "target_timerange": {
+                        "start": 11366666,
+                        "duration": 1800000
+                    },
+                    "render_timerange": {},
+                    "clip": {
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0
+                        },
+                        "transform": {
+                            "x": 0.0,
+                            "y": -0.4166666666666667
+                        },
+                        "flip": {}
+                    },
+                    "uniform_scale": {},
+                    "material_id": "150E4034-3F33-4fb9-95C8-5B27E69FAC3B",
+                    "extra_material_refs": [
+                        "E7D1E13E-EC7C-406a-A22F-6CC4EAD2D2C0"
+                    ],
+                    "render_index": 14023,
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 5,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                }
+            ],
+            "flag": 1,
+            "is_default_name": true
+        },
+        {
+            "id": "F4EF11DB-F3A0-4d5d-B2C6-C1A1C1401C42",
+            "type": "audio",
+            "segments": [
+                {
+                    "id": "F518270F-34AA-4c9f-B375-0238A092B57C",
+                    "source_timerange": {
+                        "duration": 13166666
+                    },
+                    "target_timerange": {
+                        "duration": 13166666
+                    },
+                    "render_timerange": {},
+                    "volume": 0.17713280022144318,
+                    "material_id": "D3C5B063-1674-4766-B5D5-DA6303CD3D28",
+                    "extra_material_refs": [
+                        "D031254E-E36B-471a-830C-6323AA7FAEEA",
+                        "68CFFA48-FA08-4d6f-ADFB-3DAACD376EEF",
+                        "596A3E01-821F-45f4-BC5C-1D88AEA5C26E",
+                        "B6AA31B3-CF73-477e-BE8E-B06D6DEB7CF9",
+                        "BE383322-8E4B-4e58-BD79-FB093C8EE46E",
+                        "B88F4C2B-7449-4d61-A924-958278547EF5"
+                    ],
+                    "enable_lut": false,
+                    "enable_adjust": false,
+                    "enable_hsl": false,
+                    "track_render_index": 6,
+                    "responsive_layout": {},
+                    "enable_adjust_mask": false,
+                    "source": "segmentsourcenormal"
+                }
+            ],
+            "is_default_name": true
+        }
+    ],
+    "materials": {
+        "videos": [
+            {
+                "id": "E2A934CD-AC30-4633-A16F-FEDE54F3FAE2",
+                "type": "video",
+                "duration": 35833333,
+                "path": "D:/工作空间/粗剪/223.mp4",
+                "width": 1080,
+                "height": 1920,
+                "category_name": "local",
+                "material_id": "",
+                "material_name": "223.mp4",
+                "crop": {},
+                "stable": {
+                    "time_range": {}
+                },
+                "matting": {
+                    "path": ""
+                },
+                "check_flag": 62978047,
+                "video_algorithm": {
+                    "path": "",
+                    "story_video_modify_video_config": {}
+                },
+                "local_material_id": "987eefb6-db9f-43e9-9370-f276fb2f2a6e",
+                "beauty_face_auto_preset": {},
+                "video_mask_stroke": {
+                    "resource_id": "",
+                    "path": "",
+                    "type": ""
+                },
+                "video_mask_shadow": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            },
+            {
+                "id": "659ED302-226E-4978-85A2-D265485E9185",
+                "type": "video",
+                "duration": 35833333,
+                "path": "D:/工作空间/粗剪/223.mp4",
+                "width": 1080,
+                "height": 1920,
+                "category_name": "local",
+                "material_id": "",
+                "material_name": "223.mp4",
+                "crop": {},
+                "stable": {
+                    "time_range": {}
+                },
+                "matting": {
+                    "path": ""
+                },
+                "check_flag": 62978047,
+                "video_algorithm": {
+                    "path": "",
+                    "story_video_modify_video_config": {}
+                },
+                "local_material_id": "987eefb6-db9f-43e9-9370-f276fb2f2a6e",
+                "beauty_face_auto_preset": {},
+                "video_mask_stroke": {
+                    "resource_id": "",
+                    "path": "",
+                    "type": ""
+                },
+                "video_mask_shadow": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            }
+        ],
+        "audios": [
+            {
+                "id": "D3C5B063-1674-4766-B5D5-DA6303CD3D28",
+                "type": "music",
+                "name": "爱的魔法（心动版）（Aria打打 Remix）",
+                "duration": 130300000,
+                "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/music/a5d394e344bb609b6f705305e07283f7.mp3",
+                "category_name": "search_audio",
+                "music_id": "7546618847622580250",
+                "app_id": 1775,
+                "resource_id": "7546618847622580250",
+                "category_id": "0",
+                "music_source": "pgc",
+                "similiar_music_info": {},
+                "tts_benefit_info": {
+                    "benefit_type": "none"
+                }
+            }
+        ],
+        "texts": [
+            {
+                "id": "F8BBEC6F-DD7B-46b2-B731-7AB9F34508B1",
+                "type": "text",
+                "content": "{\"text\":\"-精致主义-简约穿搭-\",\"styles\":[{\"fill\":{\"content\":{\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/1654203/50957d5102cb4f2ea1459e140826eb0c/HelloFont ID JiangHuTi.ttf\",\"id\":\"7080097079397192228\"},\"size\":15,\"shadows\":[{\"diffuse\":0.02500000037252903,\"alpha\":0.899999976158142,\"distance\":4.9999995231628418,\"content\":{\"solid\":{\"color\":[0,0,0]}},\"angle\":-45}],\"range\":[0,11]}]}",
+                "words": {},
+                "current_words": {},
+                "combo_info": {},
+                "caption_template_info": {
+                    "resource_id": "",
+                    "path": ""
+                },
+                "layer_weight": 1,
+                "line_spacing": 0.02,
+                "has_shadow": true,
+                "shadow_color": "#000000",
+                "shadow_alpha": 0.899999976158142,
+                "shadow_smoothing": 0.450000017881393,
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.636396103067893,
+                    "y": -0.636396103067893
+                },
+                "shadow_angle": -45.0,
+                "border_width": 0.08,
+                "text_color": "#FFFFFF",
+                "font_path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/1654203/50957d5102cb4f2ea1459e140826eb0c/HelloFont ID JiangHuTi.ttf",
+                "font_resource_id": "7080097079397192228",
+                "initial_scale": 1.0,
+                "check_flag": 39,
+                "fonts": [
+                    {
+                        "id": "CD263552-373F-4b8f-B3AB-971D4ACCCD92",
+                        "resource_id": "7080097079397192228",
+                        "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/1654203/50957d5102cb4f2ea1459e140826eb0c/HelloFont ID JiangHuTi.ttf",
+                        "effect_id": "7080097079397192228",
+                        "title": "江湖体",
+                        "request_id": "20260721090951826B043C693A20E8C06A"
+                    }
+                ],
+                "lyrics_template": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            },
+            {
+                "id": "4C4D0190-60DF-4ab9-B02D-11C8676FABBC",
+                "type": "text",
+                "content": "{\"text\":\"BOSS姐奢品   165cm | 55kg\",\"styles\":[{\"fill\":{\"content\":{\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/1654203/50957d5102cb4f2ea1459e140826eb0c/HelloFont ID JiangHuTi.ttf\",\"id\":\"7080097079397192228\"},\"size\":15,\"shadows\":[{\"diffuse\":0.02500000037252903,\"alpha\":0.899999976158142,\"distance\":4.9999995231628418,\"content\":{\"solid\":{\"color\":[0,0,0]}},\"angle\":-45}],\"range\":[0,9]},{\"fill\":{\"content\":{\"solid\":{\"color\":[0.71764707565307617,0.10980392247438431,0.10980392247438431]}}},\"font\":{\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/1654203/50957d5102cb4f2ea1459e140826eb0c/HelloFont ID JiangHuTi.ttf\",\"id\":\"7080097079397192228\"},\"size\":15,\"useLetterColor\":true,\"shadows\":[{\"diffuse\":0.02500000037252903,\"alpha\":0.899999976158142,\"distance\":4.9999995231628418,\"content\":{\"solid\":{\"color\":[0,0,0]}},\"angle\":-45}],\"range\":[9,22]}]}",
+                "words": {},
+                "current_words": {},
+                "combo_info": {},
+                "caption_template_info": {
+                    "resource_id": "",
+                    "path": ""
+                },
+                "layer_weight": 1,
+                "line_spacing": 0.02,
+                "has_shadow": true,
+                "shadow_color": "#000000",
+                "shadow_alpha": 0.899999976158142,
+                "shadow_smoothing": 0.450000017881393,
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.636396103067893,
+                    "y": -0.636396103067893
+                },
+                "shadow_angle": -45.0,
+                "border_width": 0.08,
+                "text_color": "#b71c1c",
+                "font_path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/1654203/50957d5102cb4f2ea1459e140826eb0c/HelloFont ID JiangHuTi.ttf",
+                "font_resource_id": "7080097079397192228",
+                "initial_scale": 1.0,
+                "use_effect_default_color": false,
+                "is_rich_text": true,
+                "check_flag": 39,
+                "fonts": [
+                    {
+                        "id": "B4112BEA-67A6-403d-A6B3-AF43CE641A1D",
+                        "resource_id": "7080097079397192228",
+                        "category_id": "favoured",
+                        "category_name": "我的收藏",
+                        "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/1654203/50957d5102cb4f2ea1459e140826eb0c/HelloFont ID JiangHuTi.ttf",
+                        "effect_id": "7080097079397192228",
+                        "title": "江湖体",
+                        "request_id": "20260721090951826B043C693A20E8C06A"
+                    }
+                ],
+                "lyrics_template": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            },
+            {
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "id": "2A11EC5C-E94A-48f3-8AF7-23DBCE55C72B",
+                "recognize_text": "这个衣长是83的这个",
+                "recognize_model": "3.3b",
+                "type": "subtitle",
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[0,5],\"size\":10},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,0.87058824300766,0]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[5,7],\"size\":10.399999618530273,\"strokes\":[{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[0,0,0]}},\"mode\":0,\"width\":0.0599999986588955}],\"useLetterColor\":true},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[7,10],\"size\":10}],\"text\":\"这个衣长是83的这个\"}",
+                "base_content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[0,10],\"size\":10}],\"text\":\"这个衣长是83的这个\"}",
+                "words": {
+                    "start_time": [
+                        0,
+                        280,
+                        640,
+                        840,
+                        1440,
+                        1640
+                    ],
+                    "end_time": [
+                        280,
+                        640,
+                        840,
+                        1440,
+                        1640,
+                        1880
+                    ],
+                    "text": [
+                        "这个",
+                        "衣长",
+                        "是",
+                        "83",
+                        "的",
+                        "这个"
+                    ]
+                },
+                "current_words": {},
+                "combo_info": {},
+                "caption_template_info": {
+                    "resource_id": "",
+                    "path": ""
+                },
+                "layer_weight": 1,
+                "line_spacing": 0.02,
+                "shadow_alpha": 0.9,
+                "shadow_smoothing": 0.45,
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_angle": -45.0,
+                "border_width": 0.08,
+                "text_color": "#FFFFFF",
+                "font_title": "字语圆体",
+                "font_size": 10.0,
+                "font_path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/7495689259223880202/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "initial_scale": 1.0,
+                "font_source_platform": 1,
+                "add_type": 1,
+                "fonts": [
+                    {
+                        "id": "893B0C3F-32BD-4039-9160-8A495DCB1C4C",
+                        "resource_id": "7495689259223880202",
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "source_platform": 1,
+                        "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                        "effect_id": "7495689259223880202",
+                        "title": "字语圆体",
+                        "request_id": "202608081626418ED1576E8D95026F8566"
+                    }
+                ],
+                "group_id": "Auto_1786177672814",
+                "subtitle_keywords": {
+                    "range": [
+                        {
+                            "location": 5,
+                            "length": 2,
+                            "source_type": "server"
+                        }
+                    ]
+                },
+                "lyrics_template": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            },
+            {
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "id": "A813BA1C-E4AD-445d-9998-0A4ED0447901",
+                "recognize_text": "你看裙摆",
+                "recognize_model": "3.3b",
+                "type": "subtitle",
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[0,4],\"size\":10}],\"text\":\"你看裙摆\"}",
+                "base_content": "{\"styles\":[{\"fill\":{\"alpha\":1.0,\"content\":{\"render_type\":\"solid\",\"solid\":{\"alpha\":1.0,\"color\":[1.0,1.0,1.0]}}},\"font\":{\"id\":\"\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/Apps/10.9.0.14199/Resources/Font/SystemFont/zh-hans.ttf\"},\"range\":[0,4],\"size\":8.0}],\"text\":\"你看裙摆\"}",
+                "words": {
+                    "start_time": [
+                        0,
+                        200,
+                        480
+                    ],
+                    "end_time": [
+                        200,
+                        400,
+                        1000
+                    ],
+                    "text": [
+                        "你",
+                        "看",
+                        "裙摆"
+                    ]
+                },
+                "current_words": {},
+                "combo_info": {},
+                "caption_template_info": {
+                    "resource_id": "",
+                    "path": ""
+                },
+                "layer_weight": 1,
+                "line_spacing": 0.02,
+                "shadow_alpha": 0.9,
+                "shadow_smoothing": 0.45,
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_angle": -45.0,
+                "border_width": 0.08,
+                "text_color": "#FFFFFF",
+                "font_title": "字语圆体",
+                "font_size": 10.0,
+                "font_path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/7495689259223880202/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "initial_scale": 1.0,
+                "font_source_platform": 1,
+                "add_type": 1,
+                "fonts": [
+                    {
+                        "id": "6E7D757D-C212-43aa-9014-E13F0532E861",
+                        "resource_id": "7495689259223880202",
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "source_platform": 1,
+                        "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                        "effect_id": "7495689259223880202",
+                        "title": "字语圆体",
+                        "request_id": "202608081626418ED1576E8D95026F8566"
+                    }
+                ],
+                "group_id": "Auto_1786177672814",
+                "subtitle_keywords": {},
+                "lyrics_template": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            },
+            {
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "id": "DDE6C2A4-2317-4c81-B099-9EB63762A327",
+                "recognize_text": "它裙摆是一个不规则的",
+                "recognize_model": "3.3b",
+                "type": "subtitle",
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[0,1],\"size\":10},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,0.87058824300766,0]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[1,3],\"size\":10.399999618530273,\"strokes\":[{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[0,0,0]}},\"mode\":0,\"width\":0.0599999986588955}],\"useLetterColor\":true},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[3,10],\"size\":10}],\"text\":\"它裙摆是一个不规则的\"}",
+                "base_content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[0,10],\"size\":10}],\"text\":\"它裙摆是一个不规则的\"}",
+                "words": {
+                    "start_time": [
+                        0,
+                        240,
+                        520,
+                        680,
+                        840,
+                        1320
+                    ],
+                    "end_time": [
+                        80,
+                        480,
+                        680,
+                        840,
+                        1320,
+                        1560
+                    ],
+                    "text": [
+                        "它",
+                        "裙摆",
+                        "是",
+                        "一个",
+                        "不规则",
+                        "的"
+                    ]
+                },
+                "current_words": {},
+                "combo_info": {},
+                "caption_template_info": {
+                    "resource_id": "",
+                    "path": ""
+                },
+                "layer_weight": 1,
+                "line_spacing": 0.02,
+                "shadow_alpha": 0.9,
+                "shadow_smoothing": 0.45,
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_angle": -45.0,
+                "border_width": 0.08,
+                "text_color": "#FFFFFF",
+                "font_title": "字语圆体",
+                "font_size": 10.0,
+                "font_path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/7495689259223880202/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "initial_scale": 1.0,
+                "font_source_platform": 1,
+                "add_type": 1,
+                "fonts": [
+                    {
+                        "id": "1646BB57-AE44-406f-88A9-066CA91748EE",
+                        "resource_id": "7495689259223880202",
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "source_platform": 1,
+                        "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                        "effect_id": "7495689259223880202",
+                        "title": "字语圆体",
+                        "request_id": "202608081626418ED1576E8D95026F8566"
+                    }
+                ],
+                "group_id": "Auto_1786177672814",
+                "subtitle_keywords": {
+                    "range": [
+                        {
+                            "location": 1,
+                            "length": 2,
+                            "source_type": "server"
+                        }
+                    ]
+                },
+                "lyrics_template": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            },
+            {
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "id": "D71707D0-0EC1-43dc-BBCF-734A25830A98",
+                "recognize_text": "它跟这样子吧",
+                "recognize_model": "3.3b",
+                "type": "subtitle",
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[0,6],\"size\":10}],\"text\":\"它跟这样子吧\"}",
+                "base_content": "{\"styles\":[{\"fill\":{\"alpha\":1.0,\"content\":{\"render_type\":\"solid\",\"solid\":{\"alpha\":1.0,\"color\":[1.0,1.0,1.0]}}},\"font\":{\"id\":\"\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/Apps/10.9.0.14199/Resources/Font/SystemFont/zh-hans.ttf\"},\"range\":[0,6],\"size\":8.0}],\"text\":\"它跟这样子吧\"}",
+                "words": {
+                    "start_time": [
+                        0,
+                        120,
+                        1240,
+                        1640,
+                        1720
+                    ],
+                    "end_time": [
+                        80,
+                        280,
+                        1640,
+                        1720,
+                        2000
+                    ],
+                    "text": [
+                        "它",
+                        "跟",
+                        "这样",
+                        "子",
+                        "吧"
+                    ]
+                },
+                "current_words": {},
+                "combo_info": {},
+                "caption_template_info": {
+                    "resource_id": "",
+                    "path": ""
+                },
+                "layer_weight": 1,
+                "line_spacing": 0.02,
+                "shadow_alpha": 0.9,
+                "shadow_smoothing": 0.45,
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_angle": -45.0,
+                "border_width": 0.08,
+                "text_color": "#FFFFFF",
+                "font_title": "字语圆体",
+                "font_size": 10.0,
+                "font_path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/7495689259223880202/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "initial_scale": 1.0,
+                "font_source_platform": 1,
+                "add_type": 1,
+                "fonts": [
+                    {
+                        "id": "E853111C-01D0-41b8-9852-9BFEC60DDE3A",
+                        "resource_id": "7495689259223880202",
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "source_platform": 1,
+                        "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                        "effect_id": "7495689259223880202",
+                        "title": "字语圆体",
+                        "request_id": "202608081626418ED1576E8D95026F8566"
+                    }
+                ],
+                "group_id": "Auto_1786177672814",
+                "subtitle_keywords": {},
+                "lyrics_template": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            },
+            {
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "id": "124E1BFE-B34A-4122-8F94-D1333E4FCE00",
+                "recognize_text": "249块钱上车",
+                "recognize_model": "3.3b",
+                "type": "subtitle",
+                "content": "{\"text\":\"249块钱上车\",\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\",\"id\":\"7495689259223880202\"},\"size\":10,\"range\":[0,3]},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,0.87058824300766,0]}}},\"font\":{\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\",\"id\":\"7495689259223880202\"},\"strokes\":[{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[0,0,0]}},\"width\":0.0599999986588955,\"mode\":0}],\"size\":10.399999618530273,\"useLetterColor\":true,\"range\":[3,7]}]}",
+                "base_content": "{\"text\":\"249块钱上车\",\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\",\"id\":\"7495689259223880202\"},\"size\":10,\"range\":[0,7]}]}",
+                "words": {
+                    "start_time": [
+                        0,
+                        920,
+                        1080,
+                        1160
+                    ],
+                    "end_time": [
+                        920,
+                        1080,
+                        1160,
+                        1640
+                    ],
+                    "text": [
+                        "249",
+                        "块",
+                        "钱",
+                        "上车"
+                    ]
+                },
+                "current_words": {},
+                "combo_info": {},
+                "caption_template_info": {
+                    "resource_id": "",
+                    "path": ""
+                },
+                "layer_weight": 1,
+                "line_spacing": 0.02,
+                "shadow_alpha": 0.9,
+                "shadow_smoothing": 0.45,
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_angle": -45.0,
+                "border_width": 0.08,
+                "text_color": "#FFFFFF",
+                "font_size": 10.0,
+                "font_path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/7495689259223880202/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "initial_scale": 1.0,
+                "font_source_platform": 1,
+                "add_type": 1,
+                "fonts": [
+                    {
+                        "id": "BA7C361E-C2C3-4be0-877D-B8FC8FF364E1",
+                        "resource_id": "7495689259223880202",
+                        "source_platform": 1,
+                        "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                        "effect_id": "7495689259223880202",
+                        "title": "字语圆体",
+                        "request_id": "202608081626418ED1576E8D95026F8566"
+                    }
+                ],
+                "group_id": "Auto_1786177672814",
+                "subtitle_keywords": {
+                    "range": [
+                        {
+                            "location": 3,
+                            "length": 4,
+                            "source_type": "server"
+                        }
+                    ]
+                },
+                "lyrics_template": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            },
+            {
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "id": "461AB698-078D-437e-9565-75B8C5694CBC",
+                "recognize_text": "整个的这个裙子的做工",
+                "recognize_model": "3.3b",
+                "type": "subtitle",
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[0,10],\"size\":10}],\"text\":\"整个的这个裙子的做工\"}",
+                "base_content": "{\"styles\":[{\"fill\":{\"alpha\":1.0,\"content\":{\"render_type\":\"solid\",\"solid\":{\"alpha\":1.0,\"color\":[1.0,1.0,1.0]}}},\"font\":{\"id\":\"\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/Apps/10.9.0.14199/Resources/Font/SystemFont/zh-hans.ttf\"},\"range\":[0,10],\"size\":8.0}],\"text\":\"整个的这个裙子的做工\"}",
+                "words": {
+                    "start_time": [
+                        0,
+                        240,
+                        400,
+                        640,
+                        960,
+                        1200
+                    ],
+                    "end_time": [
+                        240,
+                        400,
+                        640,
+                        960,
+                        1200,
+                        1560
+                    ],
+                    "text": [
+                        "整个",
+                        "的",
+                        "这个",
+                        "裙子",
+                        "的",
+                        "做工"
+                    ]
+                },
+                "current_words": {},
+                "combo_info": {},
+                "caption_template_info": {
+                    "resource_id": "",
+                    "path": ""
+                },
+                "layer_weight": 1,
+                "line_spacing": 0.02,
+                "shadow_alpha": 0.9,
+                "shadow_smoothing": 0.45,
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_angle": -45.0,
+                "border_width": 0.08,
+                "text_color": "#FFFFFF",
+                "font_title": "字语圆体",
+                "font_size": 10.0,
+                "font_path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/7495689259223880202/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "initial_scale": 1.0,
+                "font_source_platform": 1,
+                "add_type": 1,
+                "fonts": [
+                    {
+                        "id": "4CBD8956-737B-4e3e-AE82-44B30A67A46B",
+                        "resource_id": "7495689259223880202",
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "source_platform": 1,
+                        "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                        "effect_id": "7495689259223880202",
+                        "title": "字语圆体",
+                        "request_id": "202608081626418ED1576E8D95026F8566"
+                    }
+                ],
+                "group_id": "Auto_1786177672814",
+                "subtitle_keywords": {},
+                "lyrics_template": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            },
+            {
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "id": "7E57B9CB-D635-4d11-A5C0-C79220A850B5",
+                "recognize_text": "大家一定要看清楚哦真的",
+                "recognize_model": "3.3b",
+                "type": "subtitle",
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[0,5],\"size\":10},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,0.87058824300766,0]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[5,8],\"size\":10.399999618530273,\"strokes\":[{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[0,0,0]}},\"mode\":0,\"width\":0.0599999986588955}],\"useLetterColor\":true},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[8,11],\"size\":10}],\"text\":\"大家一定要看清楚哦真的\"}",
+                "base_content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[0,11],\"size\":10}],\"text\":\"大家一定要看清楚哦真的\"}",
+                "words": {
+                    "start_time": [
+                        0,
+                        240,
+                        400,
+                        520,
+                        720,
+                        1000,
+                        1160,
+                        1320
+                    ],
+                    "end_time": [
+                        240,
+                        400,
+                        520,
+                        720,
+                        960,
+                        1080,
+                        1320,
+                        1720
+                    ],
+                    "text": [
+                        "大家",
+                        "一定",
+                        "要",
+                        "看",
+                        "清楚",
+                        "哦",
+                        "真",
+                        "的"
+                    ]
+                },
+                "current_words": {},
+                "combo_info": {},
+                "caption_template_info": {
+                    "resource_id": "",
+                    "path": ""
+                },
+                "layer_weight": 1,
+                "line_spacing": 0.02,
+                "shadow_alpha": 0.9,
+                "shadow_smoothing": 0.45,
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_angle": -45.0,
+                "border_width": 0.08,
+                "text_color": "#FFFFFF",
+                "font_title": "字语圆体",
+                "font_size": 10.0,
+                "font_path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/7495689259223880202/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "initial_scale": 1.0,
+                "font_source_platform": 1,
+                "add_type": 1,
+                "fonts": [
+                    {
+                        "id": "E29872EC-EB68-449e-B7ED-41085A03377B",
+                        "resource_id": "7495689259223880202",
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "source_platform": 1,
+                        "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                        "effect_id": "7495689259223880202",
+                        "title": "字语圆体",
+                        "request_id": "202608081626418ED1576E8D95026F8566"
+                    }
+                ],
+                "group_id": "Auto_1786177672814",
+                "subtitle_keywords": {
+                    "range": [
+                        {
+                            "location": 5,
+                            "length": 3,
+                            "source_type": "server"
+                        }
+                    ]
+                },
+                "lyrics_template": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            },
+            {
+                "recognize_task_id": "6a76e887ffea1801b4c32ceb_8_2",
+                "id": "150E4034-3F33-4fb9-95C8-5B27E69FAC3B",
+                "recognize_text": "你们如果看不明白玩不明",
+                "recognize_model": "3.3b",
+                "type": "subtitle",
+                "content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[0,6],\"size\":10},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,0.87058824300766,0]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[6,8],\"size\":10.399999618530273,\"strokes\":[{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[0,0,0]}},\"mode\":0,\"width\":0.0599999986588955}],\"useLetterColor\":true},{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[8,11],\"size\":10}],\"text\":\"你们如果看不明白玩不明\"}",
+                "base_content": "{\"styles\":[{\"fill\":{\"content\":{\"render_type\":\"solid\",\"solid\":{\"color\":[1,1,1]}}},\"font\":{\"id\":\"7495689259223880202\",\"path\":\"C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf\"},\"range\":[0,11],\"size\":10}],\"text\":\"你们如果看不明白玩不明\"}",
+                "words": {
+                    "start_time": [
+                        0,
+                        320,
+                        560,
+                        760,
+                        920,
+                        1320,
+                        1520
+                    ],
+                    "end_time": [
+                        320,
+                        560,
+                        760,
+                        920,
+                        1200,
+                        1520,
+                        2080
+                    ],
+                    "text": [
+                        "你们",
+                        "如果",
+                        "看",
+                        "不",
+                        "明白",
+                        "玩",
+                        "不明"
+                    ]
+                },
+                "current_words": {},
+                "combo_info": {},
+                "caption_template_info": {
+                    "resource_id": "",
+                    "path": ""
+                },
+                "layer_weight": 1,
+                "line_spacing": 0.02,
+                "shadow_alpha": 0.9,
+                "shadow_smoothing": 0.45,
+                "shadow_distance": 5.0,
+                "shadow_point": {
+                    "x": 0.6363961030678928,
+                    "y": -0.6363961030678928
+                },
+                "shadow_angle": -45.0,
+                "border_width": 0.08,
+                "text_color": "#FFFFFF",
+                "font_title": "字语圆体",
+                "font_size": 10.0,
+                "font_path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/7495689259223880202/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                "font_resource_id": "7495689259223880202",
+                "initial_scale": 1.0,
+                "font_source_platform": 1,
+                "add_type": 1,
+                "fonts": [
+                    {
+                        "id": "94E61B91-C201-416a-B5AB-D8E2D453486A",
+                        "resource_id": "7495689259223880202",
+                        "category_id": "preset",
+                        "category_name": "剪映预设",
+                        "source_platform": 1,
+                        "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/effect/113454943/f625722b0ce881a1182f8ae3d2fc7b9a/字语圆体.ttf",
+                        "effect_id": "7495689259223880202",
+                        "title": "字语圆体",
+                        "request_id": "202608081626418ED1576E8D95026F8566"
+                    }
+                ],
+                "group_id": "Auto_1786177672814",
+                "subtitle_keywords": {
+                    "range": [
+                        {
+                            "location": 6,
+                            "length": 2,
+                            "source_type": "server"
+                        }
+                    ]
+                },
+                "lyrics_template": {
+                    "resource_id": "",
+                    "path": ""
+                }
+            }
+        ],
+        "stickers": [
+            {
+                "id": "8534F088-5913-4547-9C28-959C28B4EB57",
+                "type": "sticker",
+                "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/artistEffect/6923230730151628039/b47b43ca0f8282c8c6730a5b0cc7edfa",
+                "icon_url": "https://p3-heycan-jy-sign.byteimg.com/tos-cn-i-3jr8j4ixpe/904f44f0912f4ae38fdbce97f667fe59~tplv-3jr8j4ixpe-resize:200:200.png?x-expires=1816134679&x-signature=8FKrKV5NWB6xUKaoyWpA8Qi1V6I%3D",
+                "preview_cover_url": "https://p3-heycan-jy-sign.byteimg.com/tos-cn-i-3jr8j4ixpe/904f44f0912f4ae38fdbce97f667fe59~tplv-3jr8j4ixpe-resize:200:200.png?x-expires=1816134679&x-signature=8FKrKV5NWB6xUKaoyWpA8Qi1V6I%3D",
+                "sticker_id": "6923230730151628039",
+                "resource_id": "6923230730151628039",
+                "name": "白色闪光亮晶晶元素",
+                "category_id": "heycan_search_sticker",
+                "category_name": "heycan_search_sticker",
+                "source_platform": 1,
+                "request_id": "20260721093749010233029224073F260",
+                "combo_info": {},
+                "radius": {},
+                "shadow_point": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "shape_param": {},
+                "shape_fill_render_style": {
+                    "color": {
+                        "solid": {},
+                        "gradient": {},
+                        "texture": {
+                            "path": "",
+                            "resource_id": ""
+                        }
+                    }
+                }
+            },
+            {
+                "id": "4F627071-B89F-4721-9FB0-6E751D9006FD",
+                "type": "sticker",
+                "path": "C:/Users/JT/AppData/Local/JianyingPro/User Data/Cache/artistEffect/7592228401017277721/198b343ec51426fb572b69132e7b4db5",
+                "icon_url": "https://p3-heycan-jy-sign.byteimg.com/tos-cn-i-3jr8j4ixpe/09044924bb29455f895d08e802b90ad8~tplv-3jr8j4ixpe-resize:200:200.png?x-expires=1816137655&x-signature=RbuAOyq6r8J%2FNjqJzd33AQqZcHA%3D",
+                "preview_cover_url": "https://p3-heycan-jy-sign.byteimg.com/tos-cn-i-3jr8j4ixpe/09044924bb29455f895d08e802b90ad8~tplv-3jr8j4ixpe-resize:200:200.png?x-expires=1816137655&x-signature=RbuAOyq6r8J%2FNjqJzd33AQqZcHA%3D",
+                "sticker_id": "7592228401017277721",
+                "resource_id": "7592228401017277721",
+                "name": "呆萌小猫",
+                "category_id": "10523",
+                "category_name": "👍互动",
+                "source_platform": 1,
+                "request_id": "2026072110372724CEE23033927C073459",
+                "combo_info": {},
+                "radius": {},
+                "shadow_point": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "shape_param": {},
+                "shape_fill_render_style": {
+                    "color": {
+                        "solid": {},
+                        "gradient": {},
+                        "texture": {
+                            "path": "",
+                            "resource_id": ""
+                        }
+                    }
+                }
+            }
+        ],
+        "canvases": [
+            {
+                "id": "46ACC699-5579-4a0e-9835-5DCF459EF40E",
+                "type": "canvas_color"
+            },
+            {
+                "id": "E1E831CF-5A22-4414-BCB9-76F26902ADC6",
+                "type": "canvas_color"
+            }
+        ],
+        "audio_fades": [
+            {
+                "id": "596A3E01-821F-45f4-BC5C-1D88AEA5C26E",
+                "type": "audio_fade",
+                "fade_in_duration": 200000,
+                "fade_out_duration": 200000
+            }
+        ],
+        "beats": [
+            {
+                "id": "B6AA31B3-CF73-477e-BE8E-B06D6DEB7CF9",
+                "type": "beats",
+                "ai_beats": {
+                    "beats_url": "https://lf6-lv-music-tos.faceu.com/obj/tos-cn-v-2774c002/ocVrOfAAIICwX2ACxii1fGdEfIvhIqAeAKRLFm",
+                    "beats_path": "##_draftpath_placeholder_0E685133-18CE-45ED-8CB8-2904A212EC80_##/materials/beat/361777168304f673d4b138bfdafb241c.beat",
+                    "melody_percents": [
+                        0.600000023841858
+                    ]
+                }
+            }
+        ],
+        "material_animations": [
+            {
+                "id": "7C44F41C-0D4A-4b07-8B9E-372D30272CAC",
+                "type": "sticker_animation"
+            },
+            {
+                "id": "B1EB8E96-6970-4a17-9274-027085C8E4E3",
+                "type": "sticker_animation"
+            },
+            {
+                "id": "8549C455-5965-4539-8F58-451CE2614FB3",
+                "type": "sticker_animation"
+            },
+            {
+                "id": "64AF02DE-131B-48a9-8227-16665FF51F4E",
+                "type": "sticker_animation"
+            },
+            {
+                "id": "DAC85E8D-56D1-45b3-A89B-3AF09845F4A0",
+                "type": "sticker_animation"
+            },
+            {
+                "id": "9981796A-019B-4095-A511-731EB687CFC3",
+                "type": "sticker_animation"
+            },
+            {
+                "id": "A1260C7B-9509-40d4-BB79-7A8EC61D7282",
+                "type": "sticker_animation"
+            },
+            {
+                "id": "D1213115-E4CF-4c6a-8E67-14E1CAA83BD7",
+                "type": "sticker_animation"
+            },
+            {
+                "id": "E080EA57-78C0-4eab-9866-35B776ADD99D",
+                "type": "sticker_animation"
+            },
+            {
+                "id": "E7D1E13E-EC7C-406a-A22F-6CC4EAD2D2C0",
+                "type": "sticker_animation"
+            }
+        ],
+        "placeholder_infos": [
+            {
+                "id": "338F51F8-E8F8-4ed1-BB99-50142E35C379",
+                "type": "placeholder_info",
+                "meta_type": "none"
+            },
+            {
+                "id": "524AEC7C-BB00-46d1-904C-8D0C87CB4193",
+                "type": "placeholder_info",
+                "meta_type": "none"
+            },
+            {
+                "id": "68CFFA48-FA08-4d6f-ADFB-3DAACD376EEF",
+                "type": "placeholder_info",
+                "meta_type": "none"
+            }
+        ],
+        "speeds": [
+            {
+                "id": "027BF331-C529-46f9-9BA4-B1D3B1FBB043",
+                "type": "speed"
+            },
+            {
+                "id": "A0170121-E3A8-4966-A734-564B9E6003A5",
+                "type": "speed"
+            },
+            {
+                "id": "D031254E-E36B-471a-830C-6323AA7FAEEA",
+                "type": "speed"
+            }
+        ],
+        "sound_channel_mappings": [
+            {
+                "id": "583E685B-4E30-4b08-8245-6CD99FC38BEA",
+                "type": "none"
+            },
+            {
+                "id": "D21918C7-6B72-4168-8085-25BEC5E89207",
+                "type": "none"
+            },
+            {
+                "id": "BE383322-8E4B-4e58-BD79-FB093C8EE46E",
+                "type": "none"
+            }
+        ],
+        "material_colors": [
+            {
+                "id": "9FE5F746-A3AD-4481-A06B-D1EDE666FFA1"
+            },
+            {
+                "id": "F53416A0-D2BE-422c-92E4-58DBD1397AEC"
+            }
+        ],
+        "vocal_separations": [
+            {
+                "id": "5BE61C22-C4D0-48c4-857E-D375AC15D54D",
+                "type": "vocal_separation"
+            },
+            {
+                "id": "054F0475-289F-435e-8014-DB6F0C6681C3",
+                "type": "vocal_separation"
+            },
+            {
+                "id": "B88F4C2B-7449-4d61-A924-958278547EF5",
+                "type": "vocal_separation"
+            }
+        ]
+    },
+    "platform": {
+        "app_id": 3704,
+        "app_source": "lv",
+        "app_version": "5.9.0",
+        "device_id": "b01238e1fc97414f875e2ee6ba075927",
+        "hard_disk_id": "50cecedb853a64668e01e31bfe54f1b8",
+        "mac_address": "caccf53d4db2884dd5fa2bcd7f6cd120",
+        "os": "Windows",
+        "os_version": "10.0.19045"
+    },
+    "last_modified_platform": {
+        "app_id": 3704,
+        "app_source": "lv",
+        "app_version": "5.9.0",
+        "device_id": "b01238e1fc97414f875e2ee6ba075927",
+        "hard_disk_id": "50cecedb853a64668e01e31bfe54f1b8",
+        "mac_address": "caccf53d4db2884dd5fa2bcd7f6cd120",
+        "os": "Windows",
+        "os_version": "10.0.19045"
+    },
+    "extra_info": {
+        "subtitle_fragment_info_list": [
+            {
+                "end_time": 200000,
+                "key": "31d1edd1598a7723ff4c06995f03075f"
+            },
+            {
+                "start_time": 200000,
+                "end_time": 2080000,
+                "subtitle_cache_info": "{\"sentence_list\":[{\"attribute\":{\"event\":\"speech\"},\"bilingual_lan\":\"none\",\"end_time\":2080,\"language_server_recognize\":\"zh-CN\",\"language_user_select\":\"Auto\",\"start_time\":200,\"task_id\":\"6a76e887ffea1801b4c32ceb_8_2\",\"text\":\"这个衣长是83的这个\",\"translation_text\":\"\",\"words\":[{\"end_time\":480,\"start_time\":200,\"text\":\"这个\"},{\"end_time\":840,\"start_time\":480,\"text\":\"衣长\"},{\"end_time\":1040,\"start_time\":840,\"text\":\"是\"},{\"end_time\":1640,\"start_time\":1040,\"text\":\"83\"},{\"end_time\":1840,\"start_time\":1640,\"text\":\"的\"},{\"end_time\":2080,\"start_time\":1840,\"text\":\"这个\"}]}]}",
+                "key": "e47c89ddb02110bed17d5a32049f72de"
+            },
+            {
+                "start_time": 2080000,
+                "end_time": 3080000,
+                "subtitle_cache_info": "{\"sentence_list\":[{\"attribute\":{\"event\":\"speech\"},\"bilingual_lan\":\"none\",\"end_time\":3080,\"language_server_recognize\":\"zh-CN\",\"language_user_select\":\"Auto\",\"start_time\":2080,\"task_id\":\"6a76e887ffea1801b4c32ceb_8_2\",\"text\":\"你看裙摆\",\"translation_text\":\"\",\"words\":[{\"end_time\":2280,\"start_time\":2080,\"text\":\"你\"},{\"end_time\":2480,\"start_time\":2280,\"text\":\"看\"},{\"end_time\":3080,\"start_time\":2560,\"text\":\"裙摆\"}]}]}",
+                "key": "d159c00a8babc08aaec5d587eb9613b9"
+            },
+            {
+                "start_time": 3080000,
+                "end_time": 3360000,
+                "key": "1b6d818b4db51a5b6bf7a18f83ab2f74"
+            },
+            {
+                "start_time": 3360000,
+                "end_time": 4920000,
+                "subtitle_cache_info": "{\"sentence_list\":[{\"attribute\":{\"event\":\"speech\"},\"bilingual_lan\":\"none\",\"end_time\":4920,\"language_server_recognize\":\"zh-CN\",\"language_user_select\":\"Auto\",\"start_time\":3360,\"task_id\":\"6a76e887ffea1801b4c32ceb_8_2\",\"text\":\"它裙摆是一个不规则的\",\"translation_text\":\"\",\"words\":[{\"end_time\":3440,\"start_time\":3360,\"text\":\"它\"},{\"end_time\":3840,\"start_time\":3600,\"text\":\"裙摆\"},{\"end_time\":4040,\"start_time\":3880,\"text\":\"是\"},{\"end_time\":4200,\"start_time\":4040,\"text\":\"一个\"},{\"end_time\":4680,\"start_time\":4200,\"text\":\"不规则\"},{\"end_time\":4920,\"start_time\":4680,\"text\":\"的\"}]}]}",
+                "key": "8dc4181d0f9014f61ea381d0f9f1051f"
+            },
+            {
+                "start_time": 4920000,
+                "end_time": 6920000,
+                "subtitle_cache_info": "{\"sentence_list\":[{\"attribute\":{\"event\":\"speech\"},\"bilingual_lan\":\"none\",\"end_time\":6920,\"language_server_recognize\":\"zh-CN\",\"language_user_select\":\"Auto\",\"start_time\":4920,\"task_id\":\"6a76e887ffea1801b4c32ceb_8_2\",\"text\":\"它跟这样子吧\",\"translation_text\":\"\",\"words\":[{\"end_time\":5000,\"start_time\":4920,\"text\":\"它\"},{\"end_time\":5200,\"start_time\":5040,\"text\":\"跟\"},{\"end_time\":6560,\"start_time\":6160,\"text\":\"这样\"},{\"end_time\":6640,\"start_time\":6560,\"text\":\"子\"},{\"end_time\":6920,\"start_time\":6640,\"text\":\"吧\"}]}]}",
+                "key": "c95624e449950f3bd5eaea948b812488"
+            },
+            {
+                "start_time": 6920000,
+                "end_time": 8560000,
+                "subtitle_cache_info": "{\"sentence_list\":[{\"attribute\":{\"event\":\"speech\"},\"bilingual_lan\":\"none\",\"end_time\":8560,\"language_server_recognize\":\"zh-CN\",\"language_user_select\":\"Auto\",\"start_time\":6920,\"task_id\":\"6a76e887ffea1801b4c32ceb_8_2\",\"text\":\"249块钱上车\",\"translation_text\":\"\",\"words\":[{\"end_time\":7840,\"start_time\":6920,\"text\":\"249\"},{\"end_time\":8000,\"start_time\":7840,\"text\":\"块\"},{\"end_time\":8080,\"start_time\":8000,\"text\":\"钱\"},{\"end_time\":8560,\"start_time\":8080,\"text\":\"上车\"}]}]}",
+                "key": "86fceb2a6a993a33846e69cd7a58c03d"
+            },
+            {
+                "start_time": 8560000,
+                "end_time": 9000000,
+                "key": "29e8cc5d045bf8c46965a6d7cbcd92f9"
+            },
+            {
+                "start_time": 9000000,
+                "end_time": 10560000,
+                "subtitle_cache_info": "{\"sentence_list\":[{\"attribute\":{\"event\":\"speech\"},\"bilingual_lan\":\"none\",\"end_time\":10560,\"language_server_recognize\":\"zh-CN\",\"language_user_select\":\"Auto\",\"start_time\":9000,\"task_id\":\"6a76e887ffea1801b4c32ceb_8_2\",\"text\":\"整个的这个裙子的做工\",\"translation_text\":\"\",\"words\":[{\"end_time\":9240,\"start_time\":9000,\"text\":\"整个\"},{\"end_time\":9400,\"start_time\":9240,\"text\":\"的\"},{\"end_time\":9640,\"start_time\":9400,\"text\":\"这个\"},{\"end_time\":9960,\"start_time\":9640,\"text\":\"裙子\"},{\"end_time\":10200,\"start_time\":9960,\"text\":\"的\"},{\"end_time\":10560,\"start_time\":10200,\"text\":\"做工\"}]}]}",
+                "key": "43b6f1d959803c54d342cab44e478847"
+            },
+            {
+                "start_time": 10560000,
+                "end_time": 12280000,
+                "subtitle_cache_info": "{\"sentence_list\":[{\"attribute\":{\"event\":\"speech\"},\"bilingual_lan\":\"none\",\"end_time\":12280,\"language_server_recognize\":\"zh-CN\",\"language_user_select\":\"Auto\",\"start_time\":10560,\"task_id\":\"6a76e887ffea1801b4c32ceb_8_2\",\"text\":\"大家一定要看清楚哦真的\",\"translation_text\":\"\",\"words\":[{\"end_time\":10800,\"start_time\":10560,\"text\":\"大家\"},{\"end_time\":10960,\"start_time\":10800,\"text\":\"一定\"},{\"end_time\":11080,\"start_time\":10960,\"text\":\"要\"},{\"end_time\":11280,\"start_time\":11080,\"text\":\"看\"},{\"end_time\":11520,\"start_time\":11280,\"text\":\"清楚\"},{\"end_time\":11640,\"start_time\":11560,\"text\":\"哦\"},{\"end_time\":11880,\"start_time\":11720,\"text\":\"真\"},{\"end_time\":12280,\"start_time\":11880,\"text\":\"的\"}]}]}",
+                "key": "330376c735f938282185db9ea412abb2"
+            },
+            {
+                "start_time": 12280000,
+                "end_time": 12360000,
+                "key": "9649340a201215ba38997c9a23152ff6"
+            },
+            {
+                "start_time": 12360000,
+                "end_time": 14440000,
+                "subtitle_cache_info": "{\"sentence_list\":[{\"attribute\":{\"event\":\"speech\"},\"bilingual_lan\":\"none\",\"end_time\":14440,\"language_server_recognize\":\"zh-CN\",\"language_user_select\":\"Auto\",\"start_time\":12360,\"task_id\":\"6a76e887ffea1801b4c32ceb_8_2\",\"text\":\"你们如果看不明白玩不明\",\"translation_text\":\"\",\"words\":[{\"end_time\":12680,\"start_time\":12360,\"text\":\"你们\"},{\"end_time\":12920,\"start_time\":12680,\"text\":\"如果\"},{\"end_time\":13120,\"start_time\":12920,\"text\":\"看\"},{\"end_time\":13280,\"start_time\":13120,\"text\":\"不\"},{\"end_time\":13560,\"start_time\":13280,\"text\":\"明白\"},{\"end_time\":13880,\"start_time\":13680,\"text\":\"玩\"},{\"end_time\":14440,\"start_time\":13880,\"text\":\"不明\"}]}]}",
+                "key": "7a152dc1ce871175fc3e9ff6605db67c"
+            },
+            {
+                "start_time": 14440000,
+                "end_time": 28333332,
+                "key": "97e85b345d514af257f360a34542a3ae"
+            }
+        ]
+    },
+    "render_index_track_mode_on": true,
+    "name": "",
+    "source": "default",
+    "fps": 30.0,
+    "group_container": null,
+    "time_marks": null,
+    "mutable_config": null,
+    "cover": null,
+    "retouch_cover": null,
+    "static_cover_image_path": ""
+}

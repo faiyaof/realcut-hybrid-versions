@@ -1,0 +1,5 @@
+funasr
+modelscope
+dashscope
+requests
+jieba
