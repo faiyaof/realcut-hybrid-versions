@@ -20,10 +20,10 @@
         <button class="nav-item active" data-tab="queue"><i data-lucide="layers-3"></i><span>任务队列</span><b id="queue-count">0</b></button>
         <button class="nav-item" data-tab="details"><i data-lucide="list-checks"></i><span>任务详情</span></button>
         <button class="nav-item" data-tab="logs"><i data-lucide="scroll-text"></i><span>运行日志</span></button>
-        <button class="nav-item" data-tab="settings"><i data-lucide="stethoscope"></i><span>环境检查</span></button>
+        <button class="nav-item" data-tab="settings"><i data-lucide="settings-2"></i><span>设置</span></button>
       </nav>
       <div class="sidebar-spacer"></div>
-      <div class="sidebar-foot"><span class="status-dot ok"></span><span id="service-state">本地服务已连接</span><span class="version">v0.1</span></div>
+      <div class="sidebar-foot"><span class="status-dot ok"></span><span id="service-state">本地服务已连接</span><span class="version">v0.2</span></div>
     </aside>
 
     <main class="main-content">
@@ -105,15 +105,41 @@
       </section>
 
       <section id="settings-tab" class="tab-panel">
-        <div class="panel-heading"><div><p class="eyebrow">本地运行条件</p><h2>环境检查</h2><p>检查脚本、依赖、剪映路径和关键词库。</p></div></div>
-        <div class="settings-card">
-          <h3>环境预检</h3>
-          <div id="environment-list" class="environment-list"></div>
-          <button class="secondary-button" id="recheck-btn"><i data-lucide="stethoscope"></i>重新检查</button>
-        </div>
-        <div class="settings-card">
-          <h3>项目路径</h3>
-          <div id="project-paths" class="project-paths"></div>
+        <div class="panel-heading"><div><p class="eyebrow">本机配置</p><h2>设置</h2><p>管理 AI 服务凭据并检查本地运行条件。</p></div></div>
+        <div class="settings-layout">
+          <div class="settings-card api-settings-card">
+            <div class="settings-card-heading">
+              <div><h3>AI 服务</h3><span class="secure-storage"><i data-lucide="shield-check"></i>Windows DPAPI 当前用户加密</span></div>
+            </div>
+            <form id="api-settings-form" class="api-settings-form">
+              <div class="api-field-grid">
+                <label>DeepSeek API Key
+                  <span class="api-status" id="deepseek-key-status">未配置</span>
+                  <input id="deepseek-api-key" type="password" autocomplete="new-password" placeholder="输入新的 API Key" />
+                </label>
+                <label>DashScope API Key
+                  <span class="api-status" id="dashscope-key-status">未配置</span>
+                  <input id="dashscope-api-key" type="password" autocomplete="new-password" placeholder="输入新的 API Key" />
+                </label>
+                <label>DeepSeek 模型
+                  <input id="deepseek-model" type="text" value="deepseek-chat" autocomplete="off" />
+                </label>
+              </div>
+              <div class="settings-actions">
+                <button class="primary-button" type="submit"><i data-lucide="save"></i>保存设置</button>
+                <button class="secondary-button danger-button" id="clear-api-keys-btn" type="button"><i data-lucide="trash-2"></i>清除已保存 Key</button>
+              </div>
+            </form>
+          </div>
+          <div class="settings-card">
+            <h3>环境预检</h3>
+            <div id="environment-list" class="environment-list"></div>
+            <button class="secondary-button" id="recheck-btn"><i data-lucide="stethoscope"></i>重新检查</button>
+          </div>
+          <div class="settings-card">
+            <h3>项目路径</h3>
+            <div id="project-paths" class="project-paths"></div>
+          </div>
         </div>
       </section>
     </main>

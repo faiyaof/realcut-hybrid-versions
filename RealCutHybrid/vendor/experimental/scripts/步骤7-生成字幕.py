@@ -1141,7 +1141,7 @@ with open(dp / '字幕.txt', 'w', encoding='utf-8-sig') as f:
 import os as _os
 _local_import = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '导入字幕.py')
 _bin_dir = Path(_os.environ.get('REALCUT_BIN_DIR', HYBRID_ROOT / 'bin'))
-_subtitle_binary = _bin_dir / '导入字幕.exe'
+_subtitle_binary = _bin_dir / 'import_subtitles.exe'
 if _subtitle_binary.is_file():
     _subtitle_cmd = [str(_subtitle_binary), str(dp)]
 else:

@@ -4,7 +4,8 @@ param(
     [string]$Version = (Get-Date -Format "yyyy.MM.dd"),
     [switch]$SkipCompile,
     [switch]$SkipInstaller,
-    [switch]$SkipHashes
+    [switch]$SkipHashes,
+    [switch]$SkipRuntimeOptimization
 )
 
 $ErrorActionPreference = "Stop"
@@ -23,6 +24,7 @@ $PackageRoot = Join-Path $ProjectRoot ("dist\RealCutHybrid-Handover-{0}" -f $Ver
 $InstallerOutput = Join-Path $ProjectRoot "dist\installer"
 $Python = Join-Path $ProjectRoot ".venv-build\Scripts\python.exe"
 $ScriptRoot = Join-Path $ProjectRoot "vendor\experimental\scripts"
+$EntryPointStaging = Join-Path $BuildRoot "entrypoints"
 
 function Assert-ChildPath([string]$Path, [string]$Parent) {
     $fullPath = [IO.Path]::GetFullPath($Path).TrimEnd('\')
@@ -56,14 +58,42 @@ if (-not (Test-Path -LiteralPath $Python -PathType Leaf)) {
     & $Python -m pip install "Nuitka==4.2" ordered-set zstandard
 }
 
+$binaryAliases = @{
+    "mirror_通用" = "mirror_general"
+    "导入视频到剪映" = "step_01_import"
+    "步骤2-分离音频" = "step_02_separate_audio"
+    "步骤3-FunASR" = "step_03_funasr"
+    "步骤4-切割排序" = "step_04_select_sort"
+    "步骤4后-开盒补位" = "step_04_open_box"
+    "步骤5-淡入淡出" = "step_05_fade"
+    "步骤6-画面匹配" = "step_06_visual_match"
+    "步骤7-生成字幕" = "step_07_subtitles"
+    "步骤8-转场特效" = "step_08_transitions"
+    "步骤9-花字音效" = "step_09_flower_sfx"
+    "步骤10-添加BGM" = "step_10_bgm"
+    "步骤11-添加水印" = "step_11_watermark"
+    "步骤12-字体样式" = "step_12_style"
+    "导入字幕" = "import_subtitles"
+}
+New-Item -ItemType Directory -Force -Path $BuildRoot | Out-Null
+Reset-Directory $EntryPointStaging $BuildRoot
+
 $entryPoints = @(
-    [pscustomobject]@{ Path = (Join-Path $ProjectRoot "web_server.py"); Name = "web_server" },
-    [pscustomobject]@{ Path = (Join-Path $ProjectRoot "realcut_hybrid.py"); Name = "realcut_hybrid" }
+    [pscustomobject]@{ Path = (Join-Path $ProjectRoot "web_server.py"); CompilePath = (Join-Path $ProjectRoot "web_server.py"); Name = "web_server" },
+    [pscustomobject]@{ Path = (Join-Path $ProjectRoot "realcut_hybrid.py"); CompilePath = (Join-Path $ProjectRoot "realcut_hybrid.py"); Name = "realcut_hybrid" }
 )
 $entryPoints += Get-ChildItem -LiteralPath $ScriptRoot -Filter "*.py" -File |
     Where-Object { -not $_.BaseName.StartsWith("_") } |
     Sort-Object Name |
-    ForEach-Object { [pscustomobject]@{ Path = $_.FullName; Name = $_.BaseName } }
+    ForEach-Object {
+        $name = if ($binaryAliases.ContainsKey($_.BaseName)) { $binaryAliases[$_.BaseName] } else { $_.BaseName }
+        $compilePath = $_.FullName
+        if ($name -ne $_.BaseName) {
+            $compilePath = Join-Path $EntryPointStaging ($name + ".py")
+            Copy-Item -LiteralPath $_.FullName -Destination $compilePath -Force
+        }
+        [pscustomobject]@{ Path = $_.FullName; CompilePath = $compilePath; Name = $name }
+    }
 
 if (-not $SkipCompile) {
     Reset-Directory $NuitkaOutput $BuildRoot
@@ -76,7 +106,7 @@ if (-not $SkipCompile) {
         "--output-dir=$NuitkaOutput"
     )
     foreach ($entry in $entryPoints) {
-        $nuitkaArgs += "--main=$($entry.Path)"
+        $nuitkaArgs += "--main=$($entry.CompilePath)"
     }
     & $Python @nuitkaArgs
     if ($LASTEXITCODE -ne 0) {
@@ -103,6 +133,11 @@ foreach ($entry in $entryPoints) {
 foreach ($name in @("runtime", "models_cache", "assets")) {
     Copy-Tree (Join-Path $RuntimeSource $name) (Join-Path $PackageRoot $name)
 }
+if (-not $SkipRuntimeOptimization) {
+    & (Join-Path $PSScriptRoot "optimize_python_runtime.ps1") `
+        -RuntimePath (Join-Path $PackageRoot "runtime\python") `
+        -AllowedParent $PackageRoot
+}
 Copy-Tree (Join-Path $ProjectRoot "web") (Join-Path $PackageRoot "web")
 Copy-Tree (Join-Path $ProjectRoot "config") (Join-Path $PackageRoot "config")
 
@@ -118,7 +153,8 @@ foreach ($name in @("state", "logs", "reports", "snapshots", "manifests", "runs"
 }
 
 $forbidden = @(
-    "realcut_hybrid.py", "web_server.py", "postprocess.py", "manifest.py", "runtime_layout.py"
+    "realcut_hybrid.py", "web_server.py", "postprocess.py", "manifest.py", "runtime_layout.py",
+    "runtime_settings.py"
 )
 foreach ($name in $forbidden) {
     if (Test-Path -LiteralPath (Join-Path $PackageRoot $name)) {

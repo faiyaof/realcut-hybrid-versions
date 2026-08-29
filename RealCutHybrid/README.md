@@ -54,7 +54,7 @@ Web 前端复用 LiveClipAgent 的本地工作台视觉框架，但只保留对 
 - `ffmpeg`、`ffprobe` 在 PATH 中
 - 已安装 Python 包：`funasr modelscope dashscope requests jieba`
 - 已安装 `officecli`（Excel 快照读写；可用 `OFFICECLI_BIN` 指定二进制路径）
-- 设置 `DASHSCOPE_API_KEY`（qwen 兜底）；推荐同时或优先设置 `DEEPSEEK_API_KEY`
+- 在 Web“设置”页填写 DeepSeek 或 DashScope API Key；CLI 也支持同名 Windows 环境变量
 - 剪映 5.9 草稿根目录和主程序路径存在
 
 可用 `pip install -r requirements.txt` 安装 Python 依赖。
@@ -68,7 +68,8 @@ python realcut_hybrid.py check
 
 ## DeepSeek 配置（推荐）
 
-字幕审校、价格角色判断和 AI 断句默认优先走 DeepSeek API，配置后不需要改任何脚本：
+字幕审校、价格角色判断和 AI 断句默认优先走 DeepSeek API。Web 用户直接在“设置”页填写；
+Key 会用 Windows DPAPI 按当前用户加密，不写入项目或安装目录的配置脚本。CLI 用户也可设置：
 
 ```text
 DEEPSEEK_API_KEY=你的 DeepSeek API Key
@@ -94,6 +95,7 @@ python web_server.py
 
 - 选择单个视频或素材目录，加入持久化后台队列；Web 重启后会自动恢复未完成任务
 - 队列页可开启并行处理，最大 3 个任务同时执行；关闭后回到单任务队列
+- 设置页可保存 DeepSeek/DashScope API Key 和 DeepSeek 模型，保存后立即刷新环境预检
   - 并行适合完整新视频；对同一草稿的续跑/补字幕/重跑阶段任务建议保持单任务，避免同时写同一个剪映草稿
 - 查看任务状态、步骤断点、进度和失败原因
 - 查看运行日志、Markdown/JSON 报告和字幕复核清单

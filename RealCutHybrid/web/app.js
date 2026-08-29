@@ -49,7 +49,7 @@ function setTab(tab) {
   state.activeTab = tab;
   $$('.nav-item').forEach((item) => item.classList.toggle('active', item.dataset.tab === tab));
   $$('.tab-panel').forEach((panel) => panel.classList.toggle('active', panel.id === `${tab}-tab`));
-  const titles = { queue: '任务队列', details: '任务详情', logs: '运行日志', settings: '环境检查' };
+  const titles = { queue: '任务队列', details: '任务详情', logs: '运行日志', settings: '设置' };
   $('#page-title').textContent = titles[tab] || '任务队列';
   if (tab === 'details') {
     renderDetailSelect();
@@ -74,6 +74,28 @@ function renderEnvironment(environment = state.bootstrap?.environment) {
     </div>
   `).join('');
   window.lucide?.createIcons();
+}
+
+function renderApiSettings(settings = state.bootstrap?.settings) {
+  if (!settings) return;
+  const providers = [
+    ['deepseek_api_key', '#deepseek-key-status', '#deepseek-api-key'],
+    ['dashscope_api_key', '#dashscope-key-status', '#dashscope-api-key'],
+  ];
+  providers.forEach(([key, statusSelector, inputSelector]) => {
+    const status = settings[key] || {};
+    const node = $(statusSelector);
+    const input = $(inputSelector);
+    if (node) {
+      node.textContent = status.configured ? `已配置 · ${status.source}` : '未配置';
+      node.classList.toggle('configured', status.configured === true);
+    }
+    if (input) input.placeholder = status.configured ? '留空则保持现有 Key' : '输入新的 API Key';
+  });
+  const model = $('#deepseek-model');
+  if (model && document.activeElement !== model) {
+    model.value = settings.deepseek_model || 'deepseek-chat';
+  }
 }
 
 function renderProjectPaths(paths = state.bootstrap?.paths) {
@@ -541,11 +563,36 @@ async function saveQueueSettings() {
   toast(enabled ? `并行队列已开启，最多 ${max} 个任务同时执行` : '已切回单任务队列');
 }
 
+async function saveApiSettings(clearKeys = false) {
+  const payload = {
+    deepseek_model: $('#deepseek-model')?.value.trim() || 'deepseek-chat',
+  };
+  const deepseek = $('#deepseek-api-key')?.value.trim() || '';
+  const dashscope = $('#dashscope-api-key')?.value.trim() || '';
+  if (deepseek) payload.deepseek_api_key = deepseek;
+  if (dashscope) payload.dashscope_api_key = dashscope;
+  if (clearKeys) payload.clear_keys = true;
+
+  const data = await api('/api/settings', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  state.bootstrap.settings = data.settings;
+  state.bootstrap.environment = data.environment;
+  $('#deepseek-api-key').value = '';
+  $('#dashscope-api-key').value = '';
+  renderApiSettings(data.settings);
+  renderEnvironment(data.environment);
+  window.lucide?.createIcons();
+  toast(clearKeys ? '已清除本机保存的 API Key' : 'API 设置已保存并生效');
+}
+
 async function refresh() {
   const data = await api('/api/bootstrap');
   state.bootstrap = data;
   state.tasks = data.tasks || [];
   renderEnvironment();
+  renderApiSettings();
   renderProjectPaths();
   renderTasks();
   renderQueueSettings();
@@ -644,6 +691,14 @@ document.addEventListener('click', async (event) => {
 
 $('#parallel-enabled')?.addEventListener('change', () => saveQueueSettings().catch((error) => toast(error.message)));
 $('#max-concurrency')?.addEventListener('change', () => saveQueueSettings().catch((error) => toast(error.message)));
+$('#api-settings-form')?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  saveApiSettings().catch((error) => toast(error.message));
+});
+$('#clear-api-keys-btn')?.addEventListener('click', () => {
+  if (!window.confirm('确定清除当前 Windows 用户保存的 API Key？')) return;
+  saveApiSettings(true).catch((error) => toast(error.message));
+});
 
 $('#path-current-input')?.addEventListener('keydown', async (event) => {
   if (event.key === 'Enter') {

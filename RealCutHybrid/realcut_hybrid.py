@@ -35,6 +35,11 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
+
+from runtime_settings import apply_runtime_settings
+
+apply_runtime_settings()
+
 from manifest import ManifestStore, resolve_officecli
 import postprocess
 from runtime_layout import application_root, entrypoint_command, entrypoint_exists
@@ -266,6 +271,7 @@ def build_args(step: StepSpec, video: Path, draft: Path, opts: argparse.Namespac
 
 def run_process(cmd: list[str], task_id: Optional[str], step_label: str) -> tuple[int, str]:
     env = os.environ.copy()
+    apply_runtime_settings(env)
     env["PYTHONIOENCODING"] = "utf-8"
     env["PYTHONUTF8"] = "1"
     flags = subprocess.CREATE_NO_WINDOW if hasattr(subprocess, "CREATE_NO_WINDOW") else 0

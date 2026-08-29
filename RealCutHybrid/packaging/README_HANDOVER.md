@@ -6,9 +6,15 @@ Python 第三方依赖、FunASR 模型、FFmpeg、剪映 5.9、OfficeCLI 和风�
 ## 使用
 
 1. 安装或完整复制便携目录，推荐使用安装器默认短路径，不要放在系统保护目录或很深的多级目录。
-2. 编辑 `config\deploy_env.bat`，填写 `DEEPSEEK_API_KEY`；也可以在 Windows 用户环境变量中设置。
-3. 双击 `Start-RealCutHybridWeb.bat`。
-4. 浏览器打开 `http://127.0.0.1:8766/`。
+2. 双击 `Start-RealCutHybridWeb.bat`。
+3. 浏览器打开本机工作台，在“设置”页填写 DeepSeek 或 DashScope API Key。
+4. 保存后环境预检会立即刷新，之后提交的任务会自动使用新配置。
+
+## 体积说明
+
+这是可断网部署的完整版，包含约 2.0 GiB FunASR 模型、1.3 GiB 精简 Python AI 运行时、
+1.27 GiB 剪映 5.9，以及 FFmpeg、OfficeCLI 和风格素材。安装后的占用会明显大于下载包，
+但接手电脑不需要另装 Python、模型或剪映。
 
 首次使用前可在包目录打开命令提示符执行：
 
@@ -23,7 +29,7 @@ bin\realcut_hybrid.exe check
 - `runtime\python` 只承载 Python 标准库和第三方 AI 依赖，不包含 RealCut Hybrid 自有源码。
 - 任务状态、日志、报告和清单写在安装目录下的 `state/logs/reports/manifests`。
 - 剪映草稿默认写到当前 Windows 用户的 `%LOCALAPPDATA%\JianyingPro\User Data\Projects\com.lveditor.draft`。
-- API Key 不随安装包分发，换电脑后需要重新填写或设置环境变量。
+- API Key 使用 Windows DPAPI 按当前用户加密保存在 `%LOCALAPPDATA%\RealCutHybrid\settings.json`，不随安装包分发；换用户或换电脑后需要重新填写。
 
 ## 代码保护说明
 

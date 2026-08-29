@@ -3,9 +3,8 @@ chcp 65001 >nul
 rem RealCutHybrid compiled handover environment.
 for %%I in ("%~dp0..") do set "REALCUT_ROOT=%%~fI"
 
-if not defined DEEPSEEK_API_KEY set "DEEPSEEK_API_KEY="
+rem API keys are loaded from the Web settings page (Windows DPAPI) or inherited environment variables.
 if not defined DEEPSEEK_MODEL set "DEEPSEEK_MODEL=deepseek-chat"
-if not defined DASHSCOPE_API_KEY set "DASHSCOPE_API_KEY="
 
 if not defined REALCUT_DRAFT_ROOT set "REALCUT_DRAFT_ROOT=%LOCALAPPDATA%\JianyingPro\User Data\Projects\com.lveditor.draft"
 if not exist "%REALCUT_DRAFT_ROOT%" mkdir "%REALCUT_DRAFT_ROOT%"

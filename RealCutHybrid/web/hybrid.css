@@ -47,8 +47,24 @@
 .project-path-row span{color:#8290a0;font-weight:650}
 .project-path-row code{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#40546b}
 .environment-list{margin-top:0}
+.api-settings-card{grid-column:1/-1}
+.settings-card-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:15px}
+.settings-card-heading h3{margin-bottom:5px}
+.secure-storage{display:inline-flex;align-items:center;gap:6px;color:#39735d;font-size:11px;font-weight:600}
+.secure-storage svg{width:14px;height:14px}
+.api-settings-form{display:grid;gap:14px}
+.api-field-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.api-field-grid label{position:relative;padding-top:22px}
+.api-field-grid input{width:100%;height:38px;padding:0 10px;border:1px solid #dce3eb;border-radius:7px;background:#fff;color:var(--text);outline:none;font-weight:400}
+.api-field-grid input:focus{border-color:#8db2ef;box-shadow:0 0 0 3px #eaf2ff}
+.api-status{position:absolute;top:0;right:0;max-width:72%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#9aa5b2;font-size:10px;font-weight:600}
+.api-status.configured{color:var(--green)}
+.settings-actions{display:flex;align-items:center;gap:10px}
+.settings-actions .primary-button{height:36px}
+.danger-button{color:var(--red)}
+.danger-button:hover{border-color:#e1aaaa;color:#a94343}
 @media(max-width:1180px){.app-shell{grid-template-columns:214px minmax(0,1fr)}.detail-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:760px){.app-shell{display:block}.main-content{padding:20px 15px 30px}.queue-hero-actions{margin-top:15px}.option-grid{grid-template-columns:1fr 1fr}.detail-toolbar{align-items:flex-start}.detail-toolbar select{flex:1}.detail-summary-grid{grid-template-columns:1fr 1fr}.project-path-row{grid-template-columns:1fr}.project-path-row code{white-space:normal;word-break:break-all}}
+@media(max-width:760px){.app-shell{display:block}.main-content{padding:20px 15px 30px}.queue-hero-actions{margin-top:15px}.option-grid{grid-template-columns:1fr 1fr}.detail-toolbar{align-items:flex-start}.detail-toolbar select{flex:1}.detail-summary-grid{grid-template-columns:1fr 1fr}.project-path-row{grid-template-columns:1fr}.project-path-row code{white-space:normal;word-break:break-all}.api-field-grid{grid-template-columns:1fr}.settings-actions{align-items:stretch;flex-direction:column;gap:14px}.settings-actions button{width:100%}}
 @media(max-width:480px){.option-grid{grid-template-columns:1fr}.detail-summary-grid{grid-template-columns:1fr}.modal-form label{padding:10px}.detail-toolbar{flex-wrap:wrap}}
 .queue-settings-card{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:18px;padding:13px 15px;background:#fff;border:1px solid var(--line);border-radius:var(--radius)}
 .queue-setting-copy{display:grid;gap:3px;min-width:240px}

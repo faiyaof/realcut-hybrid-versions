@@ -12,6 +12,7 @@ and can run up to three tasks in parallel from the Web toggle.
 from __future__ import annotations
 
 import argparse
+import ipaddress
 import json
 import mimetypes
 import os
@@ -29,6 +30,11 @@ from pathlib import Path
 from typing import Any, Optional
 from urllib.parse import parse_qs, unquote, urlsplit
 from runtime_layout import application_root, entrypoint_command
+from runtime_settings import (
+    apply_runtime_settings,
+    masked_settings_payload,
+    update_runtime_settings,
+)
 
 from realcut_hybrid import (
     LOG_DIR,
@@ -324,6 +330,7 @@ class TaskQueue:
 
         append_log(item.task_id, "启动: " + " ".join(cmd))
         env = os.environ.copy()
+        apply_runtime_settings(env)
         env["PYTHONIOENCODING"] = "utf-8"
         env["PYTHONUTF8"] = "1"
         flags = subprocess.CREATE_NO_WINDOW if hasattr(subprocess, "CREATE_NO_WINDOW") else 0
@@ -582,7 +589,7 @@ def bootstrap_payload() -> dict:
         reverse=True,
     )
     return {
-        "app": {"name": "RealCut Hybrid", "version": "0.1.0", "platform": "windows"},
+        "app": {"name": "RealCut Hybrid", "version": "0.2.0", "platform": "windows"},
         "queue": queue,
         "tasks": ordered,
         "paths": {
@@ -592,6 +599,7 @@ def bootstrap_payload() -> dict:
             "reports": str(REPORT_DIR),
         },
         "environment": environment_payload(),
+        "settings": masked_settings_payload(),
         "steps": [
             {"key": step.key, "label": step.label, "order": step.order, "phase": step.phase}
             for step in STEPS
@@ -609,6 +617,7 @@ def environment_payload() -> dict:
 
 def run_environment_check() -> dict:
     env = os.environ.copy()
+    apply_runtime_settings(env)
     env["PYTHONIOENCODING"] = "utf-8"
     env["PYTHONUTF8"] = "1"
     try:
@@ -782,7 +791,7 @@ def _send_static(handler: BaseHTTPRequestHandler, relative: str) -> None:
 
 
 class RealCutHandler(BaseHTTPRequestHandler):
-    server_version = "RealCutHybridWeb/0.1"
+    server_version = "RealCutHybridWeb/0.2"
 
     def do_GET(self) -> None:  # noqa: N802
         parsed = urlsplit(self.path)
@@ -790,6 +799,8 @@ class RealCutHandler(BaseHTTPRequestHandler):
         try:
             if path == "/api/bootstrap":
                 return _send_json(self, bootstrap_payload())
+            if path == "/api/settings":
+                return _send_json(self, {"settings": masked_settings_payload()})
             if path == "/api/drafts":
                 return _send_json(
                     self,
@@ -884,6 +895,26 @@ class RealCutHandler(BaseHTTPRequestHandler):
                     max_concurrency=payload.get("max_concurrency"),
                 )
                 return _send_json(self, {"ok": True, "queue": queue})
+            if path == "/api/settings":
+                client_ip = self.client_address[0].split("%", 1)[0]
+                if not ipaddress.ip_address(client_ip).is_loopback:
+                    return _send_json(
+                        self,
+                        {"error": "API Key 只能在本机页面修改"},
+                        HTTPStatus.FORBIDDEN,
+                    )
+                payload = self._json_body()
+                update_runtime_settings(payload)
+                apply_runtime_settings()
+                environment = run_environment_check()
+                return _send_json(
+                    self,
+                    {
+                        "ok": True,
+                        "settings": masked_settings_payload(),
+                        "environment": environment,
+                    },
+                )
             if path == "/api/check":
                 return _send_json(self, run_environment_check())
             if path == "/api/browse":
