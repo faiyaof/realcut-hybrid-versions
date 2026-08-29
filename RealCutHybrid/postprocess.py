@@ -15,7 +15,7 @@ import random
 import subprocess
 import sys
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Callable, Iterable, Optional
 from runtime_layout import application_root, entrypoint_command
 
 ROOT = application_root(__file__)
@@ -64,15 +64,56 @@ def configured_default_style() -> Optional[str]:
         return None
 
 
-def available_style_names() -> list[str]:
-    if not STYLE_LIB.is_dir():
-        return []
-    names = []
-    for directory in STYLE_LIB.iterdir():
-        if not directory.is_dir() or not (directory / "draft_content.json").is_file():
+def _style_search_roots(additional_roots: Iterable[Path] = ()) -> list[tuple[Path, bool]]:
+    roots: list[tuple[Path, bool]] = [(STYLE_LIB, False), (DEFAULT_DRAFT_ROOT, True)]
+    local_app_data = os.environ.get("LOCALAPPDATA", "").strip()
+    if local_app_data:
+        roots.append(
+            (
+                Path(local_app_data)
+                / "JianyingPro"
+                / "User Data"
+                / "Projects"
+                / "com.lveditor.draft",
+                True,
+            )
+        )
+    roots.extend((Path(root), True) for root in additional_roots)
+    result: list[tuple[Path, bool]] = []
+    seen: set[str] = set()
+    for root, filter_drafts in roots:
+        key = os.path.normcase(os.path.abspath(str(root)))
+        if key in seen:
             continue
-        name = directory.name[:-2] if directory.name.endswith("模板") else directory.name
-        names.append(name)
+        seen.add(key)
+        result.append((root, filter_drafts))
+    return result
+
+
+def _style_candidate_names(style: str) -> list[str]:
+    value = (style or "").strip()
+    if not value:
+        return []
+    base = value[:-2] if value.endswith("模板") and value != "模板" else value
+    return list(dict.fromkeys((value, base, f"{base}模板")))
+
+
+def available_style_names(additional_roots: Iterable[Path] = ()) -> list[str]:
+    names = []
+    for root, filter_drafts in _style_search_roots(additional_roots):
+        if not root.is_dir():
+            continue
+        try:
+            directories = root.iterdir()
+        except OSError:
+            continue
+        for directory in directories:
+            if not directory.is_dir() or not (directory / "draft_content.json").is_file():
+                continue
+            if filter_drafts and "风格" not in directory.name and not directory.name.endswith("模板"):
+                continue
+            name = directory.name[:-2] if directory.name.endswith("模板") else directory.name
+            names.append(name)
     return sorted(set(names))
 
 
@@ -104,18 +145,24 @@ def run_script(
     return output
 
 
-def resolve_style_template(style: str, log: LogFn = _log_default) -> Path:
-    """Resolve a style template dir, preferring the 10.0 template library."""
-    if style:
-        base = style[:-2] if style.endswith('模板') and style != '模板' else style
-        for cand in (
-            STYLE_LIB / f"{base}模板",
-            DEFAULT_DRAFT_ROOT / f"{base}模板",
-            DEFAULT_DRAFT_ROOT / base,
-        ):
+def resolve_style_template(
+    style: str,
+    log: LogFn = _log_default,
+    additional_roots: Iterable[Path] = (),
+) -> Path:
+    """Resolve a style from the portable library or active JianYing draft roots."""
+    direct = Path(style).expanduser() if style else None
+    if direct and direct.is_dir() and (direct / "draft_content.json").is_file():
+        return direct
+    names = _style_candidate_names(style)
+    for root, _ in _style_search_roots(additional_roots):
+        for name in names:
+            cand = root / name
             if (cand / "draft_content.json").is_file():
                 return cand
     log(f"[postprocess] 未找到风格模板: {style}")
+    for root, _ in _style_search_roots(additional_roots):
+        log(f"[postprocess] 已搜索: {root}")
     raise RuntimeError(f"风格模板不存在: {style}")
 
 
@@ -264,7 +311,7 @@ def force_font(
         log(f"[dry-run] 强制字幕字体 {style}: {draft}")
         return 0
     read_draft, write_draft = _ensure_utils()
-    template_dir = resolve_style_template(style, log=log)
+    template_dir = resolve_style_template(style, log=log, additional_roots=(draft.parent,))
     template = read_draft(template_dir)
     target = _template_subtitle_font(template)
     if target is None:

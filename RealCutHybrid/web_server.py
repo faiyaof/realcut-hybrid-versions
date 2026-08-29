@@ -602,7 +602,11 @@ def bootstrap_payload() -> dict:
         "environment": environment_payload(),
         "settings": masked_settings_payload(),
         "styles": {
-            "available": postprocess.available_style_names(),
+            "available": postprocess.available_style_names(
+                Path(task["draft"]).parent
+                for task in ordered
+                if task.get("draft")
+            ),
             "default": postprocess.configured_default_style(),
         },
         "steps": [

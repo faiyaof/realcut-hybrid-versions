@@ -43,20 +43,50 @@ def _style_lib_path():
     return Path(raw) if raw else STYLE_LIB
 
 
-def resolve_style_template_dir(style_name):
-    """兼容 风格1、风格1模板 两种写法，并回退 5.9 草稿目录。"""
+def _style_candidate_names(style_name):
     style = (style_name or '').strip()
+    if not style:
+        return []
     base = style[:-2] if style.endswith('模板') and style != '模板' else style
+    return list(dict.fromkeys((style, base, f'{base}模板')))
+
+
+def _style_search_roots(active_draft_root=None):
+    roots = [_style_lib_path()]
+    if active_draft_root:
+        roots.append(Path(active_draft_root))
+    roots.append(DRAFT_ROOT)
+    local_app_data = os.environ.get('LOCALAPPDATA', '').strip()
+    if local_app_data:
+        roots.append(Path(local_app_data) / 'JianyingPro' / 'User Data' / 'Projects' / 'com.lveditor.draft')
+    result = []
+    seen = set()
+    for root in roots:
+        key = os.path.normcase(os.path.abspath(str(root)))
+        if key not in seen:
+            seen.add(key)
+            result.append(root)
+    return result
+
+
+def resolve_style_template_dir(style_name, active_draft_root=None):
+    """兼容风格名、模板名和路径，并搜索当前成品所在的剪映草稿库。"""
+    style = (style_name or '').strip()
+    direct = Path(style).expanduser() if style else None
+    if direct and direct.is_dir() and (direct / 'draft_content.json').is_file():
+        return direct
+
     candidates = []
-    if base:
-        candidates.append(_style_lib_path() / f'{base}模板')
-        candidates.append(DRAFT_ROOT / base)
-        candidates.append(DRAFT_ROOT / f'{base}模板')
-    candidates.append(DRAFT_ROOT / '模板')
+    names = _style_candidate_names(style)
+    for root in _style_search_roots(active_draft_root):
+        for name in names:
+            candidates.append(root / name)
+    for root in _style_search_roots(active_draft_root):
+        candidates.append(root / '模板')
     for cand in candidates:
         if (cand / 'draft_content.json').is_file():
             return cand
-    return candidates[0]
+    return candidates[0] if candidates else _style_lib_path() / '模板'
 
 def get_text_plain(content):
     """从 content 提取纯文本（支持 JSON / 纯文本 / 双重嵌套）。"""
@@ -158,16 +188,19 @@ def apply_style(dp_str, style_name=None, tmpl_path=None):
     if tmpl_path:
         tmpl_dir = Path(tmpl_path)
     elif style_name:
-        tmpl_dir = resolve_style_template_dir(style_name)
+        tmpl_dir = resolve_style_template_dir(style_name, dp.parent)
     else:
         style_name = cfg.get('default_style', '模板')
-        tmpl_dir = resolve_style_template_dir(style_name)
+        tmpl_dir = resolve_style_template_dir(style_name, dp.parent)
     print(f'使用风格: {tmpl_dir}')
 
     # 读模板
     tdc = tmpl_dir / 'draft_content.json'
     if not tdc.exists():
         print(f'模板不存在: {tdc}')
+        print('已搜索:')
+        for root in _style_search_roots(dp.parent):
+            print(f'  - {root}')
         return False
     raw = tdc.read_bytes()[:10]
     if raw.startswith(b'{'):
