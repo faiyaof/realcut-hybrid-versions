@@ -133,6 +133,27 @@ foreach ($entry in $entryPoints) {
 foreach ($name in @("runtime", "models_cache", "assets")) {
     Copy-Tree (Join-Path $RuntimeSource $name) (Join-Path $PackageRoot $name)
 }
+$requiredPortableAssets = @(
+    "assets\styles\风格1模板\draft_content.json",
+    "assets\styles\风格2模板\draft_content.json",
+    "assets\style_assets\fonts\HelloFont ID JiangHuTi.ttf",
+    "assets\style_assets\fonts\字语圆体.ttf",
+    "assets\style_assets\music\水仙.mp3",
+    "assets\style_assets\music\Shadowed Whisper.mp3",
+    "assets\style_assets\music\Skipping Pebbles.mp3",
+    "assets\style_assets\music\慵懒穿搭分享.mp3",
+    "assets\style_assets\music\Positive Dreamy.mp3",
+    "assets\style_assets\music\悠闲.MP3",
+    "assets\style_assets\music\烟雨入画.MP3",
+    "assets\style_assets\music\爱的魔法.MP3",
+    "assets\style_assets\music\奢侈品牌 Vogue.mp3"
+)
+foreach ($relative in $requiredPortableAssets) {
+    $asset = Join-Path $PackageRoot $relative
+    if (-not (Test-Path -LiteralPath $asset -PathType Leaf)) {
+        throw "Required portable style asset is missing: $relative"
+    }
+}
 if (-not $SkipRuntimeOptimization) {
     & (Join-Path $PSScriptRoot "optimize_python_runtime.ps1") `
         -RuntimePath (Join-Path $PackageRoot "runtime\python") `
@@ -186,6 +207,8 @@ $env:MODELSCOPE_CACHE = $env:REALCUT_MODELSCOPE_CACHE
 $env:REALCUT_SCRIPT_DATA_DIR = $ScriptDataDir
 $env:REALCUT_ASSETS_ROOT = Join-Path $PackageRoot "assets"
 $env:REALCUT_STYLE_LIB = Join-Path $PackageRoot "assets\styles"
+$env:REALCUT_DEFAULT_STYLE = "风格1"
+$env:REALCUT_BGM_DIR = Join-Path $PackageRoot "assets\style_assets\music"
 $env:REALCUT_KEYWORD_FILE = Join-Path $PackageRoot "config\highlight_keywords.txt"
 $env:REALCUT_JIANYING_EXE = Join-Path $PackageRoot "runtime\JianyingPro\5.9.0.11632\JianyingPro.exe"
 $env:OFFICECLI_BIN = Join-Path $PackageRoot "runtime\officecli\officecli.exe"

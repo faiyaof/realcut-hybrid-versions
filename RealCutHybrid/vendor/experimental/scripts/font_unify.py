@@ -7,6 +7,7 @@
 import argparse
 import copy
 import json
+import os
 import sys
 from collections import Counter
 from pathlib import Path
@@ -31,6 +32,12 @@ def style_name_for_draft(draft):
     prefix = '__style_overlay_'
     if isinstance(mark, str) and mark.startswith(prefix):
         return mark[len(prefix):]
+    configured = (
+        os.environ.get('REALCUT_STYLE', '').strip()
+        or os.environ.get('REALCUT_DEFAULT_STYLE', '').strip()
+    )
+    if configured:
+        return configured
     try:
         cfg = json.loads(STYLE_CONFIG_FILE.read_text(encoding='utf-8-sig'))
         return cfg.get('default_style')
@@ -39,10 +46,14 @@ def style_name_for_draft(draft):
 
 
 def resolve_style_template_dir():
-    name = None
+    name = (
+        os.environ.get('REALCUT_STYLE', '').strip()
+        or os.environ.get('REALCUT_DEFAULT_STYLE', '').strip()
+    )
     try:
-        cfg = json.loads(STYLE_CONFIG_FILE.read_text(encoding='utf-8-sig'))
-        name = cfg.get('default_style')
+        if not name:
+            cfg = json.loads(STYLE_CONFIG_FILE.read_text(encoding='utf-8-sig'))
+            name = cfg.get('default_style')
     except Exception:
         pass
     if name:

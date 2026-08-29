@@ -31,12 +31,17 @@ if not _supports_default_bgm(TEMPLATE):
         print(f'风格模板缺少默认BGM素材，BGM改用: {FALLBACK_BGM_TMPL.name}')
         TEMPLATE = FALLBACK_BGM_TMPL
 
-# 自定义 BGM 音频文件（用户额外添加）
-_CUSTOM_BGM_DIR = Path(os.environ.get('REALCUT_BGM_DIR', r'D:\工作空间\精剪\音频'))
-CUSTOM_BGM_FILES = {
-    11: {'path': str(_CUSTOM_BGM_DIR / '悠闲.MP3'),  'name': '悠闲'},
-    12: {'path': str(_CUSTOM_BGM_DIR / '烟雨入画.MP3'), 'name': '烟雨入画'},
-    13: {'path': str(_CUSTOM_BGM_DIR / '爱的魔法.MP3'), 'name': '爱的魔法'},
+# 安装包会携带全部 BGM；源码环境缺少本地文件时，6-10 仍可回退旧模板。
+_BGM_DIR = Path(os.environ.get('REALCUT_BGM_DIR', r'D:\工作空间\精剪\音频'))
+LOCAL_BGM_FILES = {
+    6: {'path': str(_BGM_DIR / '水仙.mp3'), 'name': '水仙'},
+    7: {'path': str(_BGM_DIR / 'Shadowed Whisper.mp3'), 'name': 'Shadowed Whisper'},
+    8: {'path': str(_BGM_DIR / 'Skipping Pebbles.mp3'), 'name': 'Skipping Pebbles'},
+    9: {'path': str(_BGM_DIR / '慵懒穿搭分享.mp3'), 'name': '慵懒穿搭分享'},
+    10: {'path': str(_BGM_DIR / 'Positive Dreamy.mp3'), 'name': '时尚惬意驰放Positive Dreamy'},
+    11: {'path': str(_BGM_DIR / '悠闲.MP3'), 'name': '悠闲'},
+    12: {'path': str(_BGM_DIR / '烟雨入画.MP3'), 'name': '烟雨入画'},
+    13: {'path': str(_BGM_DIR / '爱的魔法.MP3'), 'name': '爱的魔法'},
 }
 
 BGM_NAMES = {
@@ -155,21 +160,21 @@ def add_bgm(draft_path, bgm_track_idx=10):
     print(f'BGM 模板: {TEMPLATE}')
     print(f'时间线总长: {total_dur/1000000:.1f}s')
 
-    # ── 自定义BGM（11-13）──
-    if bgm_track_idx in CUSTOM_BGM_FILES:
-        info = CUSTOM_BGM_FILES[bgm_track_idx]
+    # ── 安装包本地 BGM（6-13）──
+    info = LOCAL_BGM_FILES.get(bgm_track_idx)
+    if info and Path(info['path']).is_file():
         filepath = Path(info['path'])
-        if not filepath.exists():
-            print(f'自定义BGM文件不存在: {filepath}')
-            return False
-
         result = create_custom_audio_material(filepath, info['name'], draft)
         if not result:
             return False
         mat_id, bgm_dur = result
         seg_data, use_dur = create_bgm_segment(mat_id, bgm_dur, total_dur)
 
-    # ── 模板BGM（6-10）──
+    elif bgm_track_idx >= 11:
+        print(f'自定义BGM文件不存在: {info["path"] if info else bgm_track_idx}')
+        return False
+
+    # ── 旧源码环境模板 BGM（6-10 回退）──
     else:
         with open(TEMPLATE / 'draft_content.json', 'r', encoding='utf-8') as f:
             tmpl = json.load(f)

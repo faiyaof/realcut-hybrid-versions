@@ -1,7 +1,7 @@
 # RealCut Hybrid 编译交接版
 
 本交接版把 RealCut Hybrid 自有 Python 代码编译为 Windows EXE，并保留经过验证的便携
-Python 第三方依赖、FunASR 模型、FFmpeg、剪映 5.9、OfficeCLI 和风格素材。
+Python 第三方依赖、FunASR 模型、FFmpeg、剪映 5.9、OfficeCLI、风格1/风格2模板及其字体、BGM、贴纸素材。
 
 ## 使用
 
@@ -9,6 +9,8 @@ Python 第三方依赖、FunASR 模型、FFmpeg、剪映 5.9、OfficeCLI 和风�
 2. 双击 `Start-RealCutHybridWeb.bat`。
 3. 浏览器打开本机工作台，在“设置”页填写 DeepSeek 或 DashScope API Key。
 4. 保存后环境预检会立即刷新，之后提交的任务会自动使用新配置。
+
+目标电脑不需要预装剪映 5.9，也不需要手工复制模板或剪映缓存。新建任务时可在风格框选择随包的风格1/风格2，默认使用风格1。
 
 ## 体积说明
 

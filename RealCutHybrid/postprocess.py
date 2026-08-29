@@ -49,6 +49,33 @@ def _create_no_window_flag() -> int:
     return subprocess.CREATE_NO_WINDOW if hasattr(subprocess, "CREATE_NO_WINDOW") else 0
 
 
+def configured_default_style() -> Optional[str]:
+    """Return the portable default before consulting a workstation config."""
+    for env_name in ("REALCUT_STYLE", "REALCUT_DEFAULT_STYLE"):
+        value = os.environ.get(env_name, "").strip()
+        if value:
+            return value
+    try:
+        config_path = DEFAULT_DRAFT_ROOT.parent / "style_config.json"
+        config = json.loads(config_path.read_text(encoding="utf-8-sig"))
+        value = str(config.get("default_style") or "").strip()
+        return value or None
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return None
+
+
+def available_style_names() -> list[str]:
+    if not STYLE_LIB.is_dir():
+        return []
+    names = []
+    for directory in STYLE_LIB.iterdir():
+        if not directory.is_dir() or not (directory / "draft_content.json").is_file():
+            continue
+        name = directory.name[:-2] if directory.name.endswith("模板") else directory.name
+        names.append(name)
+    return sorted(set(names))
+
+
 def run_script(
     script_name: str,
     args: list[str],

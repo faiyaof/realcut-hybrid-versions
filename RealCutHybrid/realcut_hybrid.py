@@ -170,11 +170,7 @@ def draft_style_name(draft: Optional[Path]) -> Optional[str]:
     if isinstance(mark, str) and mark.startswith(prefix):
         name = mark[len(prefix):]
         return name[:-2] if name.endswith("模板") else name
-    try:
-        cfg = json.loads((DEFAULT_DRAFT_ROOT.parent / "style_config.json").read_text(encoding="utf-8-sig"))
-        return cfg.get("default_style") or None
-    except (OSError, UnicodeError, json.JSONDecodeError):
-        return None
+    return postprocess.configured_default_style()
 
 
 def task_id_for(video: Path) -> str:
@@ -872,6 +868,37 @@ def check_environment() -> int:
     checks.append(("剪映草稿根目录", DEFAULT_DRAFT_ROOT.is_dir(), str(DEFAULT_DRAFT_ROOT)))
     checks.append(("剪映主程序", DEFAULT_JIANYING_EXE.is_file(), str(DEFAULT_JIANYING_EXE)))
     checks.append(("关键词库", DEFAULT_KEYWORD_FILE.is_file(), str(DEFAULT_KEYWORD_FILE)))
+    default_style = postprocess.configured_default_style()
+    style_template = None
+    if default_style:
+        base = default_style[:-2] if default_style.endswith("模板") else default_style
+        for candidate in (
+            postprocess.STYLE_LIB / f"{base}模板",
+            DEFAULT_DRAFT_ROOT / f"{base}模板",
+            DEFAULT_DRAFT_ROOT / base,
+        ):
+            if (candidate / "draft_content.json").is_file():
+                style_template = candidate
+                break
+    checks.append((
+        "默认风格模板",
+        style_template is not None,
+        f"{default_style or '未配置'}: {style_template or postprocess.STYLE_LIB}",
+    ))
+    configured_bgm_dir = os.environ.get("REALCUT_BGM_DIR", "").strip()
+    if configured_bgm_dir:
+        bgm_dir = Path(configured_bgm_dir)
+        required_bgm = (
+            "水仙.mp3", "Shadowed Whisper.mp3", "Skipping Pebbles.mp3",
+            "慵懒穿搭分享.mp3", "Positive Dreamy.mp3", "悠闲.MP3",
+            "烟雨入画.MP3", "爱的魔法.MP3",
+        )
+        missing_bgm = [name for name in required_bgm if not (bgm_dir / name).is_file()]
+        checks.append((
+            "随包 BGM 6-13",
+            not missing_bgm,
+            "; ".join(missing_bgm) if missing_bgm else str(bgm_dir),
+        ))
 
     failed = 0
     for name, ok, detail in checks:

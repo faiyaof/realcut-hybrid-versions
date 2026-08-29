@@ -23,7 +23,7 @@
         <button class="nav-item" data-tab="settings"><i data-lucide="settings-2"></i><span>设置</span></button>
       </nav>
       <div class="sidebar-spacer"></div>
-      <div class="sidebar-foot"><span class="status-dot ok"></span><span id="service-state">本地服务已连接</span><span class="version">v0.2</span></div>
+      <div class="sidebar-foot"><span class="status-dot ok"></span><span id="service-state">本地服务已连接</span><span class="version">v0.2.1</span></div>
     </aside>
 
     <main class="main-content">
@@ -169,7 +169,7 @@
         </select></label>
         <label>快照模式<select id="job-snapshot"><option value="json">JSON 轻量</option><option value="copy">完整目录</option><option value="off">关闭</option></select></label>
         <label>单步最大重试<select id="job-max-attempts"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
-        <label>风格模板（可选）<input id="job-style" type="text" placeholder="例如 我的风格"></label>
+        <label>风格模板（可选）<input id="job-style" type="text" list="job-style-options" placeholder="选择随包风格或输入名称"><datalist id="job-style-options"></datalist></label>
       </div>
       <div id="draft-picker" class="draft-picker" hidden>
         <div class="draft-picker-head">

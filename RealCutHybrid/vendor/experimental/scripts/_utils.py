@@ -217,8 +217,11 @@ def resolve_template_dir():
 
     返回 (Path, 模板名)。找不到任何模板返回 (None, None)。
     """
-    style_name = None
-    if STYLE_CONFIG_FILE.exists():
+    style_name = (
+        os.environ.get('REALCUT_STYLE', '').strip()
+        or os.environ.get('REALCUT_DEFAULT_STYLE', '').strip()
+    )
+    if not style_name and STYLE_CONFIG_FILE.exists():
         try:
             import json as _json
             cfg = _json.load(open(STYLE_CONFIG_FILE, encoding='utf-8'))
@@ -235,6 +238,11 @@ def resolve_template_dir():
         cand = DRAFT_ROOT / style_name
         if (cand / 'draft_content.json').exists():
             return cand, style_name
+    if STYLE_LIB.is_dir():
+        for cand in sorted(STYLE_LIB.glob('*模板')):
+            if (cand / 'draft_content.json').exists():
+                name = cand.name[:-2] if cand.name.endswith('模板') else cand.name
+                return cand, name
     fallback = DRAFT_ROOT / '草稿'
     if (fallback / 'draft_content.json').exists():
         return fallback, '草稿'

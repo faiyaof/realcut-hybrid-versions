@@ -35,6 +35,7 @@ from runtime_settings import (
     masked_settings_payload,
     update_runtime_settings,
 )
+import postprocess
 
 from realcut_hybrid import (
     LOG_DIR,
@@ -589,7 +590,7 @@ def bootstrap_payload() -> dict:
         reverse=True,
     )
     return {
-        "app": {"name": "RealCut Hybrid", "version": "0.2.0", "platform": "windows"},
+        "app": {"name": "RealCut Hybrid", "version": "0.2.1", "platform": "windows"},
         "queue": queue,
         "tasks": ordered,
         "paths": {
@@ -600,6 +601,10 @@ def bootstrap_payload() -> dict:
         },
         "environment": environment_payload(),
         "settings": masked_settings_payload(),
+        "styles": {
+            "available": postprocess.available_style_names(),
+            "default": postprocess.configured_default_style(),
+        },
         "steps": [
             {"key": step.key, "label": step.label, "order": step.order, "phase": step.phase}
             for step in STEPS
@@ -791,7 +796,7 @@ def _send_static(handler: BaseHTTPRequestHandler, relative: str) -> None:
 
 
 class RealCutHandler(BaseHTTPRequestHandler):
-    server_version = "RealCutHybridWeb/0.2"
+    server_version = "RealCutHybridWeb/0.2.1"
 
     def do_GET(self) -> None:  # noqa: N802
         parsed = urlsplit(self.path)

@@ -364,7 +364,10 @@ def _resolve_style_template():
 
     import os as _os
     # 1. 环境变量
-    style = _os.environ.get('REALCUT_STYLE', '')
+    style = (
+        _os.environ.get('REALCUT_STYLE', '')
+        or _os.environ.get('REALCUT_DEFAULT_STYLE', '')
+    )
     # 2. style_config.json
     if not style:
         cfg_file = Path(os.environ.get('REALCUT_DRAFT_ROOT', r'C:\Users\JT\AppData\Local\JianyingPro\User Data\Projects\com.lveditor.draft')).parent / 'style_config.json'

@@ -16,6 +16,7 @@ set "JY_DLL=%REALCUT_ROOT%\runtime\JianyingPro\5.9.0.11632\videoeditor.dll"
 set "OFFICECLI_BIN=%REALCUT_ROOT%\runtime\officecli\officecli.exe"
 
 set "REALCUT_STYLE_LIB=%REALCUT_ROOT%\assets\styles"
+if not defined REALCUT_DEFAULT_STYLE set "REALCUT_DEFAULT_STYLE=风格1"
 set "REALCUT_ASSETS_ROOT=%REALCUT_ROOT%\assets"
 set "REALCUT_KEYWORD_FILE=%REALCUT_ROOT%\config\highlight_keywords.txt"
 set "REALCUT_SCRIPT_DATA_DIR=%REALCUT_ROOT%\vendor\experimental\scripts"

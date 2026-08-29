@@ -98,6 +98,16 @@ function renderApiSettings(settings = state.bootstrap?.settings) {
   }
 }
 
+function renderStyleOptions(styles = state.bootstrap?.styles) {
+  const list = $('#job-style-options');
+  if (!list || !styles) return;
+  list.replaceChildren(...(styles.available || []).map((name) => {
+    const option = document.createElement('option');
+    option.value = name;
+    return option;
+  }));
+}
+
 function renderProjectPaths(paths = state.bootstrap?.paths) {
   const target = $('#project-paths');
   if (!target || !paths) return;
@@ -382,7 +392,7 @@ function openJobModal() {
   $('#modal-video-path').textContent = '选择单个视频或包含视频的文件夹';
   $('#job-mode').value = 'full';
   $('#job-draft').value = '';
-  $('#job-style').value = '';
+  $('#job-style').value = state.bootstrap?.styles?.default || '';
   $('#job-bgm').value = '10';
   $('#job-snapshot').value = 'json';
   $('#job-max-attempts').value = '2';
@@ -593,6 +603,7 @@ async function refresh() {
   state.tasks = data.tasks || [];
   renderEnvironment();
   renderApiSettings();
+  renderStyleOptions();
   renderProjectPaths();
   renderTasks();
   renderQueueSettings();

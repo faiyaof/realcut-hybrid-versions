@@ -22,7 +22,7 @@ ensure_utf8_stdout()
 
 
 def load_config():
-    cfg = {'default_style': '模板'}
+    cfg = {'default_style': os.environ.get('REALCUT_DEFAULT_STYLE', '模板')}
     if CONFIG_FILE.exists():
         try:
             cfg.update(json.load(open(CONFIG_FILE, encoding='utf-8')))
@@ -36,6 +36,8 @@ def uid():
 
 
 def _style_lib_path():
+    if os.environ.get('REALCUT_STYLE_LIB', '').strip():
+        return STYLE_LIB
     cfg = load_config()
     raw = cfg.get('style_lib') or ''
     return Path(raw) if raw else STYLE_LIB
