@@ -377,7 +377,12 @@ def fix_typos(text):
     return text
 
 
-HYBRID_ROOT = Path(os.environ.get('REALCUT_ROOT', Path(__file__).resolve().parents[3]))
+_configured_root = os.environ.get('REALCUT_ROOT', '').strip()
+if _configured_root:
+    HYBRID_ROOT = Path(_configured_root)
+else:
+    _script_file = Path(__file__).resolve()
+    HYBRID_ROOT = _script_file.parents[3] if len(_script_file.parents) > 3 else _script_file.parent
 GLOSSARY_FILE = HYBRID_ROOT / 'config' / 'subtitle_glossary.json'
 OVERRIDE_FILE = HYBRID_ROOT / 'config' / 'subtitle_overrides.json'
 

@@ -197,7 +197,14 @@ def rewrite_pkg_asset_paths(value):
             return value
         root = os.environ.get('REALCUT_ASSETS_ROOT', '').strip().rstrip('\\/')
         if not root:
-            fallback = Path(os.environ.get('REALCUT_ROOT', Path(__file__).resolve().parents[3]))
+            configured_root = os.environ.get('REALCUT_ROOT', '').strip()
+            script_file = Path(__file__).resolve()
+            if configured_root:
+                fallback = Path(configured_root)
+            elif len(script_file.parents) > 3:
+                fallback = script_file.parents[3]
+            else:
+                fallback = script_file.parent
             root = str(fallback / 'assets')
         return value.replace(PKG_ASSETS_PLACEHOLDER, root.replace('\\', '/'))
     if isinstance(value, list):
