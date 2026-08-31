@@ -242,6 +242,16 @@ def script_path(step: StepSpec) -> Path:
 def build_args(step: StepSpec, video: Path, draft: Path, opts: argparse.Namespace) -> list[str]:
     if step.key == "1_import":
         return [str(video), "--no-open"]
+    if step.key == "4_select_sort":
+        args = [str(draft), "--no-open"]
+        if opts.visual_match is False:
+            args.append("--no-visual-check")
+        return args
+    if step.key == "6_visual":
+        args = [str(draft), "--no-open"]
+        if opts.visual_match is False:
+            args.append("--timeline-only")
+        return args
     if step.key == "10_bgm":
         args = [str(draft), "--bgm", str(opts.bgm)]
         if step.no_open:
@@ -694,6 +704,7 @@ def dry_run_task(video: Path, opts: argparse.Namespace, task_id: str) -> int:
 
 
 def run_task(opts: argparse.Namespace, video_path: Path) -> int:
+    opts = argparse.Namespace(**vars(opts))
     video = video_path.resolve()
     if not video.is_file():
         log(f"源视频不存在: {video}")
@@ -708,6 +719,8 @@ def run_task(opts: argparse.Namespace, video_path: Path) -> int:
         state = {}
     if not state:
         state = new_state(video)
+    if opts.visual_match is None:
+        opts.visual_match = True if opts.fresh else bool(state.get("visual_match", True))
     if opts.fresh:
         state["steps"] = {}
         state["status"] = "pending"
@@ -726,6 +739,7 @@ def run_task(opts: argparse.Namespace, video_path: Path) -> int:
             state.pop("style", None)
     state["video"] = str(video)
     state["video_signature"] = video_signature(video)
+    state["visual_match"] = bool(opts.visual_match)
 
     draft: Optional[Path] = None
     if opts.draft:
@@ -966,6 +980,9 @@ def add_common_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--no-smooth-audio", dest="smooth_audio", action="store_false", help="关闭音频平滑")
     parser.add_argument("--review-subtitles", dest="review_subtitles", action="store_true", default=True, help="生成字幕复核清单（默认开）")
     parser.add_argument("--no-review-subtitles", dest="review_subtitles", action="store_false", help="关闭字幕复核清单")
+    visual_group = parser.add_mutually_exclusive_group()
+    visual_group.add_argument("--visual-match", dest="visual_match", action="store_true", default=None, help="启用 AI 画面识别（默认开）")
+    visual_group.add_argument("--no-visual-match", dest="visual_match", action="store_false", help="关闭 AI 画面识别，按字幕时间轴快速配画")
     parser.add_argument("--continue-on-error", action="store_true", help="单视频失败后继续批量任务")
     parser.add_argument("--snapshot-mode", choices=("json", "copy", "off"), default="json")
     parser.add_argument("--max-attempts", type=int, default=2, help="单步最多尝试次数")

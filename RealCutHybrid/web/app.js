@@ -401,6 +401,7 @@ function openJobModal() {
   $('#job-flower').checked = false;
   $('#job-smooth-audio').checked = true;
   $('#job-review-subtitles').checked = true;
+  $('#job-visual-match').checked = true;
   $('#job-dry-run').checked = false;
   $('#job-no-close').checked = false;
   $('#job-no-restore').checked = false;
@@ -522,6 +523,7 @@ async function createJob() {
     enable_flower_text: $('#job-flower').checked,
     smooth_audio: $('#job-smooth-audio').checked,
     review_subtitles: $('#job-review-subtitles').checked,
+    visual_match: $('#job-visual-match').checked,
     dry_run: $('#job-dry-run').checked,
     no_close_jianying: $('#job-no-close').checked,
     no_restore: $('#job-no-restore').checked,

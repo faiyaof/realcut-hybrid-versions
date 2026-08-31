@@ -322,6 +322,8 @@ class TaskQueue:
             cmd += ["--no-smooth-audio"]
         if opts.get("review_subtitles") is False:
             cmd += ["--no-review-subtitles"]
+        if opts.get("visual_match") is False:
+            cmd += ["--no-visual-match"]
         if opts.get("no_close_jianying"):
             cmd += ["--no-close-jianying"]
         if opts.get("no_restore"):
@@ -1028,6 +1030,8 @@ class RealCutHandler(BaseHTTPRequestHandler):
         options = self._json_body().get("options") or {}
         if state.get("draft") and not options.get("draft"):
             options["draft"] = state["draft"]
+        if "visual_match" not in options and "visual_match" in state:
+            options["visual_match"] = state["visual_match"]
         if options.get("phase2"):
             options.setdefault("force", True)
         if options.get("phase2") and not options.get("style") and state.get("style"):

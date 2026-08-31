@@ -319,7 +319,7 @@ def limit_segments_to_max_duration(segs, max_ms=MAX_VIDEO_DURATION_MS):
     return result
 
 
-def main(dp_str, auto_open=True):
+def main(dp_str, auto_open=True, visual_check=True):
     dp = Path(dp_str)
     dc_path = dp / 'draft_content.json'
     asr_path = dp / 'asr_result.json'
@@ -359,7 +359,7 @@ def main(dp_str, auto_open=True):
             print(f'   {idx}: {s["text"][:40]} ({s["end"]-s["start"]:.0f}ms)')
 
     # [VL visual check] Reclassify discarded segments that show clothing display on video
-    if key and discarded:
+    if visual_check and key and discarded:
         src_video = find_source_video(dp)
         if src_video:
             recls = visual_check_clothing_display(dp, sentences, discarded, src_video)
@@ -515,5 +515,8 @@ if __name__ == '__main__':
         sys.exit(0)
 
     auto_open = '--no-open' not in sys.argv
-    success = main(dp_arg, auto_open=auto_open)
+    visual_check = '--no-visual-check' not in sys.argv
+    if not visual_check:
+        print('已关闭 AI 画面复核，步骤4仅按字幕内容分类')
+    success = main(dp_arg, auto_open=auto_open, visual_check=visual_check)
     sys.exit(0 if success else 1)

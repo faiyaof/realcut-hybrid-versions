@@ -101,7 +101,7 @@ python web_server.py
 - 查看任务状态、步骤断点、进度和失败原因
 - 查看运行日志、Markdown/JSON 报告和字幕复核清单
 - 断点续跑、只重跑字幕阶段、从头重跑
-- Dry Run 预演、音频平滑、字幕复核、BGM/水印/花字/风格/快照模式等常用开关
+- Dry Run 预演、AI 画面识别、音频平滑、字幕复核、BGM/水印/花字/风格/快照模式等常用开关
 - 一键“只补字幕空隙”：对已有草稿任务直接跑 `subtitle_gaps`，不重跑前面步骤
 
 Web 服务通过 `realcut_hybrid.py run` 调用同一套 CLI，因此不会绕过已验证的调度
@@ -195,6 +195,8 @@ Excel 快照由 `officecli create/batch/close` 生成，JSON 仍是主状态源�
 --no-smooth-audio         关闭音频平滑
 --review-subtitles        开启字幕复核清单（默认开）
 --no-review-subtitles     关闭字幕复核清单
+--visual-match            开启 AI 画面识别（默认开）
+--no-visual-match         跳过抽帧和视觉模型，按字幕时间轴快速配画
 --enable-flower-text      开启步骤 9 花字音效
 --watermark               开启步骤 11 水印
 --style <风格名>          完成后套用风格模板

@@ -143,7 +143,7 @@ def get_frame_actions(src_video, draft_path):
     return actions
 
 
-def match_video(draft_path, auto_open=True):
+def match_video(draft_path, auto_open=True, timeline_only=False):
     draft_path = Path(draft_path)
     dc_path = draft_path / 'draft_content.json'
     seg_meta_path = draft_path / 'step4_segments.json'
@@ -181,22 +181,24 @@ def match_video(draft_path, auto_open=True):
     asegs = audio_track['segments']
     video_id = draft['materials']['videos'][0]['id']
 
-    api_available = True
-    try:
-        import_external('dashscope')
-        if not os.environ.get('DASHSCOPE_API_KEY', ''):
-            api_available = False
-            print('API Key not set, skip visual check')
-    except ImportError:
-        api_available = False
-        print('dashscope not installed, skip visual check')
-
     frame_actions = {}
-    if api_available:
-        frame_actions = get_frame_actions(src_video, str(draft_path))
+    if timeline_only:
+        print('字幕时间轴快速模式：跳过抽帧和 AI 画面识别')
     else:
-        print('跳过画面分析，使用原位置分配')
-        frame_actions = {}
+        api_available = True
+        try:
+            import_external('dashscope')
+            if not os.environ.get('DASHSCOPE_API_KEY', ''):
+                api_available = False
+                print('API Key not set, skip visual check')
+        except ImportError:
+            api_available = False
+            print('dashscope not installed, skip visual check')
+
+        if api_available:
+            frame_actions = get_frame_actions(src_video, str(draft_path))
+        else:
+            print('跳过画面分析，使用原位置分配')
 
     print('\nPhase 2: 质量画面分配...')
     sources = assign_video_sources(asegs, seg_meta, frame_actions, video_file_dur_us)
@@ -280,4 +282,5 @@ if __name__ == '__main__':
         print(__doc__)
         sys.exit(1)
     auto_open = '--no-open' not in sys.argv
-    match_video(sys.argv[1], auto_open=auto_open)
+    timeline_only = '--timeline-only' in sys.argv
+    match_video(sys.argv[1], auto_open=auto_open, timeline_only=timeline_only)
