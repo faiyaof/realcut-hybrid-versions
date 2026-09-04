@@ -142,8 +142,12 @@ def classify_sentences(sentences, dashscope_key, max_retries=2):
                 # 修正：爆点中带衣服细节改判展示衣服
                 corrected = []
                 for idx, cat in classifications:
+                    t = sentences[idx]['text']
+                    # 硬性合规过滤：无论 LLM 归到什么分类，含违禁词一律改判废话丢弃
+                    if any(k in t for k in ['南沙港','中检仓','仓库','货源','终点站','工厂']):
+                        corrected.append((idx, '废话'))
+                        continue
                     if cat == '爆点':
-                        t = sentences[idx]['text']
                         dkw = ['面料','冰丝','刺绣','版型','材质','细节','工艺','做工','走线',
                                '剪裁','设计','手感','质感','柔软','透气','西服','套装','大版',
                                'boyfriend','男朋友','衣服','上衣','裙子','裤子','T恤','马甲','衬衫']
@@ -151,14 +155,8 @@ def classify_sentences(sentences, dashscope_key, max_retries=2):
                             corrected.append((idx, '展示衣服'))
                             continue
                     if cat == '废话':
-                        t = sentences[idx]['text']
                         if '太美' in t or '太漂亮' in t:
                             corrected.append((idx, '爆点'))
-                            continue
-                    if cat == '爆点':
-                        t = sentences[idx]['text']
-                        if any(k in t for k in ['南沙港','中检仓','仓库','货源','终点站','工厂']):
-                            corrected.append((idx, '废话'))
                             continue
                     corrected.append((idx, cat))
                 classifications = corrected
@@ -419,6 +417,11 @@ def main(dp_str, auto_open=True, visual_check=True):
             recls = visual_check_clothing_display(dp, sentences, discarded, src_video)
             for idx in recls:
                 if idx in discarded:
+                    # 合规硬过滤：VL 捞回的段也禁止含违禁词（防画面展示捞回敏感口播）
+                    _t = sentences[idx]['text'] if idx < len(sentences) else ''
+                    if any(k in _t for k in ['南沙港','中检仓','仓库','货源','终点站','工厂']):
+                        print(f'  [合规] VL捞回段含违禁词，仍判废话丢弃: {_t[:24]}')
+                        continue
                     discarded.remove(idx)
                     if idx not in grouped['展示衣服']:
                         grouped['展示衣服'].append(idx)
