@@ -159,6 +159,10 @@
       <label class="manual-path-label">视频或文件夹完整路径<input id="manual-job-path" type="text" placeholder="例如 D:\素材\sample.mp4"></label>
       <div class="form-grid modal-form">
         <label>运行模式<select id="job-mode"><option value="full">完整剪辑</option><option value="phase2">仅字幕阶段（需已有草稿）</option></select></label>
+        <label>识别引擎<select id="job-asr-engine">
+          <option value="funasr" selected>FunASR（本地，默认）</option>
+          <option value="volc">火山 Seed-ASR（云端，更准）</option>
+        </select></label>
         <label>已有草稿（可选）<input id="job-draft" type="text" placeholder="草稿名或完整路径"></label>
         <button class="secondary-button draft-load-btn" id="load-drafts-btn" type="button" hidden><i data-lucide="folder-search"></i>读取剪映已有草稿</button>
         <label>BGM 序号<select id="job-bgm">

@@ -242,6 +242,12 @@ def script_path(step: StepSpec) -> Path:
 def build_args(step: StepSpec, video: Path, draft: Path, opts: argparse.Namespace) -> list[str]:
     if step.key == "1_import":
         return [str(video), "--no-open"]
+    if step.key == "3_asr":
+        args = [str(draft), "--no-open"]
+        engine = opts.asr_engine or os.environ.get("REALCUT_ASR_ENGINE", "funasr").strip() or "funasr"
+        if engine == "volc":
+            args += ["--engine", "volc"]
+        return args
     if step.key == "4_select_sort":
         args = [str(draft), "--no-open"]
         if opts.visual_match is False:
@@ -984,6 +990,8 @@ def add_common_args(parser: argparse.ArgumentParser) -> None:
     visual_group.add_argument("--visual-match", dest="visual_match", action="store_true", default=None, help="启用 AI 画面识别（默认开）")
     visual_group.add_argument("--no-visual-match", dest="visual_match", action="store_false", help="关闭 AI 画面识别，按字幕时间轴快速配画")
     parser.add_argument("--continue-on-error", action="store_true", help="单视频失败后继续批量任务")
+    parser.add_argument("--asr-engine", choices=("funasr", "volc"), default=None,
+                        help="步骤3语音识别引擎: funasr(本地, 默认) / volc(火山Seed-ASR云)；省略时用 REALCUT_ASR_ENGINE 环境变量，再缺省用 funasr")
     parser.add_argument("--snapshot-mode", choices=("json", "copy", "off"), default="json")
     parser.add_argument("--max-attempts", type=int, default=2, help="单步最多尝试次数")
     parser.add_argument("--no-close-jianying", action="store_true", help="不自动关闭剪映")

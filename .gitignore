@@ -19,6 +19,7 @@ RealCutHybrid_Deploy_20260826.zip
 !**/.env.example
 **/*.pem
 **/*.key
+**/asr_volc.env
 
 # Generated jobs and personal working data
 **/state/

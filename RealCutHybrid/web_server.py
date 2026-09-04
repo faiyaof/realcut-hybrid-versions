@@ -324,6 +324,8 @@ class TaskQueue:
             cmd += ["--no-review-subtitles"]
         if opts.get("visual_match") is False:
             cmd += ["--no-visual-match"]
+        if opts.get("asr_engine") in {"funasr", "volc"}:
+            cmd += ["--asr-engine", str(opts["asr_engine"])]
         if opts.get("no_close_jianying"):
             cmd += ["--no-close-jianying"]
         if opts.get("no_restore"):

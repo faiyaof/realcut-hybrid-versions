@@ -420,6 +420,19 @@ def main(dp_str, auto_open=True):
     grouped = enforce_limits_and_fallback(grouped, sentences, str(audio_src), discarded=discarded)
     segs = build_ordered_segments(grouped, sentences)
 
+    # 语音质量净化：丢弃"近无声/有效语音过低"的 ASR 段，避免成片出现大段空白
+    try:
+        import _trim_segments as _ts
+        base_vol = _ts.overall_mean_volume(str(audio_src))
+        if base_vol is not None:
+            print(f'源音频整体音量: {base_vol:.1f}dB（净化低于 {base_vol - _ts.VOL_DIFF_DB:.1f}dB 的近声段）')
+        before_n = len(segs)
+        segs = _ts.clean_ordered_segments(segs, str(audio_src), baseline_vol=base_vol)
+        if len(segs) < before_n:
+            print(f'语音净化: 丢弃 {before_n - len(segs)} 段低质语音')
+    except Exception as e:
+        print(f'  (语音净化跳过: {e})')
+
     # 金句判定（选项B）：只要没有金句就从素材库必补一条（不再看 15s 阈值）
     if segs:
         has_jinju = any(s['category'] == '金句' for s in segs)

@@ -391,6 +391,7 @@ function openJobModal() {
   $('#modal-video-name').textContent = '尚未选择素材';
   $('#modal-video-path').textContent = '选择单个视频或包含视频的文件夹';
   $('#job-mode').value = 'full';
+  $('#job-asr-engine').value = 'funasr';
   $('#job-draft').value = '';
   $('#job-style').value = state.bootstrap?.styles?.default || '';
   $('#job-bgm').value = '10';
@@ -527,6 +528,7 @@ async function createJob() {
     dry_run: $('#job-dry-run').checked,
     no_close_jianying: $('#job-no-close').checked,
     no_restore: $('#job-no-restore').checked,
+    asr_engine: $('#job-asr-engine').value,
   };
   const style = $('#job-style').value.trim();
   if (style) options.style = style;

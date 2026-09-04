@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Shared FunASR recognition helpers for real-cut scripts."""
 import os
+import sys
 
 os.environ.setdefault('MODELSCOPE_CACHE', r'D:\.cache\modelscope')
 os.environ.setdefault('HF_ENDPOINT', 'https://hf-mirror.com')
@@ -75,8 +76,20 @@ def _build_from_flat(full_text, timestamp):
     return words, sentences
 
 
-def recognize_audio(audio_path):
-    """Return (words, sentences) for a single audio file, or (None, None) on failure."""
+def recognize_audio(audio_path, engine=None, **kwargs):
+    """Return (words, sentences) for a single audio file, or (None, None) on failure.
+
+    engine=None/'funasr' -> 本地 FunASR；engine='volc' -> 火山 Seed-ASR。
+    火山凭证见同目录 asr_volc.env（参考 _volc_asr.py）。
+    """
+    if engine == 'volc':
+        import _volc_asr
+        try:
+            return _volc_asr.recognize_audio(audio_path, **kwargs)
+        except Exception as e:
+            print(f'火山识别失败: {e}', file=sys.stderr)
+            print('回退 FunASR ...', file=sys.stderr)
+            # 回退本地
     model = load_model()
     try:
         res = model.generate(input=str(audio_path), batch_size_s=300,

@@ -249,6 +249,60 @@ def enforce_limits_and_fallback(grouped, sentences, asr_source_audio, pre_durati
     # 金句不自动补充：仅保留原视频 ASR 分类出的金句
     return grouped
 
+
+def _seg_start_ms(seg):
+    return int(seg.get('src_start_ms', 0) or 0)
+
+
+def _refill_dropped(segs, dropped, grouped, sentences, audio_src, _ts):
+    """净化丢弃了低音量段后，若某分类结构位因此空缺，从 grouped 同分类的
+    剩余候补句子（正常音量、未被当前 segs 使用）补一条，保住叙事结构。
+    返回补位后的 segs（保持原相对顺序；补入段加在同类位置附近）。"""
+    if not dropped or not grouped:
+        return segs
+    dropped_cats = {}
+    for d in dropped:
+        cat = d.get('category')
+        if cat and cat in ('爆点', '痛点', '金句', '价格'):
+            dropped_cats[cat] = d
+    if not dropped_cats:
+        return segs
+    used_starts = {_seg_start_ms(s) for s in segs}
+    base_vol = _ts.overall_mean_volume(audio_src)
+    for cat, dseg in dropped_cats.items():
+        # 该分类是否还空缺（当前 segs 无此分类）
+        if any(s.get('category') == cat for s in segs):
+            continue
+        # 从 grouped 该分类候选里找：未被用过、且音量正常的
+        for idx in grouped.get(cat, []):
+            if idx >= len(sentences):
+                continue
+            st = int(sentences[idx].get('start', 0))
+            if st in used_starts:
+                continue
+            s = sentences[idx]
+            info = _ts.analyze_segment(audio_src, s['start'], s['end'])
+            low_vol = (base_vol is not None and info['vol_db'] is not None
+                       and info['vol_db'] < base_vol - _ts.VOL_DIFF_DB)
+            low_ratio = info['ratio'] < _ts.MIN_SPEECH_RATIO
+            if low_vol or low_ratio:
+                continue  # 候补也低质，跳过
+            new_seg = {'category': cat, 'text': s['text'],
+                       'src_start_ms': s['start'], 'src_end_ms': s['end'],
+                       'src_dur_ms': s['end'] - s['start'], 'source': 'asr', 'file': None}
+            # 插到 segs 中与 dropped 原位置接近处（按 src_start 排序插入）
+            insert_pos = len(segs)
+            for i, x in enumerate(segs):
+                if _seg_start_ms(x) > _seg_start_ms(dseg):
+                    insert_pos = i
+                    break
+            segs.insert(insert_pos, new_seg)
+            used_starts.add(st)
+            print(f'  [补位] {cat} 从候补补入: "{s["text"][:30]}" ({s["start"]/1000:.1f}-{s["end"]/1000:.1f}s)')
+            break
+    return segs
+
+
 def build_ordered_segments(grouped, sentences):
     ordered = []
     for cat in ('原价', '上车价'):
@@ -393,6 +447,21 @@ def main(dp_str, auto_open=True, visual_check=True):
     grouped = enforce_limits_and_fallback(grouped, sentences, str(audio_src), discarded=discarded)
     segs = build_ordered_segments(grouped, sentences)
 
+    # 语音质量净化：丢弃"近无声/有效语音过低"的 ASR 段，避免成片出现大段空白
+    try:
+        import _trim_segments as _ts
+        base_vol = _ts.overall_mean_volume(str(audio_src))
+        if base_vol is not None:
+            print(f'源音频整体音量: {base_vol:.1f}dB（净化低于 {base_vol - _ts.VOL_DIFF_DB:.1f}dB 的近声段）')
+        before_n = len(segs)
+        segs, dropped = _ts.clean_ordered_segments(segs, str(audio_src), baseline_vol=base_vol)
+        if len(segs) < before_n:
+            print(f'语音净化: 丢弃 {before_n - len(segs)} 段低质语音')
+        # 结构位补回：若某分类因净化而空缺，从 grouped 同分类剩余候补(正常音量)补一条
+        if dropped:
+            segs = _refill_dropped(segs, dropped, grouped, sentences, str(audio_src), _ts)
+    except Exception as e:
+        print(f'  (语音净化跳过: {e})')
 
     # 全部自动补位完成后，统一把成片压到30秒内
     segs = limit_segments_to_max_duration(segs)
