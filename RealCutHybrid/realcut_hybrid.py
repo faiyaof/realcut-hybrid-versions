@@ -71,6 +71,7 @@ DEFAULT_KEYWORD_FILE = Path(
 )
 
 SCHEMA_VERSION = 1
+EDIT_POLICY_VERSION = "voiced-15-45-v1"
 
 
 @dataclass(frozen=True)
@@ -89,8 +90,8 @@ STEPS: list[StepSpec] = [
     StepSpec("2_separate_audio", "步骤2-分离音频", "步骤2-分离音频.py", 2.0, no_open=True),
     StepSpec("3_asr", "步骤3-FunASR", "步骤3-FunASR.py", 3.0, no_open=True),
     StepSpec("4_select_sort", "步骤4-切割排序", "步骤4-切割排序.py", 4.0, no_open=True),
-    StepSpec("mirror", "镜像补位", "mirror_通用.py", 4.5),
-    StepSpec("4_open_box", "步骤4后-开盒补位", "步骤4后-开盒补位.py", 4.7, no_open=True),
+    StepSpec("mirror", "镜像静音防护", "mirror_通用.py", 4.5),
+    StepSpec("4_open_box", "开盒静音防护", "步骤4后-开盒补位.py", 4.7, no_open=True),
     StepSpec("5_fade", "步骤5-淡入淡出", "步骤5-淡入淡出.py", 5.0, no_open=True),
     StepSpec("6_visual", "步骤6-画面匹配", "步骤6-画面匹配.py", 6.0, no_open=True),
     StepSpec("8_transition", "步骤8-转场特效", "步骤8-转场特效.py", 8.0),
@@ -193,6 +194,7 @@ def new_state(video: Path) -> dict:
         "task_id": task_id_for(video),
         "video": str(video.resolve()),
         "video_signature": video_signature(video),
+        "edit_policy_version": EDIT_POLICY_VERSION,
         "draft": None,
         "created_at": now_iso(),
         "updated_at": now_iso(),
@@ -200,6 +202,16 @@ def new_state(video: Path) -> dict:
         "last_error": None,
         "steps": {},
     }
+
+
+def resolve_asr_engine(requested: Optional[str], state: dict) -> str:
+    if requested in {"funasr", "volc"}:
+        return requested
+    saved = state.get("asr_engine")
+    if saved in {"funasr", "volc"}:
+        return saved
+    configured = os.environ.get("REALCUT_ASR_ENGINE", "funasr").strip()
+    return configured if configured in {"funasr", "volc"} else "funasr"
 
 
 def load_state(task_id: str) -> dict:
@@ -244,7 +256,7 @@ def build_args(step: StepSpec, video: Path, draft: Path, opts: argparse.Namespac
         return [str(video), "--no-open"]
     if step.key == "3_asr":
         args = [str(draft), "--no-open"]
-        engine = opts.asr_engine or os.environ.get("REALCUT_ASR_ENGINE", "funasr").strip() or "funasr"
+        engine = getattr(opts, "asr_engine", None) or os.environ.get("REALCUT_ASR_ENGINE", "funasr").strip() or "funasr"
         if engine == "volc":
             args += ["--engine", "volc"]
         return args
@@ -252,6 +264,8 @@ def build_args(step: StepSpec, video: Path, draft: Path, opts: argparse.Namespac
         args = [str(draft), "--no-open"]
         if opts.visual_match is False:
             args.append("--no-visual-check")
+        if getattr(opts, "silence_pruning", False):
+            args.append("--silence-pruning")
         return args
     if step.key == "6_visual":
         args = [str(draft), "--no-open"]
@@ -428,6 +442,57 @@ def _dynamic_fonts_unified(data: dict) -> bool:
     return bool(ids) and len(fonts) == 1
 
 
+def _verify_voiced_duration_policy(draft: Path) -> None:
+    policy = _json_read(draft / "duration_policy_report.json", {})
+    if policy.get("status") != "OK" or policy.get("silent_fill_allowed") is not False:
+        raise RuntimeError("有声时长策略验证失败：缺少有效 duration_policy_report.json")
+
+    metadata = _json_read(draft / "step4_segments.json", [])
+    if not isinstance(metadata, list) or not metadata:
+        raise RuntimeError("有声时长策略验证失败：step4_segments.json 为空")
+    if any(item.get("source") == "mirror" for item in metadata):
+        raise RuntimeError("有声时长策略验证失败：仍含旧 mirror 静音段")
+
+    data = _json_read(draft / "draft_content.json", {})
+    duration_us = int(data.get("duration", 0) or 0)
+    if not 15_000_000 <= duration_us <= 45_000_000:
+        raise RuntimeError(f"有声时长策略验证失败：草稿时长 {duration_us / 1_000_000:.2f}s")
+
+    materials = {
+        item.get("id"): item
+        for item in data.get("materials", {}).get("audios", [])
+    }
+    voice_tracks = []
+    for track in data.get("tracks", []):
+        if track.get("type") != "audio":
+            continue
+        referenced = [materials.get(segment.get("material_id"), {}) for segment in track.get("segments", [])]
+        if referenced and all(str(item.get("name", "")).startswith("clip_") for item in referenced):
+            voice_tracks.append(track)
+    if len(voice_tracks) != 1:
+        raise RuntimeError("有声时长策略验证失败：未找到唯一主口播轨")
+
+    voice_segments = sorted(
+        voice_tracks[0].get("segments", []),
+        key=lambda item: int(item.get("target_timerange", {}).get("start", 0) or 0),
+    )
+    if len(voice_segments) != len(metadata):
+        raise RuntimeError("有声时长策略验证失败：口播轨与步骤4元数据数量不一致")
+    cursor_us = 0
+    for segment in voice_segments:
+        target = segment.get("target_timerange", {}) or {}
+        start_us = int(target.get("start", 0) or 0)
+        segment_us = int(target.get("duration", 0) or 0)
+        if abs(start_us - cursor_us) > 100_000 or segment_us <= 0:
+            raise RuntimeError("有声时长策略验证失败：主口播轨存在空洞或无效音频段")
+        material = materials.get(segment.get("material_id"), {})
+        if str(material.get("name", "")).startswith("mirror_fill_"):
+            raise RuntimeError("有声时长策略验证失败：主口播轨引用 mirror_fill 静音素材")
+        cursor_us = start_us + segment_us
+    if abs(cursor_us - duration_us) > 100_000:
+        raise RuntimeError("有声时长策略验证失败：主口播未覆盖草稿末尾")
+
+
 def verify_step_output(
     step: StepSpec, draft: Path, opts: argparse.Namespace
 ) -> None:
@@ -437,11 +502,23 @@ def verify_step_output(
         raise RuntimeError(f"缺少 draft_content.json: {draft}")
 
     if step.key == "3_asr":
-        if not (draft / "asr_result.json").is_file():
+        asr_path = draft / "asr_result.json"
+        if not asr_path.is_file():
             raise RuntimeError("步骤3验证失败：缺少 asr_result.json")
+        asr = _json_read(asr_path, {})
+        expected = getattr(opts, "asr_engine", None) or "funasr"
+        if asr.get("requested_engine") != expected:
+            raise RuntimeError(
+                f"步骤3验证失败：请求引擎为 {expected}，结果元数据为 {asr.get('requested_engine') or '缺失'}"
+            )
+        if asr.get("actual_engine") not in {"funasr", "volc"}:
+            raise RuntimeError("步骤3验证失败：缺少实际识别引擎元数据")
     elif step.key == "4_select_sort":
         if not (draft / "step4_segments.json").is_file():
             raise RuntimeError("步骤4验证失败：缺少 step4_segments.json")
+        _verify_voiced_duration_policy(draft)
+    elif step.key in {"mirror", "4_open_box"}:
+        _verify_voiced_duration_policy(draft)
     elif step.key == "audio_smooth":
         if not (draft / ".audio_smooth_backup").is_dir():
             raise RuntimeError("音频平滑验证失败：缺少 .audio_smooth_backup")
@@ -620,6 +697,10 @@ def write_report(state: dict) -> Path:
         f"- 草稿: {state.get('draft') or '未创建'}",
         f"- 创建: {state.get('created_at')}",
         f"- 更新: {state.get('updated_at')}",
+        f"- ASR 请求引擎: {state.get('asr_engine') or 'funasr'}",
+        f"- ASR 实际引擎: {state.get('asr_actual_engine') or '尚未运行'}",
+        f"- ASR 后端版本: {state.get('asr_backend_version') or '-'}",
+        f"- ASR 回退: {state.get('asr_fallback_reason') or '无'}",
         "",
         "## 步骤状态",
         "",
@@ -647,6 +728,32 @@ def write_report(state: dict) -> Path:
         lines.append(f"- 修改段数: {gaps.get('changes', 0)}")
         if gaps.get("gaps_before_us"):
             lines.append(f"- 补前空隙: {len(gaps['gaps_before_us'])} 处")
+        lines.append("")
+    if draft and (draft / "silence_pruning_report.json").is_file():
+        pruning = _json_read(draft / "silence_pruning_report.json", {})
+        trimmed = pruning.get("trimmed", []) or []
+        dropped = pruning.get("dropped", []) or []
+        lines.append("## 实验性静音净化")
+        lines.append("")
+        lines.append(f"- 状态: {pruning.get('status') or '-'}")
+        lines.append(f"- 长静音区间: {pruning.get('silence_interval_count', 0)}")
+        lines.append(f"- 裁边段数: {len(trimmed)}")
+        lines.append(f"- 删除段数: {len(dropped)}")
+        for item in trimmed:
+            lines.append(
+                f"- 裁边 [{item.get('category') or '-'}] "
+                f"{item.get('original_src_start_ms')}-{item.get('original_src_end_ms')}ms -> "
+                f"{item.get('src_start_ms')}-{item.get('src_end_ms')}ms: "
+                f"{item.get('text') or ''}"
+            )
+        for item in dropped:
+            lines.append(
+                f"- 删除 [{item.get('category') or '-'}] "
+                f"{item.get('src_start_ms')}-{item.get('src_end_ms')}ms "
+                f"(有声占比 {item.get('speech_ratio')}): {item.get('text') or ''}"
+            )
+        if pruning.get("error"):
+            lines.append(f"- 错误: {pruning['error']}")
         lines.append("")
     if draft and (draft / "subtitle_review.json").is_file():
         review = _json_read(draft / "subtitle_review.json", {})
@@ -725,12 +832,41 @@ def run_task(opts: argparse.Namespace, video_path: Path) -> int:
         state = {}
     if not state:
         state = new_state(video)
+    previous_edit_policy = state.get("edit_policy_version")
+    edit_policy_changed = bool(state.get("steps")) and previous_edit_policy != EDIT_POLICY_VERSION
+    if edit_policy_changed and not opts.fresh:
+        for step in STEPS:
+            if step.order >= 4:
+                state["steps"].pop(step.key, None)
+        state["status"] = "pending"
+        state["last_error"] = None
+        log(
+            "剪辑策略已升级为15-45秒有声补位，从步骤4重新执行",
+            task_id,
+        )
+    previous_asr_engine = state.get("asr_engine")
+    opts.asr_engine = resolve_asr_engine(getattr(opts, "asr_engine", None), state)
+    asr_engine_changed = bool(state.get("steps")) and previous_asr_engine != opts.asr_engine
+    if asr_engine_changed and not opts.fresh:
+        for step in STEPS:
+            if step.order >= 3:
+                state["steps"].pop(step.key, None)
+        state["status"] = "pending"
+        state["last_error"] = None
+        log(
+            f"ASR 引擎从 {previous_asr_engine or '旧版未记录'} 切换为 {opts.asr_engine}，从步骤3重新执行",
+            task_id,
+        )
     if opts.visual_match is None:
         opts.visual_match = True if opts.fresh else bool(state.get("visual_match", True))
+    if getattr(opts, "silence_pruning", None) is None:
+        opts.silence_pruning = bool(state.get("silence_pruning", False))
     if opts.fresh:
         state["steps"] = {}
         state["status"] = "pending"
         state["last_error"] = None
+        for key in ("asr_actual_engine", "asr_backend_version", "asr_fallback_reason"):
+            state.pop(key, None)
         if not opts.draft:
             state.pop("draft", None)
             state.pop("style", None)
@@ -745,7 +881,10 @@ def run_task(opts: argparse.Namespace, video_path: Path) -> int:
             state.pop("style", None)
     state["video"] = str(video)
     state["video_signature"] = video_signature(video)
+    state["edit_policy_version"] = EDIT_POLICY_VERSION
     state["visual_match"] = bool(opts.visual_match)
+    state["asr_engine"] = opts.asr_engine
+    state["silence_pruning"] = bool(opts.silence_pruning)
 
     draft: Optional[Path] = None
     if opts.draft:
@@ -831,6 +970,16 @@ def run_task(opts: argparse.Namespace, video_path: Path) -> int:
                 log(f"任务失败，报告: {report}", task_id)
                 return 1
 
+            if step.key == "3_asr" and draft is not None:
+                asr = _json_read(draft / "asr_result.json", {})
+                state["asr_actual_engine"] = asr.get("actual_engine")
+                state["asr_backend_version"] = asr.get("asr_backend_version")
+                if asr.get("fallback_reason"):
+                    state["asr_fallback_reason"] = asr["fallback_reason"]
+                else:
+                    state.pop("asr_fallback_reason", None)
+                save_state(state)
+
         if opts.style and state["steps"].get("style_apply", {}).get("status") != "completed":
             style_step = next(s for s in STEPS if s.key == "style_apply")
             ok, _, _ = run_step_once(style_step, opts, state, video, draft)
@@ -885,6 +1034,19 @@ def check_environment() -> int:
         found = shutil.which(exe) is not None
         checks.append((f"命令 {exe}", found, str(shutil.which(exe) or exe)))
     checks.append(("DEEPSEEK_API_KEY 或 DASHSCOPE_API_KEY", bool(os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("DASHSCOPE_API_KEY")), "环境变量；DeepSeek 优先，qwen 兜底"))
+    volc_names = (
+        "VOLCENGINE_API_KEY",
+        "VOLCENGINE_ACCESS_KEY_ID",
+        "VOLCENGINE_SECRET_ACCESS_KEY",
+        "VOLCENGINE_TOS_BUCKET",
+        "VOLCENGINE_TOS_REGION",
+    )
+    missing_volc = [name for name in volc_names if not os.environ.get(name)]
+    checks.append((
+        "火山 Seed-ASR 凭证（可选）",
+        True,
+        "已完整配置" if not missing_volc else "未启用；缺少 " + ", ".join(missing_volc),
+    ))
     checks.append(("剪映草稿根目录", DEFAULT_DRAFT_ROOT.is_dir(), str(DEFAULT_DRAFT_ROOT)))
     checks.append(("剪映主程序", DEFAULT_JIANYING_EXE.is_file(), str(DEFAULT_JIANYING_EXE)))
     checks.append(("关键词库", DEFAULT_KEYWORD_FILE.is_file(), str(DEFAULT_KEYWORD_FILE)))
@@ -989,6 +1151,9 @@ def add_common_args(parser: argparse.ArgumentParser) -> None:
     visual_group = parser.add_mutually_exclusive_group()
     visual_group.add_argument("--visual-match", dest="visual_match", action="store_true", default=None, help="启用 AI 画面识别（默认开）")
     visual_group.add_argument("--no-visual-match", dest="visual_match", action="store_false", help="关闭 AI 画面识别，按字幕时间轴快速配画")
+    silence_group = parser.add_mutually_exclusive_group()
+    silence_group.add_argument("--silence-pruning", dest="silence_pruning", action="store_true", default=None, help="启用实验性静音片段净化（默认关闭）")
+    silence_group.add_argument("--no-silence-pruning", dest="silence_pruning", action="store_false", help="关闭静音片段净化")
     parser.add_argument("--continue-on-error", action="store_true", help="单视频失败后继续批量任务")
     parser.add_argument("--asr-engine", choices=("funasr", "volc"), default=None,
                         help="步骤3语音识别引擎: funasr(本地, 默认) / volc(火山Seed-ASR云)；省略时用 REALCUT_ASR_ENGINE 环境变量，再缺省用 funasr")

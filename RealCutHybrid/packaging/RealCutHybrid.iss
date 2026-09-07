@@ -5,7 +5,7 @@
   #define OutputDir "."
 #endif
 #ifndef AppVersion
-  #define AppVersion "2026.08.28"
+  #define AppVersion "2026.09.05-volc-asr-rc5"
 #endif
 
 [Setup]

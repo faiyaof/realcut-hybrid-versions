@@ -18,6 +18,11 @@ DEFAULT_DEEPSEEK_MODEL = "deepseek-chat"
 _SECRET_FIELDS = {
     "deepseek_api_key": "DEEPSEEK_API_KEY",
     "dashscope_api_key": "DASHSCOPE_API_KEY",
+    "volcengine_api_key": "VOLCENGINE_API_KEY",
+    "volcengine_access_key_id": "VOLCENGINE_ACCESS_KEY_ID",
+    "volcengine_secret_access_key": "VOLCENGINE_SECRET_ACCESS_KEY",
+    "volcengine_tos_bucket": "VOLCENGINE_TOS_BUCKET",
+    "volcengine_tos_region": "VOLCENGINE_TOS_REGION",
 }
 _MANAGED_ENV = (*_SECRET_FIELDS.values(), "DEEPSEEK_MODEL")
 _INITIAL_ENV = {name: os.environ.get(name) for name in _MANAGED_ENV}
@@ -259,9 +264,22 @@ def masked_settings_payload() -> dict[str, Any]:
             return {"configured": True, "source": "Windows 环境变量"}
         return {"configured": False, "source": "未配置"}
 
-    return {
+    payload = {
         "deepseek_api_key": status("deepseek_api_key", "DEEPSEEK_API_KEY"),
         "dashscope_api_key": status("dashscope_api_key", "DASHSCOPE_API_KEY"),
+        "volcengine_api_key": status("volcengine_api_key", "VOLCENGINE_API_KEY"),
+        "volcengine_access_key_id": status(
+            "volcengine_access_key_id", "VOLCENGINE_ACCESS_KEY_ID"
+        ),
+        "volcengine_secret_access_key": status(
+            "volcengine_secret_access_key", "VOLCENGINE_SECRET_ACCESS_KEY"
+        ),
+        "volcengine_tos_bucket": status(
+            "volcengine_tos_bucket", "VOLCENGINE_TOS_BUCKET"
+        ),
+        "volcengine_tos_region": status(
+            "volcengine_tos_region", "VOLCENGINE_TOS_REGION"
+        ),
         "deepseek_model": (
             settings.get("deepseek_model")
             or _INITIAL_ENV.get("DEEPSEEK_MODEL")
@@ -269,3 +287,16 @@ def masked_settings_payload() -> dict[str, Any]:
         ),
         "storage": "Windows DPAPI（当前用户）",
     }
+    volc_fields = {
+        "API Key": "volcengine_api_key",
+        "Access Key ID": "volcengine_access_key_id",
+        "Secret Access Key": "volcengine_secret_access_key",
+        "TOS Bucket": "volcengine_tos_bucket",
+        "TOS Region": "volcengine_tos_region",
+    }
+    missing = [label for label, field in volc_fields.items() if not payload[field]["configured"]]
+    payload["volcengine_asr"] = {
+        "configured": not missing,
+        "missing": missing,
+    }
+    return payload

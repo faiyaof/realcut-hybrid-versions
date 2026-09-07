@@ -30,5 +30,6 @@ set "REALCUT_FONT_PATH=%REALCUT_ROOT%\assets\style_assets\fonts\字语圆体.ttf
 set "PATH=%REALCUT_ROOT%\runtime\ffmpeg;%REALCUT_ROOT%\runtime\python;%REALCUT_ROOT%\runtime\officecli;%PATH%"
 set "PYTHONIOENCODING=utf-8"
 set "PYTHONUTF8=1"
+set "PYTHONDONTWRITEBYTECODE=1"
 
 if not exist "%REALCUT_MODELSCOPE_CACHE%" mkdir "%REALCUT_MODELSCOPE_CACHE%"

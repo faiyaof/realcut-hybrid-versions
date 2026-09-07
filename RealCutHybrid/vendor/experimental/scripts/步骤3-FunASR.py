@@ -11,13 +11,13 @@ r"""
   python "步骤3-FunASR.py" <草稿路径> --no-open  # 只识别，不打开剪映
 
 输出（草稿目录下）:
-  - asr_result.json  {"words":[{text,start,end}...], "sentences":[{text,start,end}...], "fingerprint": 音频指纹}（毫秒；音频未变化时复用缓存）
+  - asr_result.json  识别结果、音频指纹、请求/实际引擎及后端版本（毫秒；同引擎且音频未变化时复用缓存）
   - asr_result.txt   每行 "句子 start end"
 
 依赖:  pip install funasr modelscope
 模型缓存:  D:\.cache\modelscope （首次自动下载 ~2.2GB，之后离线复用）
 """
-import json, sys, os, subprocess, time
+import json, sys, os, re, subprocess, time
 from pathlib import Path
 
 from _runtime_deps import import_external
@@ -35,6 +35,10 @@ _SENT_END = set('。？！.!?')
 JY_PATH = os.environ.get('REALCUT_JIANYING_EXE', r'C:\Users\JT\Desktop\剪映5.9Windows\JianyingPro\5.9.0.11632\JianyingPro.exe')
 
 _MODEL = None
+_BACKEND_VERSIONS = {
+    'funasr': 'paraformer-zh-v1',
+    'volc': 'seedasr-v2',
+}
 
 
 def _load_model():
@@ -123,25 +127,37 @@ def _audio_fingerprint(audio):
     }
 
 
-def _load_cached_asr(dp, audio):
+def _load_cached_asr(dp, audio, requested_engine='funasr'):
     fp = dp / 'asr_result.json'
     if not fp.exists():
         return None
     try:
         with open(fp, encoding='utf-8') as f:
             data = json.load(f)
+        cached_requested = data.get('requested_engine')
+        if not cached_requested:
+            cached_requested = 'funasr'
+        if cached_requested != requested_engine:
+            return None
+        actual_engine = data.get('actual_engine') or cached_requested
+        if requested_engine == 'volc' and actual_engine != 'volc':
+            return None
+        cached_version = data.get('asr_backend_version')
+        expected_version = _BACKEND_VERSIONS.get(actual_engine)
+        if cached_version and expected_version and cached_version != expected_version:
+            return None
         if (data.get('fingerprint') == _audio_fingerprint(audio)
                 and data.get('words') and data.get('sentences')):
+            data.setdefault('requested_engine', cached_requested)
+            data.setdefault('actual_engine', actual_engine)
+            data.setdefault('asr_backend_version', expected_version)
             return data
     except Exception:
         return None
     return None
 
-def _recognize_with_engine(audio, engine):
-    """按引擎识别：'volc' 走火山(云)，否则 FunASR(本地)。返回 (words, sentences) 或 (None, None)。"""
-    if engine == 'volc':
-        import _volc_asr
-        return _volc_asr.recognize_audio(audio)
+def _recognize_funasr(audio):
+    """Run the local FunASR backend."""
     model = _load_model()
     try:
         res = model.generate(input=str(audio), batch_size_s=300,
@@ -157,6 +173,38 @@ def _recognize_with_engine(audio, engine):
     return _build_from_flat(full_text, timestamp)
 
 
+def _recognize_with_engine(audio, engine):
+    """Return words, sentences, actual engine and an optional fallback reason."""
+    if engine == 'volc':
+        import _volc_asr
+        try:
+            words, sentences = _volc_asr.recognize_audio(audio)
+            return words, sentences, 'volc', None
+        except Exception as exc:
+            reason = ' '.join(str(exc).splitlines())
+            reason = re.sub(r'https?://\S+', '<redacted-url>', reason)[:500]
+            print(f'火山识别失败: {reason}', file=sys.stderr)
+            print('回退 FunASR ...', file=sys.stderr)
+            words, sentences = _recognize_funasr(audio)
+            return words, sentences, 'funasr', reason
+    words, sentences = _recognize_funasr(audio)
+    return words, sentences, 'funasr', None
+
+
+def _result_payload(audio, words, sentences, requested_engine, actual_engine, fallback_reason=None):
+    result = {
+        'words': words,
+        'sentences': sentences,
+        'fingerprint': _audio_fingerprint(audio),
+        'requested_engine': requested_engine,
+        'actual_engine': actual_engine,
+        'asr_backend_version': _BACKEND_VERSIONS.get(actual_engine, 'unknown'),
+    }
+    if fallback_reason:
+        result['fallback_reason'] = fallback_reason
+    return result
+
+
 def _do_asr_legacy(draft_path, auto_open=True, engine='funasr'):
     dp = Path(draft_path)
     if not dp.exists():
@@ -170,13 +218,15 @@ def _do_asr_legacy(draft_path, auto_open=True, engine='funasr'):
 
     print('识别引擎: 火山 Seed-ASR 2.0（云端）' if engine == 'volc' else '识别引擎: FunASR（本地）')
     print('识别中...')
-    words, sentences = _recognize_with_engine(audio, engine)
+    words, sentences, actual_engine, fallback_reason = _recognize_with_engine(audio, engine)
 
     if not sentences:
         print('识别结果为空')
         return False
 
-    result = {'words': words, 'sentences': sentences, 'fingerprint': _audio_fingerprint(audio)}
+    result = _result_payload(
+        audio, words, sentences, engine, actual_engine, fallback_reason=fallback_reason
+    )
     with open(dp / 'asr_result.json', 'w', encoding='utf-8') as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
     with open(dp / 'asr_result.txt', 'w', encoding='utf-8') as f:
@@ -202,18 +252,25 @@ def do_asr(draft_path, auto_open=True, engine='funasr'):
     if not audio:
         print('未找到音频文件（audio.mp3），请先执行步骤2-分离音频')
         return False
-    cached = _load_cached_asr(dp, audio)
+    cached = _load_cached_asr(dp, audio, requested_engine=engine)
     if cached is None:
         return _do_asr_legacy(draft_path, auto_open=auto_open, engine=engine)
 
     print(f'音频: {audio.name}')
-    print('复用已有 ASR 缓存（音频未变化）...')
+    print(f'复用已有 ASR 缓存（音频未变化，引擎={engine}）...')
     words = cached.get('words', [])
     sentences = cached.get('sentences', [])
     if not sentences:
         print('识别结果为空')
         return False
-    result = {'words': words, 'sentences': sentences, 'fingerprint': _audio_fingerprint(audio)}
+    result = _result_payload(
+        audio,
+        words,
+        sentences,
+        engine,
+        cached.get('actual_engine') or engine,
+        fallback_reason=cached.get('fallback_reason'),
+    )
     with open(dp / 'asr_result.json', 'w', encoding='utf-8') as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
     with open(dp / 'asr_result.txt', 'w', encoding='utf-8') as f:

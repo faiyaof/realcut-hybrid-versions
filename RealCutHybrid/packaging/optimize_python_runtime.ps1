@@ -43,7 +43,7 @@ foreach ($name in @("Doc", "include", "libs", "tcl")) {
 }
 
 # These packages came from the workstation environment and are not used by RealCut.
-$unusedPackagePattern = '^(PySide6|PyQt5|playwright|selenium|diffusers|onnxruntime|opencv|cv2|shiboken6)(-|_|$)'
+$unusedPackagePattern = '^(PySide6|PyQt5|playwright|selenium|diffusers|onnxruntime|opencv|cv2|shiboken6|ai_edit_studio)(-|_|\.|$)|^__editable__(\.|_).*ai_edit_studio'
 Get-ChildItem -LiteralPath $sitePackages -Force |
     Where-Object { $_.Name -match $unusedPackagePattern } |
     ForEach-Object { Remove-RuntimeItem $_.FullName }

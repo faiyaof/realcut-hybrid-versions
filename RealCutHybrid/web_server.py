@@ -52,9 +52,10 @@ ROOT = application_root(__file__)
 WEB_DIR = ROOT / "web"
 ORCHESTRATOR = ROOT / "realcut_hybrid.py"
 DEFAULT_PORT = 8765
+DEFAULT_HOST = "127.0.0.1"
 VIDEO_EXTS = {".mp4", ".mkv", ".mov", ".avi", ".flv", ".wmv", ".m4v", ".ts"}
 
-QUEUE_FILE = ROOT / "web_queue.json"
+QUEUE_FILE = Path(os.environ.get("REALCUT_QUEUE_FILE", str(ROOT / "web_queue.json"))).resolve()
 QUEUE_SCHEMA_VERSION = 1
 MAX_WORKER_THREADS = 3
 DEFAULT_MAX_CONCURRENCY = 1
@@ -85,6 +86,79 @@ class QueueItem:
     started_at: Optional[str] = None
 
 
+class QueueOwnershipError(RuntimeError):
+    pass
+
+
+class QueueFileLease:
+    """Hold an OS-level lock for one queue file for the process lifetime."""
+
+    def __init__(self, queue_file: Path) -> None:
+        self.lock_file = queue_file.with_suffix(queue_file.suffix + ".lock")
+        self._handle = None
+
+    def acquire(self) -> None:
+        self.lock_file.parent.mkdir(parents=True, exist_ok=True)
+        handle = self.lock_file.open("a+b")
+        handle.seek(0, os.SEEK_END)
+        if handle.tell() == 0:
+            handle.write(b" ")
+            handle.flush()
+        handle.seek(0)
+        try:
+            if os.name == "nt":
+                import msvcrt
+
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except (OSError, BlockingIOError) as exc:
+            try:
+                # Byte zero is the locked range on Windows; owner metadata starts after it.
+                handle.seek(1)
+                owner = handle.read().decode("utf-8", errors="replace").strip()
+            except OSError:
+                owner = ""
+            finally:
+                handle.close()
+            detail = f"（{owner}）" if owner else ""
+            raise QueueOwnershipError(
+                f"已有 RealCut Hybrid Web 实例占用队列 {self.lock_file}{detail}"
+            ) from exc
+
+        handle.seek(0)
+        handle.truncate()
+        handle.write(b" ")
+        handle.write(
+            json.dumps(
+                {"pid": os.getpid(), "queue_file": str(self.lock_file.with_suffix(""))},
+                ensure_ascii=False,
+            ).encode("utf-8")
+        )
+        handle.flush()
+        handle.seek(0)
+        self._handle = handle
+
+    def release(self) -> None:
+        handle, self._handle = self._handle, None
+        if handle is None:
+            return
+        try:
+            handle.seek(0)
+            if os.name == "nt":
+                import msvcrt
+
+                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                import fcntl
+
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+        finally:
+            handle.close()
+
+
 class TaskQueue:
     def __init__(
         self,
@@ -96,15 +170,24 @@ class TaskQueue:
         self._running: dict[str, QueueItem] = {}
         self._processes: dict[str, subprocess.Popen] = {}
         self._max_concurrency = self._clamp_max(max_concurrency)
-        self._queue_file = queue_file or QUEUE_FILE
+        self._queue_file = (queue_file or QUEUE_FILE).resolve()
+        self._lease = QueueFileLease(self._queue_file)
         self._stop = False
-        self._load_persisted()
-        for _ in range(MAX_WORKER_THREADS):
-            threading.Thread(
-                target=self._worker,
-                name="realcut-web-queue",
-                daemon=True,
-            ).start()
+        self._threads: list[threading.Thread] = []
+        self._lease.acquire()
+        try:
+            self._load_persisted()
+            for _ in range(MAX_WORKER_THREADS):
+                thread = threading.Thread(
+                    target=self._worker,
+                    name="realcut-web-queue",
+                    daemon=True,
+                )
+                thread.start()
+                self._threads.append(thread)
+        except Exception:
+            self._lease.release()
+            raise
 
     @staticmethod
     def _clamp_max(value: Any) -> int:
@@ -168,6 +251,11 @@ class TaskQueue:
     def submit(self, video: Path, options: dict) -> tuple[bool, str]:
         video = video.resolve()
         task_id = task_id_for(video)
+        if options.get("asr_engine") == "volc" and not options.get("phase2"):
+            volc_status = masked_settings_payload().get("volcengine_asr", {})
+            if not volc_status.get("configured"):
+                missing = "、".join(volc_status.get("missing") or [])
+                return False, f"火山 Seed-ASR 配置不完整：{missing}"
         with self._cond:
             if task_id in self._running:
                 return False, "该任务正在运行"
@@ -248,6 +336,11 @@ class TaskQueue:
         with self._cond:
             self._stop = True
             self._cond.notify_all()
+        for thread in self._threads:
+            thread.join(timeout=0.2)
+        with self._cond:
+            if not self._running:
+                self._lease.release()
 
     def _item_payload(self, item: QueueItem) -> dict:
         return {
@@ -268,7 +361,7 @@ class TaskQueue:
                     and not self._stop
                 ):
                     self._cond.wait(timeout=1.0)
-                if self._stop and not self._items:
+                if self._stop:
                     return
                 if not self._items:
                     continue
@@ -324,6 +417,8 @@ class TaskQueue:
             cmd += ["--no-review-subtitles"]
         if opts.get("visual_match") is False:
             cmd += ["--no-visual-match"]
+        if opts.get("silence_pruning") is True:
+            cmd += ["--silence-pruning"]
         if opts.get("asr_engine") in {"funasr", "volc"}:
             cmd += ["--asr-engine", str(opts["asr_engine"])]
         if opts.get("no_close_jianying"):
@@ -562,12 +657,17 @@ def _enrich_task(state: dict) -> dict:
         "current_step": current_step,
         "progress": progress,
         "steps": steps,
+        "asr_engine": state.get("asr_engine") or "funasr",
+        "asr_actual_engine": state.get("asr_actual_engine") or "",
+        "asr_backend_version": state.get("asr_backend_version") or "",
+        "asr_fallback_reason": state.get("asr_fallback_reason") or "",
+        "silence_pruning": bool(state.get("silence_pruning", False)),
         "report_exists": (REPORT_DIR / f"{task_id}.md").is_file(),
     }
 
 
 def bootstrap_payload() -> dict:
-    queue = task_queue.snapshot()
+    queue = _active_task_queue().snapshot()
     tasks: dict[str, dict] = {}
     for path in _state_files():
         state = _load_state(path.stem)
@@ -594,7 +694,7 @@ def bootstrap_payload() -> dict:
         reverse=True,
     )
     return {
-        "app": {"name": "RealCut Hybrid", "version": "0.2.1", "platform": "windows"},
+        "app": {"name": "RealCut Hybrid", "version": "0.3.0", "platform": "windows"},
         "queue": queue,
         "tasks": ordered,
         "paths": {
@@ -687,7 +787,13 @@ class EnvironmentCache:
 
 
 environment_cache = EnvironmentCache()
-task_queue = TaskQueue()
+task_queue: Optional[TaskQueue] = None
+
+
+def _active_task_queue() -> TaskQueue:
+    if task_queue is None:
+        raise RuntimeError("Web 任务队列尚未启动")
+    return task_queue
 
 
 def _read_tail(path: Path, limit: int = 200_000) -> str:
@@ -803,10 +909,85 @@ def _send_static(handler: BaseHTTPRequestHandler, relative: str) -> None:
     handler.wfile.write(body)
 
 
+def _parse_http_authority(value: str) -> Optional[tuple[str, int]]:
+    if not value or any(char.isspace() for char in value):
+        return None
+    try:
+        parsed = urlsplit(f"//{value}")
+        if not parsed.hostname or parsed.username or parsed.password:
+            return None
+        if parsed.path or parsed.query or parsed.fragment:
+            return None
+        port = parsed.port if parsed.port is not None else 80
+    except ValueError:
+        return None
+    host = parsed.hostname.rstrip(".").casefold()
+    try:
+        address = ipaddress.ip_address(host.split("%", 1)[0])
+        if isinstance(address, ipaddress.IPv6Address) and address.ipv4_mapped:
+            address = address.ipv4_mapped
+        host = address.compressed
+    except ValueError:
+        pass
+    return host, port
+
+
+def request_host_allowed(host_header: str, server_port: int, local_address: str) -> bool:
+    """Reject DNS-rebinding Host headers while allowing the active local endpoint."""
+    authority = _parse_http_authority(host_header)
+    if authority is None or authority[1] != server_port:
+        return False
+    host = authority[0]
+    local = _parse_http_authority(f"[{local_address}]:{server_port}" if ":" in local_address else f"{local_address}:{server_port}")
+    if local is None:
+        return False
+    if host == "localhost":
+        try:
+            return ipaddress.ip_address(local[0]).is_loopback
+        except ValueError:
+            return False
+    return host == local[0]
+
+
+def origin_matches_host(origin: str, host_header: str) -> bool:
+    """Return true only for an HTTP Origin matching the request Host exactly."""
+    try:
+        parsed = urlsplit(origin)
+    except ValueError:
+        return False
+    if parsed.scheme.casefold() != "http" or not parsed.netloc:
+        return False
+    if parsed.path not in ("", "/") or parsed.query or parsed.fragment:
+        return False
+    origin_authority = _parse_http_authority(parsed.netloc)
+    host_authority = _parse_http_authority(host_header)
+    return origin_authority is not None and origin_authority == host_authority
+
+
 class RealCutHandler(BaseHTTPRequestHandler):
-    server_version = "RealCutHybridWeb/0.2.1"
+    server_version = "RealCutHybridWeb/0.3.0"
+
+    def _reject_untrusted_request(self, mutating: bool = False) -> bool:
+        host_header = self.headers.get("Host", "")
+        server_port = int(self.server.server_address[1])
+        local_address = str(self.connection.getsockname()[0]).split("%", 1)[0]
+        if not request_host_allowed(host_header, server_port, local_address):
+            _send_json(self, {"error": "请求 Host 不受信任"}, HTTPStatus.FORBIDDEN)
+            return True
+        if not mutating:
+            return False
+        if self.headers.get("X-RealCut-Request") != "1":
+            _send_json(self, {"error": "缺少本机工作台请求标记"}, HTTPStatus.FORBIDDEN)
+            return True
+        origin = self.headers.get("Origin", "")
+        if origin and not origin_matches_host(origin, host_header):
+            _send_json(self, {"error": "拒绝跨站状态变更请求"}, HTTPStatus.FORBIDDEN)
+            return True
+        return False
 
     def do_GET(self) -> None:  # noqa: N802
+        if self._reject_untrusted_request():
+            return
         parsed = urlsplit(self.path)
         path = parsed.path
         try:
@@ -895,6 +1076,8 @@ class RealCutHandler(BaseHTTPRequestHandler):
             _send_json(self, {"error": str(exc)}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     def do_POST(self) -> None:  # noqa: N802
+        if self._reject_untrusted_request(mutating=True):
+            return
         parsed = urlsplit(self.path)
         path = parsed.path
         try:
@@ -903,7 +1086,7 @@ class RealCutHandler(BaseHTTPRequestHandler):
                 return self._submit_run(payload)
             if path == "/api/queue/config":
                 payload = self._json_body()
-                queue = task_queue.set_concurrency(
+                queue = _active_task_queue().set_concurrency(
                     enabled=payload.get("parallel_enabled"),
                     max_concurrency=payload.get("max_concurrency"),
                 )
@@ -940,7 +1123,7 @@ class RealCutHandler(BaseHTTPRequestHandler):
             match = re.fullmatch(r"/api/tasks/([^/]+)/cancel", path)
             if match:
                 task_id = match.group(1)
-                cancelled = task_queue.cancel(task_id)
+                cancelled = _active_task_queue().cancel(task_id)
                 if not cancelled:
                     return _send_json(
                         self,
@@ -984,7 +1167,7 @@ class RealCutHandler(BaseHTTPRequestHandler):
                     errors.append(err)
                     continue
                 for video in videos:
-                    ok, result = task_queue.submit(video, options)
+                    ok, result = _active_task_queue().submit(video, options)
                     if ok:
                         queued.append({"task_id": result, "video": str(video)})
                     else:
@@ -1005,7 +1188,7 @@ class RealCutHandler(BaseHTTPRequestHandler):
             opts["draft"] = str(draft)
             opts["phase2"] = True
             opts["force"] = True
-            ok, result = task_queue.submit(Path(video), opts)
+            ok, result = _active_task_queue().submit(Path(video), opts)
             if ok:
                 queued.append({"task_id": result, "draft": draft.name, "video": str(video)})
             else:
@@ -1034,11 +1217,15 @@ class RealCutHandler(BaseHTTPRequestHandler):
             options["draft"] = state["draft"]
         if "visual_match" not in options and "visual_match" in state:
             options["visual_match"] = state["visual_match"]
+        if "asr_engine" not in options and state.get("asr_engine") in {"funasr", "volc"}:
+            options["asr_engine"] = state["asr_engine"]
+        if "silence_pruning" not in options and "silence_pruning" in state:
+            options["silence_pruning"] = bool(state["silence_pruning"])
         if options.get("phase2"):
             options.setdefault("force", True)
         if options.get("phase2") and not options.get("style") and state.get("style"):
             options["style"] = state["style"]
-        ok, result = task_queue.submit(Path(video), options)
+        ok, result = _active_task_queue().submit(Path(video), options)
         if not ok:
             _send_json(self, {"error": result}, HTTPStatus.CONFLICT)
             return
@@ -1059,7 +1246,13 @@ def _lan_url(port: int) -> Optional[str]:
     return None
 
 
-def serve(host: str, start_port: int, no_browser: bool = False) -> None:
+def serve(
+    host: str,
+    start_port: int,
+    no_browser: bool = False,
+    max_concurrency: Optional[int] = None,
+) -> None:
+    global task_queue
     handler = RealCutHandler
     last_error = None
     for port in range(start_port, start_port + 20):
@@ -1070,6 +1263,14 @@ def serve(host: str, start_port: int, no_browser: bool = False) -> None:
             last_error = exc
     else:
         raise RuntimeError(f"端口 {start_port}-{start_port + 19} 均不可用: {last_error}")
+
+    try:
+        task_queue = TaskQueue()
+        if max_concurrency is not None:
+            task_queue.set_concurrency(max_concurrency=max_concurrency)
+    except Exception:
+        server.server_close()
+        raise
 
     url = f"http://127.0.0.1:{port}"
     print(f"RealCut Hybrid Web: {url}")
@@ -1084,24 +1285,33 @@ def serve(host: str, start_port: int, no_browser: bool = False) -> None:
     except KeyboardInterrupt:
         pass
     finally:
-        task_queue.shutdown()
+        if task_queue is not None:
+            task_queue.shutdown()
+            task_queue = None
         server.server_close()
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="RealCut Hybrid Web")
     parser.add_argument("--port", type=int, default=DEFAULT_PORT, help="本地端口")
-    parser.add_argument("--host", default="0.0.0.0", help="监听地址；0.0.0.0 允许局域网访问")
+    parser.add_argument("--host", default=DEFAULT_HOST, help="监听地址；默认仅限本机，显式使用 0.0.0.0 才允许局域网访问")
     parser.add_argument("--max-concurrency", type=int, default=None, help="启动时最大并发 1-3；Web 中的设置会持久化并覆盖此值")
     parser.add_argument("--no-browser", action="store_true", help="不自动打开浏览器")
     args = parser.parse_args()
-    if args.max_concurrency is not None:
-        task_queue.set_concurrency(max_concurrency=args.max_concurrency)
     try:
         run_environment_check()
     except Exception:
         pass
-    serve(args.host, args.port, no_browser=args.no_browser)
+    try:
+        serve(
+            args.host,
+            args.port,
+            no_browser=args.no_browser,
+            max_concurrency=args.max_concurrency,
+        )
+    except QueueOwnershipError as exc:
+        print(f"Web 启动失败: {exc}", file=sys.stderr)
+        return 2
     return 0
 
 

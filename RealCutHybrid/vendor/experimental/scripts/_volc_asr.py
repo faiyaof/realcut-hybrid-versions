@@ -33,6 +33,12 @@ _ENV_VARS = (
 )
 
 
+def _safe_error(exc):
+    text = " ".join(str(exc).splitlines())
+    text = re.sub(r"https?://\S+", "<redacted-url>", text)
+    return text[:500]
+
+
 def _find_env_file():
     here = os.path.dirname(os.path.abspath(__file__))
     for d in (here, os.path.dirname(here), os.getcwd()):
@@ -113,7 +119,17 @@ def _upload_to_tos(filepath, fmt, creds):
         resp = requests.put(put_url, data=f, headers={"Content-Type": content_type}, timeout=180)
     if resp.status_code not in (200, 201):
         raise RuntimeError(f"TOS 上传失败 ({resp.status_code}): {resp.text[:200]}")
-    return _tos_sign_v4("GET", url_raw, ak, sk, region, expires=3600)
+    return _tos_sign_v4("GET", url_raw, ak, sk, region, expires=3600), url_raw
+
+
+def _delete_from_tos(url_raw, creds):
+    """Best-effort deletion for the temporary ASR object."""
+    delete_url = _tos_sign_v4(
+        "DELETE", url_raw, creds["ak"], creds["sk"], creds["region"], expires=300
+    )
+    resp = requests.delete(delete_url, timeout=30)
+    if resp.status_code not in (200, 204, 404):
+        raise RuntimeError(f"TOS 临时对象删除失败 ({resp.status_code}): {resp.text[:200]}")
 
 
 def _fmt_of(path):
@@ -201,6 +217,25 @@ _PUNCT = set('，。？！、,.!?；;：:…—－–～~﹏「」『』（）()
 _SENT_END = set('，。？！、,.!?；;')  # 含逗号，短句粒度贴近 FunASR sentence_info
 
 
+def _expand_word_token(word):
+    """Expand one Volc token to the single-character contract used downstream."""
+    chars = [c for c in (word.get("text") or "") if c not in _PUNCT]
+    if not chars:
+        return []
+    start = int(word.get("start", 0) or 0)
+    end = max(start, int(word.get("end", start) or start))
+    duration = end - start
+    count = len(chars)
+    return [
+        {
+            "text": char,
+            "start": start + duration * index // count,
+            "end": start + duration * (index + 1) // count,
+        }
+        for index, char in enumerate(chars)
+    ]
+
+
 def _split_utterance(text, utt_start, utt_end, utt_words):
     """把一个 utterance 切成短句；字符标点就地插入，逐字对回 words 毫秒。"""
     chars = []
@@ -252,15 +287,16 @@ def normalize_volc(payload):
         txt = (u.get("text") or "").strip()
         st = int(u.get("start_time", 0) or 0)
         en = int(u.get("end_time", st) or st)
-        uw = []
+        token_words = []
         for w in u.get("words") or []:
             wt = (w.get("text") or "").strip()
             if wt:
-                uw.append({
+                token_words.append({
                     "text": wt,
                     "start": int(w.get("start_time", 0) or 0),
                     "end": int(w.get("end_time", 0) or 0),
                 })
+        uw = [char_word for token in token_words for char_word in _expand_word_token(token)]
         if not uw and txt and en > st:
             chars = [c for c in txt if c not in _PUNCT]
             if chars:
@@ -287,19 +323,25 @@ def recognize_audio(audio_path, tier="express", timeout=600):
     if not creds["api_key"]:
         raise RuntimeError("缺少 VOLCENGINE_API_KEY（见 asr_volc.env，参考 _volc_asr.py 顶部说明）")
     fmt = _fmt_of(audio_path)
-    url = _upload_to_tos(str(audio_path), fmt, creds)
-    if tier == "standard":
-        payload = _recognize_standard(url, fmt, creds["api_key"], timeout=timeout)
-    else:
+    url, object_url = _upload_to_tos(str(audio_path), fmt, creds)
+    try:
+        if tier == "standard":
+            payload = _recognize_standard(url, fmt, creds["api_key"], timeout=timeout)
+        else:
+            try:
+                payload = _recognize_express(url, fmt, creds["api_key"], timeout=timeout)
+            except RuntimeError as e:
+                if "not granted" in str(e) or "45000030" in str(e):
+                    print("  [volc] 极速档未开通，回退标准档...", file=sys.stderr)
+                    payload = _recognize_standard(url, fmt, creds["api_key"], timeout=timeout)
+                else:
+                    raise
+        return normalize_volc(payload)
+    finally:
         try:
-            payload = _recognize_express(url, fmt, creds["api_key"], timeout=timeout)
-        except RuntimeError as e:
-            if "not granted" in str(e) or "45000030" in str(e):
-                print("  [volc] 极速档未开通，回退标准档...", file=sys.stderr)
-                payload = _recognize_standard(url, fmt, creds["api_key"], timeout=timeout)
-            else:
-                raise
-    return normalize_volc(payload)
+            _delete_from_tos(object_url, creds)
+        except Exception as exc:
+            print(f"  [volc] 警告：{_safe_error(exc)}", file=sys.stderr)
 
 
 if __name__ == "__main__":

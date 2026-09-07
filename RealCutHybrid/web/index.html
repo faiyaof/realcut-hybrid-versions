@@ -23,7 +23,7 @@
         <button class="nav-item" data-tab="settings"><i data-lucide="settings-2"></i><span>设置</span></button>
       </nav>
       <div class="sidebar-spacer"></div>
-      <div class="sidebar-foot"><span class="status-dot ok"></span><span id="service-state">本地服务已连接</span><span class="version">v0.2.1</span></div>
+      <div class="sidebar-foot"><span class="status-dot ok"></span><span id="service-state">本地服务已连接</span><span class="version">v0.3.0</span></div>
     </aside>
 
     <main class="main-content">
@@ -121,6 +121,26 @@
                   <span class="api-status" id="dashscope-key-status">未配置</span>
                   <input id="dashscope-api-key" type="password" autocomplete="new-password" placeholder="输入新的 API Key" />
                 </label>
+                <label>火山 API Key
+                  <span class="api-status" id="volcengine-api-key-status">未配置</span>
+                  <input id="volcengine-api-key" type="password" autocomplete="new-password" placeholder="输入新的 API Key" />
+                </label>
+                <label>火山 Access Key ID
+                  <span class="api-status" id="volcengine-access-key-id-status">未配置</span>
+                  <input id="volcengine-access-key-id" type="password" autocomplete="new-password" placeholder="输入新的 Access Key ID" />
+                </label>
+                <label>火山 Secret Access Key
+                  <span class="api-status" id="volcengine-secret-access-key-status">未配置</span>
+                  <input id="volcengine-secret-access-key" type="password" autocomplete="new-password" placeholder="输入新的 Secret Access Key" />
+                </label>
+                <label>火山 TOS Bucket
+                  <span class="api-status" id="volcengine-tos-bucket-status">未配置</span>
+                  <input id="volcengine-tos-bucket" type="password" autocomplete="new-password" placeholder="输入 Bucket 名称" />
+                </label>
+                <label>火山 TOS Region
+                  <span class="api-status" id="volcengine-tos-region-status">未配置</span>
+                  <input id="volcengine-tos-region" type="password" autocomplete="new-password" placeholder="例如 cn-beijing" />
+                </label>
                 <label>DeepSeek 模型
                   <input id="deepseek-model" type="text" value="deepseek-chat" autocomplete="off" />
                 </label>
@@ -190,6 +210,7 @@
         <label class="switch-line"><input type="checkbox" id="job-smooth-audio" checked><span>音频平滑</span></label>
         <label class="switch-line"><input type="checkbox" id="job-review-subtitles" checked><span>字幕复核清单</span></label>
         <label class="switch-line"><input type="checkbox" id="job-visual-match" checked><span>AI 画面识别（较慢）</span></label>
+        <label class="switch-line"><input type="checkbox" id="job-silence-pruning"><span>实验性静音净化（较慢）</span></label>
         <label class="switch-line"><input type="checkbox" id="job-dry-run"><span>Dry Run 预演</span></label>
         <label class="switch-line"><input type="checkbox" id="job-no-close"><span>不自动关闭剪映</span></label>
         <label class="switch-line"><input type="checkbox" id="job-no-restore"><span>失败不恢复快照</span></label>

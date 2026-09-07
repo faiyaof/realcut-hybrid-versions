@@ -13,6 +13,8 @@
 """
 
 import json
+import hashlib
+import re
 import sys
 import os
 import uuid
@@ -29,6 +31,16 @@ from _runtime_deps import import_external
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 from pathlib import Path
+
+
+FRAME_CACHE_SCHEMA_VERSION = 1
+FRAME_CACHE_INTERVAL_SECONDS = 1
+FRAME_CACHE_MODEL = 'qwen-vl-plus'
+FRAME_CACHE_HASH_BYTES = 256 * 1024
+FATAL_VL_ERROR_CODES = {
+    'arrearage', 'invalidapikey', 'invalid_api_key', 'accessdenied',
+    'permissiondenied', 'unauthorized', 'forbidden',
+}
 
 
 def uid():
@@ -58,20 +70,179 @@ def get_video_dur(path):
         return 0
 
 
+def _quick_source_hash(src_video):
+    """Hash the start and end of a video to distinguish same-name draft copies."""
+    size = os.path.getsize(src_video)
+    digest = hashlib.sha256()
+    with open(src_video, 'rb') as f:
+        digest.update(f.read(FRAME_CACHE_HASH_BYTES))
+        if size > FRAME_CACHE_HASH_BYTES:
+            f.seek(max(0, size - FRAME_CACHE_HASH_BYTES))
+            digest.update(f.read(FRAME_CACHE_HASH_BYTES))
+    return digest.hexdigest()
+
+
+def build_frame_cache_signature(src_video):
+    """Return the inputs that actually determine full-video frame labels."""
+    stat = os.stat(src_video)
+    return {
+        'schema_version': FRAME_CACHE_SCHEMA_VERSION,
+        'source_path': os.path.normcase(os.path.abspath(src_video)),
+        'source_size': stat.st_size,
+        'source_mtime_ns': stat.st_mtime_ns,
+        'source_quick_hash': _quick_source_hash(src_video),
+        'interval_seconds': FRAME_CACHE_INTERVAL_SECONDS,
+        'model': FRAME_CACHE_MODEL,
+    }
+
+
+def frame_cache_signatures_match(left, right, allow_different_path=False):
+    keys = {
+        'schema_version', 'source_size', 'source_mtime_ns',
+        'source_quick_hash', 'interval_seconds', 'model',
+    }
+    if not allow_different_path:
+        keys.add('source_path')
+    return all(left.get(key) == right.get(key) for key in keys)
+
+
+def _has_usable_frame_actions(actions):
+    return isinstance(actions, dict) and any(
+        str(value or '').strip() for value in actions.values()
+    )
+
+
+def _fatal_vl_error(status_code=None, code='', message=''):
+    normalized_code = re.sub(r'[^a-z_]', '', str(code or '').lower())
+    if normalized_code in FATAL_VL_ERROR_CODES:
+        return normalized_code
+    if status_code in (401, 403):
+        return f'http_{status_code}'
+    normalized_message = str(message or '').lower()
+    message_markers = (
+        'arrearage', 'invalid api key', 'access denied', 'permission denied',
+        'unauthorized', 'forbidden', '欠费', '无效api key', '权限', '鉴权',
+    )
+    if any(marker in normalized_message for marker in message_markers):
+        return normalized_code or 'account_permission_error'
+    return ''
+
+
+def collect_frame_actions(frames, call_vl):
+    actions = {}
+    for i, fp in enumerate(frames):
+        fname = os.path.basename(fp)
+        fnum = int(fname.split('_')[1].split('.')[0])
+        ms = fnum * 1000
+        key = str(ms)
+        txt, fatal_error = call_vl(fp)
+        if fatal_error:
+            print(
+                f'  [VL熔断] 致命账户/权限错误 {fatal_error}，'
+                f'停止剩余 {len(frames) - i - 1} 帧'
+            )
+            return {}, fatal_error
+        actions[key] = txt
+        print(
+            '  ' + format(ms / 1000, '.2f') + 's: ' + txt
+            + ' (' + str(i + 1) + '/' + str(len(frames)) + ')'
+        )
+    return actions, ''
+
+
+def load_frame_cache(cache_path, src_video):
+    """Load a compatible frame cache without coupling it to step4 output."""
+    if not os.path.exists(cache_path):
+        return None
+    meta_path = cache_path + '.meta.json'
+    expected = build_frame_cache_signature(src_video)
+    try:
+        if os.path.exists(meta_path):
+            with open(meta_path, 'r', encoding='utf-8') as f:
+                if not frame_cache_signatures_match(json.load(f), expected):
+                    print('[步骤6] 源视频或视觉模型已变化，重新扫描画面')
+                    return None
+        else:
+            # Old caches predate metadata. They are reusable when they are newer
+            # than the source video, then get upgraded in place.
+            if os.path.getmtime(cache_path) < os.path.getmtime(src_video):
+                print('[步骤6] 旧画面缓存早于源视频，重新扫描画面')
+                return None
+        with open(cache_path, 'r', encoding='utf-8') as f:
+            actions = json.load(f)
+        if not _has_usable_frame_actions(actions):
+            print('[步骤6] 画面缓存全空，拒绝复用')
+            return None
+        if not os.path.exists(meta_path):
+            with open(meta_path, 'w', encoding='utf-8') as f:
+                json.dump(expected, f, ensure_ascii=False, indent=2)
+        print('[步骤6] 复用1秒全视频画面缓存')
+        return actions
+    except (OSError, ValueError, TypeError, json.JSONDecodeError) as exc:
+        print(f'[步骤6] 画面缓存不可用，重新扫描: {exc}')
+        return None
+
+
+def find_sibling_frame_cache(src_video, draft_path):
+    """Reuse analysis from another draft created from the exact same video."""
+    draft = Path(draft_path)
+    parent = draft.parent
+    expected = build_frame_cache_signature(src_video)
+    source_name = Path(src_video).name
+    for candidate_path in parent.glob('*/_frame_full_cache_1s.json'):
+        if candidate_path.parent == draft:
+            continue
+        try:
+            meta_path = Path(str(candidate_path) + '.meta.json')
+            if meta_path.exists():
+                candidate_signature = json.loads(meta_path.read_text(encoding='utf-8'))
+                compatible = frame_cache_signatures_match(
+                    candidate_signature, expected, allow_different_path=True
+                )
+            else:
+                sibling_source = candidate_path.parent / source_name
+                if not sibling_source.is_file():
+                    continue
+                sibling_stat = sibling_source.stat()
+                if (sibling_stat.st_size != expected['source_size']
+                        or sibling_stat.st_mtime_ns != expected['source_mtime_ns']
+                        or candidate_path.stat().st_mtime_ns < sibling_stat.st_mtime_ns):
+                    continue
+                compatible = (
+                    _quick_source_hash(str(sibling_source))
+                    == expected['source_quick_hash']
+                )
+            if not compatible:
+                continue
+            actions = json.loads(candidate_path.read_text(encoding='utf-8'))
+            if _has_usable_frame_actions(actions):
+                print(f'[步骤6] 复用同源草稿画面缓存: {candidate_path.parent.name}')
+                return actions
+        except (OSError, ValueError, TypeError, json.JSONDecodeError):
+            continue
+    return None
+
+
+def save_frame_cache(cache_path, src_video, actions):
+    if not _has_usable_frame_actions(actions):
+        return False
+    with open(cache_path, 'w', encoding='utf-8') as f:
+        json.dump(actions, f, ensure_ascii=False)
+    with open(cache_path + '.meta.json', 'w', encoding='utf-8') as f:
+        json.dump(build_frame_cache_signature(src_video), f, ensure_ascii=False, indent=2)
+    return True
+
+
 def get_frame_actions(src_video, draft_path):
     """获取全视频帧动作数据 (1s间隔)。缓存到文件避免重复扫描。"""
     cache_path = os.path.join(draft_path, '_frame_full_cache_1s.json')
-
-    # 步骤4重跑后自动失效缓存
-    seg_meta = os.path.join(draft_path, 'step4_segments.json')
-    if os.path.exists(cache_path) and os.path.exists(seg_meta):
-        if os.path.getmtime(seg_meta) > os.path.getmtime(cache_path):
-            os.remove(cache_path)
-            print('[Keng6] step4_segments.json updated -> cache invalidated')
-
-    if os.path.exists(cache_path):
-        with open(cache_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+    cached = load_frame_cache(cache_path, src_video)
+    if cached is not None:
+        return cached
+    cached = find_sibling_frame_cache(src_video, draft_path)
+    if cached is not None:
+        save_frame_cache(cache_path, src_video, cached)
+        return cached
 
     print('首次全视频扫描 1s间隔 (结果将缓存)...')
     frame_dir = os.path.join(draft_path, '_frame_s4')
@@ -100,7 +271,7 @@ def get_frame_actions(src_video, draft_path):
                     img_b64 = base64.b64encode(f.read()).decode('utf-8')
                 MultiModalConversation = import_external('dashscope').MultiModalConversation
                 resp = MultiModalConversation.call(
-                    model='qwen-vl-plus',
+                    model=FRAME_CACHE_MODEL,
                     messages=[{'role': 'user', 'content': [
                         {'image': 'data:image/png;base64,' + img_b64},
                         {'text': '只看画面，主播有没有举起/展示这件衣服？详细判断：展示中(手举着/拿着展示衣服), 丢掉(放下/丢下衣服), 其他商品(出现其他商品/其他品类), 开盒(在打开包装盒), 空手(没拿衣服/空手比划)。只回答其中一个：展示中, 丢掉, 其他商品, 开盒, 空手'}
@@ -111,32 +282,38 @@ def get_frame_actions(src_video, draft_path):
                 if hasattr(resp, 'status_code') and resp.status_code == 200:
                     c = resp.output.choices[0].message.content
                     txt = c[0]['text'] if isinstance(c, list) and len(c) > 0 and isinstance(c[0], dict) else str(c)
+                else:
+                    result['fatal'] = _fatal_vl_error(
+                        getattr(resp, 'status_code', None),
+                        getattr(resp, 'code', ''),
+                        getattr(resp, 'message', ''),
+                    )
                 result['txt'] = txt
             except Exception as e:
-                result['err'] = str(e)
+                fatal_error = _fatal_vl_error(message=str(e))
+                if fatal_error:
+                    result['fatal'] = fatal_error
+                else:
+                    result['err'] = str(e)
 
         t = threading.Thread(target=worker, daemon=True)
         t.start()
         t.join(_TIMEOUT_S)
         if t.is_alive():
-            return ''
+            return '', ''
+        if result.get('fatal'):
+            return '', result['fatal']
         if 'err' in result:
-            return ''
-        return result.get('txt', '')
+            return '', ''
+        return result.get('txt', ''), ''
 
-    for i, fp in enumerate(frames):
-        fname = os.path.basename(fp)
-        fnum = int(fname.split('_')[1].split('.')[0])
-        ms = fnum * 1000
-        key = str(ms)
-
-        txt = _call_vl(fp)
-        actions[key] = txt
-        print('  ' + format(ms / 1000, '.2f') + 's: ' + txt + ' (' + str(i + 1) + '/' + str(len(frames)) + ')')
-
-    with open(cache_path, 'w', encoding='utf-8') as f:
-        json.dump(actions, f, ensure_ascii=False)
-    print('缓存已保存到 _frame_full_cache_1s.json')
+    actions, fatal_error = collect_frame_actions(frames, _call_vl)
+    if save_frame_cache(cache_path, src_video, actions):
+        print('缓存已保存到 _frame_full_cache_1s.json')
+    elif fatal_error:
+        print('  [VL熔断] 本轮画面结果已丢弃，不写入缓存')
+    else:
+        print('  [步骤6] 画面结果全空，不写入缓存')
 
     if os.path.exists(frame_dir):
         shutil.rmtree(frame_dir, ignore_errors=True)

@@ -39,8 +39,8 @@ Web 前端复用 LiveClipAgent 的本地工作台视觉框架，但只保留对 
 
 ## 为什么是 Hybrid
 
-- 保留 real-cut 的确定性剪辑规则：30 秒收敛、AI 分类排序、镜像/开盒补位、画面匹配、
-  转场、BGM、字幕断句、关键字标黄、字体样式。
+- 保留 real-cut 的确定性剪辑规则：15-45 秒有声成片、AI 分类排序、画面匹配、转场、
+  BGM、字幕断句、关键字标黄、字体样式。
 - 吸收 LiveClipAgent 的优点：任务状态持久化、步骤 checkpoint、失败后快照回滚、
   有界重试、批量队列、日志与结构化报告。
 - 新增质量修复：字幕领域词表 + AI 受限审校、人声响度归一化、过短片段合并、BGM
@@ -77,7 +77,7 @@ DEEPSEEK_BASE_URL=https://api.deepseek.com
 DEEPSEEK_MODEL=deepseek-chat
 ```
 
-如果账号使用的是其他模型名，例如 `deepseek-flash` 或类似名字，只设置 `DEEPSEEK_MODEL` 即可；
+如果账号使用的是其他模型名，例如 `deepseek-v4-flash`，只设置 `DEEPSEEK_MODEL` 即可；
 未设置 `DEEPSEEK_API_KEY` 时自动回退 `qwen-plus`。
 
 ## 快速开始
@@ -90,12 +90,15 @@ DEEPSEEK_MODEL=deepseek-chat
 python web_server.py
 ```
 
-服务默认打开 `http://127.0.0.1:8765`。Web 页面支持：
-服务默认监听 `0.0.0.0:8765`，本机访问 `http://127.0.0.1:8765`；同一局域网电脑可访问 `http://<本机局域网IP>:8765`。如需指定监听地址，运行 `python web_server.py --host 0.0.0.0`。首次局域网访问时需在 Windows 防火墙放行 TCP 8765。
+服务默认只监听并打开 `http://127.0.0.1:8765`。确实需要从同一局域网电脑访问时，可显式运行
+`python web_server.py --host 0.0.0.0`，再访问 `http://<本机局域网IP>:8765`。局域网模式没有
+用户登录，仅应在受信任网络临时开启；首次使用还需在 Windows 防火墙放行对应 TCP 端口。
+所有状态变更接口都要求工作台专用请求标记和同源 `Origin`，并拒绝 DNS 重绑定使用的异常
+`Host`，避免其他网页借本机浏览器修改设置或提交任务。
 
 - 选择单个视频或素材目录，加入持久化后台队列；Web 重启后会自动恢复未完成任务
 - 队列页可开启并行处理，最大 3 个任务同时执行；关闭后回到单任务队列
-- 设置页可保存 DeepSeek/DashScope API Key 和 DeepSeek 模型，保存后立即刷新环境预检
+- 设置页可保存 DeepSeek/DashScope API Key、火山 Seed-ASR 五项凭证和 DeepSeek 模型，保存后立即刷新环境预检
 - 交接包自带便携剪映 5.9、风格1/风格2及 BGM 6-13；目标电脑无需预装剪映或复制模板缓存
   - 并行适合完整新视频；对同一草稿的续跑/补字幕/重跑阶段任务建议保持单任务，避免同时写同一个剪映草稿
 - 查看任务状态、步骤断点、进度和失败原因
@@ -104,10 +107,10 @@ python web_server.py
 - Dry Run 预演、AI 画面识别、音频平滑、字幕复核、BGM/水印/花字/风格/快照模式等常用开关
 - 一键“只补字幕空隙”：对已有草稿任务直接跑 `subtitle_gaps`，不重跑前面步骤
 
-Web 服务通过 `realcut_hybrid.py run` 调用同一套 CLI，因此不会绕过已验证的调度
+Web 服务通过 `realcut_hybrid.py run` 调用同一套 CLI，因此不会绕过已验证的调度逻辑；
+也不会修改 `vendor/real-cut`。
 
-队列状态保存在 `web_queue.json`，包括待办、运行中和并发设置；提交任务时先落盘再入队，所以 Web 进程重启不会再把排队任务丢光。并发上限固定为 1-3，开启后多个任务会各自启动独立剪辑进程。
-逻辑；也不会修改 `vendor/real-cut`。
+队列状态保存在 `web_queue.json`，包括待办、运行中和并发设置；提交任务时先落盘再入队，所以 Web 进程重启不会再把排队任务丢光。并发上限固定为 1-3，开启后多个任务会各自启动独立剪辑进程。同一队列带跨进程所有权锁，误启动第二个 Web 实例时会明确退出，不会重复恢复任务；开发测试可用 `REALCUT_QUEUE_FILE` 指向独立队列。
 
 单视频完整处理：
 
@@ -122,6 +125,10 @@ python realcut_hybrid.py run "D:\工作空间\素材\你的视频.mp4"
 - 步骤 11 水印默认关闭。
 - BGM 默认使用序号 10。
 - 音频平滑默认开启，字幕复核清单默认开启；价格角色判断随步骤4自动生成。
+- ASR 默认使用本地 FunASR；选择火山时会记录请求/实际引擎，失败明确回退 FunASR。
+- 实验性静音净化默认关闭，需要时通过 Web 开关或 `--silence-pruning` 启用；启用后整段音频只扫描一次，裁掉句首句尾长静音，仅删除近全静音句子。
+- 步骤4强制执行 15-45 秒有声策略：营销结构不足时回捞未使用的合规原声，最后才使用闲聊；
+  原视频无法提供 15 秒有效口播时明确失败，不生成静音 `mirror_fill` 或无声开盒段。
 - 每个步骤开始前保存轻量 JSON 快照；失败时自动恢复快照并最多重试 2 次。
 
 只打印执行计划，不改草稿：
@@ -197,6 +204,8 @@ Excel 快照由 `officecli create/batch/close` 生成，JSON 仍是主状态源�
 --no-review-subtitles     关闭字幕复核清单
 --visual-match            开启 AI 画面识别（默认开）
 --no-visual-match         跳过抽帧和视觉模型，按字幕时间轴快速配画
+--asr-engine funasr|volc  选择本地 FunASR 或火山 Seed-ASR
+--silence-pruning         启用实验性静音片段净化（默认关闭）
 --enable-flower-text      开启步骤 9 花字音效
 --watermark               开启步骤 11 水印
 --style <风格名>          完成后套用风格模板
@@ -264,17 +273,23 @@ qwen-plus）。审校不允许增删句子、
 
 ## 音频质量修复
 
-- 步骤4按新音频结构排序：原价句和上车价句放开头，其余非废话按原视频时间顺序保留，
-  金句放最后；30 秒裁剪也会保持这个顺序，优先从金句前的尾部截断。
+- 步骤4先把相邻 ASR 短句合成完整口播单元，不再删除 `<1s` 句子；原价句和上车价句放
+  开头，其余内容按结构和原视频顺序组织。LLM 漏分类的句子会自动补回候选池。
+- 成片目标为 15-45 秒。核心内容不足 15 秒时，依次回捞未使用的合规原声和闲聊；超过
+  45 秒时只删除完整口播单元，不硬截半句话。静音净化若只裁掉少量自然停顿导致略低于
+  15 秒，只恢复该单元句首句尾的自然停顿。
 - 价格角色由 DeepSeek 读取完整 ASR 字幕后写入 `draft/price_roles.json`；LLM 不可用时用
-  价格数值/关键词回退。
-- 金句只保留原视频 ASR 分类出的金句，不再从外部素材库补充；步骤4也不再从素材库补
-  爆点/价格口播。镜像/倒放补位只补画面，使用静音音轨，避免不同人物视频混入老板姐口播。
+  价格数值/关键词回退；款号、货号和型号会先剔除，中文逗号按口播停顿处理，不再把
+  `2771170K`、`90560G` 或 `159，100` 误当成一个价格。
+- 金句只保留原视频 ASR 分类出的金句，不再从外部素材库补充。镜像和开盒兼容步骤现在
+  只做检查，不新增音频、视频或时长；画面匹配仍可镜像某个画面片段，但其时间线始终由
+  对应的原视频口播覆盖。
 - 步骤5淡入淡出改为 60ms，减少短片段一顿一顿的听感。
 - `audio_smooth.py` 在人声片段上做 EBU R128 响度归一化到 `-16 LUFS`，增益上限
   `±12dB`，加 true-peak 限幅；相邻且各自低于 1.3 秒的展示衣服段合并，合并后不超过
   3 秒。处理前会把原始 clip 备份到 `draft/.audio_smooth_backup/`。
 - `bgm_normalize.py` 把模板 BGM 压到 `-20dB`（音量 0.1），并加 300ms 首尾淡入淡出。
+- 步骤10遇到短于成片的 BGM 时会分段循环到时间线末尾，最后一段按剩余时长裁切，不留尾部空白。
 - v1 不做自动 BGM 闪避，因为本地剪映 5.9 草稿还没有已验证的音量关键帧/自动闪避结构。
   先通过人声归一化 + BGM 压低 + 短淡入淡出解决主体问题。
 
@@ -390,8 +405,26 @@ OfficeCLI 和素材。交付目录不包含 RealCut Hybrid 自有 Python 源码�
 ```powershell
 .\packaging\build_handover.ps1 `
   -RuntimeSource ..\RealCutHybrid_Deploy_20260826 `
-  -Version 2026.08.28
+  -Version 2026.09.05-volc-asr-rc5
 ```
 
 构建产物位于 `dist/RealCutHybrid-Handover-<版本>/`，Inno Setup 分卷安装包位于
-`dist/installer/`。详细使用和代码保护边界见 `packaging/README_HANDOVER.md`。
+`dist/installer/`。目录内会生成 `SHA256SUMS.txt` 和可双击的
+`Verify-RealCutHybrid.cmd`，后者会严格核对所有分卷并报告安装器签名状态。
+
+正式交付必须使用受信任的代码签名证书，并在火山控制台轮换曾暴露的 API Key 和 AK/SK。
+证书需带私钥并安装在当前用户或本机的 `My` 证书存储区；构建脚本可从参数或环境变量读取
+其 SHA-1 指纹：
+
+```powershell
+$env:REALCUT_SIGNING_CERT_THUMBPRINT = "<代码签名证书指纹>"
+.\packaging\build_handover.ps1 `
+  -RuntimeSource ..\RealCutHybrid_Deploy_20260826 `
+  -Version 2026.09.05 `
+  -Release `
+  -ConfirmCredentialsRotated
+```
+
+`-ConfirmCredentialsRotated` 只是构建人的明确确认，不会代替控制台轮换操作。`-Release` 会在
+缺少该确认、签名证书、安装器或哈希时提前拒绝构建，并在生成哈希前签名、在结束前强制
+复验 Authenticode。详细使用和代码保护边界见 `packaging/README_HANDOVER.md`。

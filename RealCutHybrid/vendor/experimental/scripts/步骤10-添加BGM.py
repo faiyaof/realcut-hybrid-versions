@@ -138,6 +138,29 @@ def create_bgm_segment(mat_id, duration_us, total_dur_us):
     }, use_dur
 
 
+def create_bgm_segments(mat_id, duration_us, total_dur_us):
+    """循环 BGM 素材，连续覆盖时间线且不越过结尾。"""
+    duration_us = int(duration_us or 0)
+    total_dur_us = int(total_dur_us or 0)
+    if duration_us <= 0 or total_dur_us <= 0:
+        return [], 0
+
+    segments = []
+    target_start = 0
+    while target_start < total_dur_us:
+        segment, use_dur = create_bgm_segment(
+            mat_id,
+            duration_us,
+            total_dur_us - target_start,
+        )
+        if use_dur <= 0:
+            break
+        segment['target_timerange']['start'] = target_start
+        segments.append(segment)
+        target_start += use_dur
+    return segments, target_start
+
+
 def add_bgm(draft_path, bgm_track_idx=10):
     """
     bgm_track_idx: 轨道索引
@@ -168,7 +191,7 @@ def add_bgm(draft_path, bgm_track_idx=10):
         if not result:
             return False
         mat_id, bgm_dur = result
-        seg_data, use_dur = create_bgm_segment(mat_id, bgm_dur, total_dur)
+        bgm_segments, use_dur = create_bgm_segments(mat_id, bgm_dur, total_dur)
 
     elif bgm_track_idx >= 11:
         print(f'自定义BGM文件不存在: {info["path"] if info else bgm_track_idx}')
@@ -204,42 +227,22 @@ def add_bgm(draft_path, bgm_track_idx=10):
         draft['materials']['audios'].append(bgm_audio)
 
         bgm_dur = bgm_audio.get('duration', total_dur)
-        use_dur = min(total_dur, bgm_dur)
+        bgm_segments, use_dur = create_bgm_segments(
+            bgm_audio['id'], bgm_dur, total_dur
+        )
 
-        seg_data = {
-            "caption_info": None, "cartoon": False, "clip": None,
-            "common_keyframes": [], "enable_adjust": False,
-            "enable_color_correct_adjust": False, "enable_color_curves": True,
-            "enable_color_match_adjust": False, "enable_color_wheels": True,
-            "enable_lut": False, "enable_smart_color_adjust": False,
-            "extra_material_refs": [], "group_id": "", "hdr_settings": None,
-            "id": uid(), "intensifies_audio": False,
-            "is_placeholder": False, "is_tone_modify": False,
-            "keyframe_refs": [], "last_nonzero_volume": 1,
-            "material_id": bgm_audio['id'], "render_index": 0,
-            "responsive_layout": {
-                "enable": False, "horizontal_pos_layout": 0,
-                "size_layout": 0, "target_follow": "",
-                "vertical_pos_layout": 0
-            },
-            "reverse": False,
-            "source_timerange": {"duration": use_dur, "start": 0},
-            "speed": 1,
-            "target_timerange": {"duration": use_dur, "start": 0},
-            "template_id": "", "template_scene": "default",
-            "track_attribute": 0, "track_render_index": 0,
-            "uniform_scale": {"on": True, "value": 1.0},
-            "visible": True, "volume": 0.177827941
-        }
+    if not bgm_segments:
+        print('BGM 时长无效或时间线为空')
+        return False
 
     print(f'BGM 原长: {bgm_dur/1000000:.1f}s')
-    print(f'实际使用: {use_dur/1000000:.1f}s')
+    print(f'时间线覆盖: {use_dur/1000000:.1f}s ({len(bgm_segments)} 段)')
 
     # 添加到新轨道
     draft['tracks'].append({
         "attribute": 0, "flag": 0, "id": uid(),
         "is_default_name": True, "name": "",
-        "segments": [seg_data], "type": "audio"
+        "segments": bgm_segments, "type": "audio"
     })
 
     draft['duration'] = total_dur

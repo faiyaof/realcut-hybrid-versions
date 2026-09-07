@@ -9,3 +9,4 @@ build/
 dist/
 .venv-build/
 *.iss.sig
+web_queue.json.lock

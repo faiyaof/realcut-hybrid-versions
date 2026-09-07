@@ -57,6 +57,8 @@ def _deepseek_text(
             if r.status_code != 200:
                 body = r.text[:300]
                 print(f'  [LLM] DeepSeek API {r.status_code}: {body}')
+                if 400 <= r.status_code < 500 and r.status_code != 429:
+                    return None
                 if attempt < max_retries:
                     continue
                 return None
@@ -121,8 +123,17 @@ def llm_text_with_provider(
     system: Optional[str] = None,
     temperature: float = 0.1,
     json_mode: bool = False,
+    deepseek_timeout: int = 60,
+    deepseek_max_retries: int = 2,
 ) -> tuple[Optional[str], str]:
-    content = _deepseek_text(prompt, system=system, temperature=temperature, json_mode=json_mode)
+    content = _deepseek_text(
+        prompt,
+        system=system,
+        temperature=temperature,
+        json_mode=json_mode,
+        timeout=deepseek_timeout,
+        max_retries=deepseek_max_retries,
+    )
     if content is not None:
         return content, f'deepseek:{DEEPSEEK_MODEL}'
     content = _qwen_text(prompt, system=system, temperature=temperature)

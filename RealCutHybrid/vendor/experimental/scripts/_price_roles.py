@@ -19,11 +19,26 @@ ORIGINAL_PRICE_KW = ['原价', '吊牌', '专柜', '官方', '牌价', '上万',
                      '三万', '几千', '高价', '太贵', '买不起']
 CURRENT_PRICE_KW = ['上车', '上链接', '开个', '只要', '只需', '到手', '最低', '低价',
                     '便宜', '几十', '几百', '几十块', '百来', '几块', '多少钱']
+PRODUCT_CODE_KW = ['款号', '货号', '型号', '编号', '编码', '商品号', '链接号']
+
+
+def _strip_product_codes(text: str) -> str:
+    keywords = '|'.join(re.escape(keyword) for keyword in PRODUCT_CODE_KW)
+    return re.sub(
+        rf'(?:{keywords})\s*(?:是|为|[:：])?\s*[A-Za-z0-9_-]+',
+        '',
+        text or '',
+        flags=re.I,
+    )
 
 
 def _price_value(text: str) -> Optional[float]:
+    text = _strip_product_codes(text)
     values = []
-    for m in re.finditer(r'(?<!\d)(\d+(?:[.,，]\d+)?)\s*(万|w|W|千|k|K|元|块钱|块)?', text or ''):
+    for m in re.finditer(
+        r'(?<![A-Za-z0-9])(\d+(?:[.,]\d+)?)\s*(万|w|W|千|k|K|元|块钱|块)?(?![A-Za-z0-9])',
+        text or '',
+    ):
         try:
             n = float(m.group(1).replace(',', '').replace('，', ''))
             unit = (m.group(2) or '').lower()
@@ -44,7 +59,9 @@ def _price_value(text: str) -> Optional[float]:
 def _has_price(text: str) -> bool:
     if not text:
         return False
-    return _price_value(text) is not None or any(k in text for k in PRICE_MARK_KW)
+    price_text = _strip_product_codes(text)
+    has_explicit_mark = any(k in price_text for k in PRICE_MARK_KW)
+    return _price_value(price_text) is not None or has_explicit_mark
 
 
 def _clean_role_ids(raw_ids, sentences, max_len):
@@ -72,13 +89,20 @@ def _extract_json_object(content):
     return text[start:end + 1]
 
 
-def detect_price_roles(sentences):
+def detect_price_roles(sentences, allowed_indices=None):
     """Return (original_idx, current_idx, source)."""
-    candidates = [i for i, s in enumerate(sentences) if _has_price(s.get('text', ''))]
+    allowed = set(range(len(sentences))) if allowed_indices is None else set(allowed_indices)
+    candidates = [
+        i for i, s in enumerate(sentences)
+        if i in allowed and _has_price(s.get('text', ''))
+    ]
     if not candidates:
         return None, None, 'none'
 
-    numbered = '\n'.join(f'{i}. {s.get("text", "")}' for i, s in enumerate(sentences))
+    numbered = '\n'.join(
+        f'{i}. {sentences[i].get("text", "")}' for i in sorted(allowed)
+        if 0 <= i < len(sentences)
+    )
     prompt = (
         '你是直播带货口播审片员。下面是视频全部 ASR 字幕，按编号排列。\n'
         '任务：找出原价句（吊牌/专柜/原价，可能是几千或上万）和上车价句（主播最终给的最低价/上车价）。\n'
@@ -86,14 +110,28 @@ def detect_price_roles(sentences):
         '只输出 JSON，不要解释：{"original_price": [句子ID], "current_price": [句子ID], "reason": "简短判断"}'
         f'\n字幕：\n{numbered}'
     )
-    content, provider = llm_text_with_provider(prompt, temperature=0.1, json_mode=True)
+    content, provider = llm_text_with_provider(
+        prompt,
+        temperature=0.1,
+        json_mode=True,
+        deepseek_timeout=30,
+        deepseek_max_retries=0,
+    )
     orig_id = curr_id = None
     source = 'fallback'
     if content:
         try:
             j = json.loads(_extract_json_object(content) or content.strip().strip('`'))
-            origs = _clean_role_ids(j.get('original_price') or j.get('original'), sentences, len(sentences))
-            currs = _clean_role_ids(j.get('current_price') or j.get('current'), sentences, len(sentences))
+            origs = [
+                i for i in _clean_role_ids(
+                    j.get('original_price') or j.get('original'), sentences, len(sentences)
+                ) if i in allowed
+            ]
+            currs = [
+                i for i in _clean_role_ids(
+                    j.get('current_price') or j.get('current'), sentences, len(sentences)
+                ) if i in allowed
+            ]
             if origs and currs:
                 orig_id, curr_id = origs[0], currs[0]
                 source = provider

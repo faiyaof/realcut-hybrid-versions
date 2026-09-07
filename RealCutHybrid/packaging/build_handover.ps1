@@ -2,6 +2,10 @@
 param(
     [string]$RuntimeSource = "",
     [string]$Version = (Get-Date -Format "yyyy.MM.dd"),
+    [string]$SigningCertificateThumbprint = $env:REALCUT_SIGNING_CERT_THUMBPRINT,
+    [string]$TimestampServer = "http://timestamp.digicert.com",
+    [switch]$Release,
+    [switch]$ConfirmCredentialsRotated,
     [switch]$SkipCompile,
     [switch]$SkipInstaller,
     [switch]$SkipHashes,
@@ -10,6 +14,18 @@ param(
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
+
+if ($Release) {
+    if (-not $ConfirmCredentialsRotated) {
+        throw "Release build refused: rotate the previously exposed API Key and AK/SK, then pass -ConfirmCredentialsRotated."
+    }
+    if ([string]::IsNullOrWhiteSpace($SigningCertificateThumbprint)) {
+        throw "Release build refused: provide -SigningCertificateThumbprint or REALCUT_SIGNING_CERT_THUMBPRINT."
+    }
+    if ($SkipInstaller -or $SkipHashes) {
+        throw "Release build refused: -SkipInstaller and -SkipHashes are not allowed with -Release."
+    }
+}
 
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $WorkspaceRoot = (Resolve-Path (Join-Path $ProjectRoot "..")).Path
@@ -51,6 +67,65 @@ function Copy-Tree([string]$Source, [string]$Destination) {
     if ($LASTEXITCODE -gt 7) {
         throw "Robocopy failed ($LASTEXITCODE): $Source"
     }
+}
+
+function Resolve-CodeSigningCertificate([string]$Thumbprint) {
+    $normalized = ($Thumbprint -replace '[^0-9a-fA-F]', '').ToUpperInvariant()
+    if ($normalized.Length -ne 40) {
+        throw "Code-signing certificate thumbprint must contain 40 hexadecimal characters."
+    }
+    $certificate = $null
+    foreach ($store in @("Cert:\CurrentUser\My", "Cert:\LocalMachine\My")) {
+        $candidate = Join-Path $store $normalized
+        if (Test-Path -LiteralPath $candidate) {
+            $certificate = Get-Item -LiteralPath $candidate
+            break
+        }
+    }
+    if ($null -eq $certificate) {
+        throw "Code-signing certificate was not found in CurrentUser or LocalMachine My store: $normalized"
+    }
+    if (-not $certificate.HasPrivateKey) {
+        throw "Code-signing certificate has no accessible private key: $normalized"
+    }
+    $now = Get-Date
+    if ($now -lt $certificate.NotBefore -or $now -gt $certificate.NotAfter) {
+        throw "Code-signing certificate is not currently valid: $normalized"
+    }
+    $codeSigningOid = "1.3.6.1.5.5.7.3.3"
+    $supportsCodeSigning = @($certificate.EnhancedKeyUsageList) |
+        Where-Object { $_.ObjectId.Value -eq $codeSigningOid }
+    if (-not $supportsCodeSigning) {
+        throw "Certificate is not valid for code signing: $normalized"
+    }
+    return $certificate
+}
+
+function Invoke-CodeSigning(
+    [string]$Path,
+    [Security.Cryptography.X509Certificates.X509Certificate2]$Certificate
+) {
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+        throw "Cannot sign missing file: $Path"
+    }
+    $parameters = @{
+        FilePath = $Path
+        Certificate = $Certificate
+        HashAlgorithm = "SHA256"
+    }
+    if (-not [string]::IsNullOrWhiteSpace($TimestampServer)) {
+        $parameters.TimestampServer = $TimestampServer
+    }
+    $signature = Set-AuthenticodeSignature @parameters
+    if ($signature.Status -ne [Management.Automation.SignatureStatus]::Valid) {
+        throw "Authenticode signing failed for $Path ($($signature.Status)): $($signature.StatusMessage)"
+    }
+    Write-Host "Signed: $Path"
+}
+
+$SigningCertificate = $null
+if (-not [string]::IsNullOrWhiteSpace($SigningCertificateThumbprint)) {
+    $SigningCertificate = Resolve-CodeSigningCertificate $SigningCertificateThumbprint
 }
 
 if (-not (Test-Path -LiteralPath $Python -PathType Leaf)) {
@@ -123,6 +198,11 @@ if (-not (Test-Path -LiteralPath $PrimaryExe -PathType Leaf)) {
 Reset-Directory $PackageRoot (Join-Path $ProjectRoot "dist")
 $BinDir = Join-Path $PackageRoot "bin"
 Copy-Tree $CompiledDist $BinDir
+if ($null -ne $SigningCertificate) {
+    # Nuitka multidist uses one launcher under multiple names. Sign it once so
+    # every copied alias carries the same timestamped Authenticode signature.
+    Invoke-CodeSigning (Join-Path $BinDir "web_server.exe") $SigningCertificate
+}
 foreach ($entry in $entryPoints) {
     $target = Join-Path $BinDir ($entry.Name + ".exe")
     if ($entry.Name -ne "web_server") {
@@ -186,19 +266,6 @@ if (Get-ChildItem -LiteralPath $ScriptDataDir -Filter "*.py" -File -ErrorAction 
     throw "Source leak detected under vendor\experimental\scripts"
 }
 
-if (-not $SkipHashes) {
-    $HashFile = Join-Path $PackageRoot "SHA256SUMS.txt"
-    $lines = Get-ChildItem -LiteralPath $PackageRoot -Recurse -File |
-        Where-Object { $_.FullName -ne $HashFile } |
-        Sort-Object FullName |
-        ForEach-Object {
-            $relative = $_.FullName.Substring($PackageRoot.Length + 1).Replace('\', '/')
-            $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
-            "$hash  $relative"
-        }
-    [IO.File]::WriteAllLines($HashFile, $lines, [Text.UTF8Encoding]::new($false))
-}
-
 $env:REALCUT_ROOT = $PackageRoot
 $env:REALCUT_BIN_DIR = $BinDir
 $env:REALCUT_PYTHON_RUNTIME = Join-Path $PackageRoot "runtime\python"
@@ -215,10 +282,26 @@ $env:OFFICECLI_BIN = Join-Path $PackageRoot "runtime\officecli\officecli.exe"
 $env:PATH = (Join-Path $PackageRoot "runtime\ffmpeg") + ";" + $env:PATH
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
+$env:PYTHONDONTWRITEBYTECODE = "1"
 
 & (Join-Path $BinDir "realcut_hybrid.exe") check
 if ($LASTEXITCODE -ne 0) {
     throw "Packaged environment check failed with exit code $LASTEXITCODE"
+}
+
+# Run the packaged smoke check before freezing the file manifest. This keeps
+# every payload file covered even if a future dependency writes a cache file.
+if (-not $SkipHashes) {
+    $HashFile = Join-Path $PackageRoot "SHA256SUMS.txt"
+    $lines = Get-ChildItem -LiteralPath $PackageRoot -Recurse -File |
+        Where-Object { $_.FullName -ne $HashFile } |
+        Sort-Object FullName |
+        ForEach-Object {
+            $relative = $_.FullName.Substring($PackageRoot.Length + 1).Replace('\', '/')
+            $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            "$hash  $relative"
+        }
+    [IO.File]::WriteAllLines($HashFile, $lines, [Text.UTF8Encoding]::new($false))
 }
 
 if (-not $SkipInstaller) {
@@ -253,15 +336,34 @@ if (-not $SkipInstaller) {
     } finally {
         & subst.exe "${substLetter}:" /D
     }
-    $installerHashFile = Join-Path $InstallerOutput "SHA256SUMS.txt"
-    $installerHashes = Get-ChildItem -LiteralPath $InstallerOutput -File |
-        Where-Object { $_.FullName -ne $installerHashFile } |
-        Sort-Object Name |
-        ForEach-Object {
-            $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
-            "$hash  $($_.Name)"
-        }
-    [IO.File]::WriteAllLines($installerHashFile, $installerHashes, [Text.UTF8Encoding]::new($false))
+    $setupFiles = @(Get-ChildItem -LiteralPath $InstallerOutput -Filter "*-Setup.exe" -File)
+    if ($setupFiles.Count -ne 1) {
+        throw "Expected exactly one generated Setup.exe, found $($setupFiles.Count)"
+    }
+    if ($null -ne $SigningCertificate) {
+        Invoke-CodeSigning $setupFiles[0].FullName $SigningCertificate
+    }
+
+    Copy-Item -LiteralPath (Join-Path $PSScriptRoot "verify_installer.ps1") `
+        -Destination (Join-Path $InstallerOutput "Verify-RealCutHybrid.ps1") -Force
+    Copy-Item -LiteralPath (Join-Path $PSScriptRoot "Verify-RealCutHybrid.cmd") `
+        -Destination $InstallerOutput -Force
+
+    if (-not $SkipHashes) {
+        $installerHashFile = Join-Path $InstallerOutput "SHA256SUMS.txt"
+        $installerHashes = Get-ChildItem -LiteralPath $InstallerOutput -File |
+            Where-Object { $_.FullName -ne $installerHashFile } |
+            Sort-Object Name |
+            ForEach-Object {
+                $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+                "$hash  $($_.Name)"
+            }
+        [IO.File]::WriteAllLines($installerHashFile, $installerHashes, [Text.UTF8Encoding]::new($false))
+
+        & (Join-Path $PSScriptRoot "verify_installer.ps1") `
+            -InstallerDirectory $InstallerOutput `
+            -RequireSignature:$Release
+    }
 }
 
 Write-Host "Handover package: $PackageRoot"

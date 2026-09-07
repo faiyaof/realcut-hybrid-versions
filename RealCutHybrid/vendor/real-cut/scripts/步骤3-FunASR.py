@@ -135,29 +135,7 @@ def _load_cached_asr(dp, audio):
         return None
     return None
 
-def _recognize_with_engine(audio, engine):
-    """按引擎识别：'volc' 走火山(云)，否则 FunASR(本地)。
-    返回 (words, sentences) 或 (None, None)。"""
-    if engine == 'volc':
-        import _volc_asr
-        return _volc_asr.recognize_audio(audio)
-    # FunASR 本地
-    model = _load_model()
-    try:
-        res = model.generate(input=str(audio), batch_size_s=300,
-                             sentence_timestamp=True, disable_pbar=True)
-    except TypeError:
-        res = model.generate(input=str(audio), batch_size_s=300, sentence_timestamp=True)
-    r = res[0] if res else {}
-    full_text = (r.get('text') or '').replace(' ', '')
-    sentence_info = r.get('sentence_info')
-    timestamp = r.get('timestamp') or []
-    if sentence_info:
-        return _build_from_sentence_info(sentence_info)
-    return _build_from_flat(full_text, timestamp)
-
-
-def _do_asr_legacy(draft_path, auto_open=True, engine='funasr'):
+def _do_asr_legacy(draft_path, auto_open=True):
     dp = Path(draft_path)
     if not dp.exists():
         print(f'草稿目录不存在: {dp}')
@@ -168,12 +146,24 @@ def _do_asr_legacy(draft_path, auto_open=True, engine='funasr'):
         return False
     print(f'音频: {audio.name}')
 
-    if engine == 'volc':
-        print('识别引擎: 火山 Seed-ASR 2.0（云端）')
-    else:
-        print('识别引擎: FunASR（本地）')
+    model = _load_model()
     print('识别中...')
-    words, sentences = _recognize_with_engine(audio, engine)
+    try:
+        res = model.generate(input=str(audio), batch_size_s=300,
+                             sentence_timestamp=True, disable_pbar=True)
+    except TypeError:
+        # 老版本 funasr 不支持 disable_pbar
+        res = model.generate(input=str(audio), batch_size_s=300, sentence_timestamp=True)
+
+    r = res[0] if res else {}
+    full_text = (r.get('text') or '').replace(' ', '')
+    sentence_info = r.get('sentence_info')
+    timestamp = r.get('timestamp') or []
+
+    if sentence_info:
+        words, sentences = _build_from_sentence_info(sentence_info)
+    else:
+        words, sentences = _build_from_flat(full_text, timestamp)
 
     if not sentences:
         print('识别结果为空')
@@ -196,7 +186,7 @@ def _do_asr_legacy(draft_path, auto_open=True, engine='funasr'):
     return True
 
 
-def do_asr(draft_path, auto_open=True, engine='funasr'):
+def do_asr(draft_path, auto_open=True):
     dp = Path(draft_path)
     if not dp.exists():
         print(f'草稿目录不存在: {dp}')
@@ -207,7 +197,7 @@ def do_asr(draft_path, auto_open=True, engine='funasr'):
         return False
     cached = _load_cached_asr(dp, audio)
     if cached is None:
-        return _do_asr_legacy(draft_path, auto_open=auto_open, engine=engine)
+        return _do_asr_legacy(draft_path, auto_open=auto_open)
 
     print(f'音频: {audio.name}')
     print('复用已有 ASR 缓存（音频未变化）...')
@@ -247,16 +237,9 @@ def _open_draft(dp: Path):
 
 
 if __name__ == '__main__':
-    args = sys.argv[1:]
-    pos = [a for a in args if not a.startswith('--')]
+    pos = [a for a in sys.argv[1:] if not a.startswith('--')]
     if not pos:
         print(__doc__)
         sys.exit(1)
-    auto_open = '--no-open' not in args
-    engine = 'volc'
-    if '--engine' in args:
-        ei = args.index('--engine')
-        engine = args[ei + 1] if ei + 1 < len(args) else 'volc'
-    elif '--engine volc' in ' '.join(args):   # 兼容单参数形式
-        engine = 'volc'
-    sys.exit(0 if do_asr(pos[0], auto_open=auto_open, engine=engine) else 1)
+    auto_open = '--no-open' not in sys.argv
+    sys.exit(0 if do_asr(pos[0], auto_open=auto_open) else 1)

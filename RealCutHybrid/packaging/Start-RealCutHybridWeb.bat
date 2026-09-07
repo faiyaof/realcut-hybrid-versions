@@ -9,6 +9,6 @@ if not exist "%REALCUT_ROOT%\bin\web_server.exe" (
   exit /b 1
 )
 
-start "RealCutHybrid Web" /min "%REALCUT_ROOT%\bin\web_server.exe" --port 8766
+start "RealCutHybrid Web" /min "%REALCUT_ROOT%\bin\web_server.exe" --host 127.0.0.1 --port 8766
 timeout /t 4 /nobreak >nul
 start "" "http://127.0.0.1:8766/"

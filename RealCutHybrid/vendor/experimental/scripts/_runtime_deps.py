@@ -51,6 +51,11 @@ def configure_external_runtime() -> None:
     if _CONFIGURED:
         return
 
+    # Compiled entry points may be launched directly instead of through the
+    # deployment batch file. Keep the shipped runtime immutable in both cases.
+    os.environ.setdefault("PYTHONDONTWRITEBYTECODE", "1")
+    sys.dont_write_bytecode = True
+
     root = _application_root()
     runtime = Path(
         os.environ.get("REALCUT_PYTHON_RUNTIME", root / "runtime" / "python")

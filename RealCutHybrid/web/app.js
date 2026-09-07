@@ -15,7 +15,11 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => (
   { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]
 ));
 const api = async (path, options = {}) => {
-  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-RealCut-Request': '1',
+    ...(options.headers || {}),
+  };
   const response = await fetch(path, { ...options, headers });
   let data = {};
   try { data = await response.json(); } catch {}
@@ -79,10 +83,15 @@ function renderEnvironment(environment = state.bootstrap?.environment) {
 function renderApiSettings(settings = state.bootstrap?.settings) {
   if (!settings) return;
   const providers = [
-    ['deepseek_api_key', '#deepseek-key-status', '#deepseek-api-key'],
-    ['dashscope_api_key', '#dashscope-key-status', '#dashscope-api-key'],
+    ['deepseek_api_key', '#deepseek-key-status', '#deepseek-api-key', '输入新的 API Key'],
+    ['dashscope_api_key', '#dashscope-key-status', '#dashscope-api-key', '输入新的 API Key'],
+    ['volcengine_api_key', '#volcengine-api-key-status', '#volcengine-api-key', '输入新的 API Key'],
+    ['volcengine_access_key_id', '#volcengine-access-key-id-status', '#volcengine-access-key-id', '输入新的 Access Key ID'],
+    ['volcengine_secret_access_key', '#volcengine-secret-access-key-status', '#volcengine-secret-access-key', '输入新的 Secret Access Key'],
+    ['volcengine_tos_bucket', '#volcengine-tos-bucket-status', '#volcengine-tos-bucket', '输入 Bucket 名称'],
+    ['volcengine_tos_region', '#volcengine-tos-region-status', '#volcengine-tos-region', '例如 cn-beijing'],
   ];
-  providers.forEach(([key, statusSelector, inputSelector]) => {
+  providers.forEach(([key, statusSelector, inputSelector, emptyPlaceholder]) => {
     const status = settings[key] || {};
     const node = $(statusSelector);
     const input = $(inputSelector);
@@ -90,11 +99,20 @@ function renderApiSettings(settings = state.bootstrap?.settings) {
       node.textContent = status.configured ? `已配置 · ${status.source}` : '未配置';
       node.classList.toggle('configured', status.configured === true);
     }
-    if (input) input.placeholder = status.configured ? '留空则保持现有 Key' : '输入新的 API Key';
+    if (input) input.placeholder = status.configured ? '留空则保持现有配置' : emptyPlaceholder;
   });
   const model = $('#deepseek-model');
   if (model && document.activeElement !== model) {
     model.value = settings.deepseek_model || 'deepseek-chat';
+  }
+  const volcOption = $('#job-asr-engine')?.querySelector('option[value="volc"]');
+  if (volcOption) {
+    const ready = settings.volcengine_asr?.configured === true;
+    volcOption.disabled = !ready;
+    volcOption.textContent = ready
+      ? '火山 Seed-ASR（云端，更准）'
+      : '火山 Seed-ASR（请先在设置中配置）';
+    if (!ready && $('#job-asr-engine').value === 'volc') $('#job-asr-engine').value = 'funasr';
   }
 }
 
@@ -238,6 +256,7 @@ function renderDetail(task) {
       </div>
       <div><span>草稿</span><strong>${esc(task.draft_name || '尚未创建')}</strong></div>
       <div><span>进度</span><strong>${Math.min(100, Math.max(0, Number(task.progress || 0)))}%</strong></div>
+      <div><span>ASR</span><strong>${esc(task.asr_actual_engine ? `${task.asr_engine} → ${task.asr_actual_engine}` : task.asr_engine || 'funasr')}</strong></div>
       <div><span>更新</span><strong>${formatTime(task.updated_at)}</strong></div>
       <div><span>当前断点</span><strong>${esc(task.current_step ? `步骤 ${task.current_step}` : '未开始')}</strong></div>
     </div>
@@ -371,9 +390,9 @@ async function actionJob(action, id) {
   }
   if (action === 'retry') {
     if (!task || !task.video) throw new Error('找不到源视频');
-    await api('/api/run', {
+    await api(`/api/tasks/${encodeURIComponent(id)}/resume`, {
       method: 'POST',
-      body: JSON.stringify({ path: task.video, options: { fresh: true, force: true } }),
+      body: JSON.stringify({ options: { fresh: true, force: true } }),
     });
     await refresh();
     toast('已提交重跑任务');
@@ -403,6 +422,7 @@ function openJobModal() {
   $('#job-smooth-audio').checked = true;
   $('#job-review-subtitles').checked = true;
   $('#job-visual-match').checked = true;
+  $('#job-silence-pruning').checked = false;
   $('#job-dry-run').checked = false;
   $('#job-no-close').checked = false;
   $('#job-no-restore').checked = false;
@@ -525,6 +545,7 @@ async function createJob() {
     smooth_audio: $('#job-smooth-audio').checked,
     review_subtitles: $('#job-review-subtitles').checked,
     visual_match: $('#job-visual-match').checked,
+    silence_pruning: $('#job-silence-pruning').checked,
     dry_run: $('#job-dry-run').checked,
     no_close_jianying: $('#job-no-close').checked,
     no_restore: $('#job-no-restore').checked,
@@ -585,6 +606,17 @@ async function saveApiSettings(clearKeys = false) {
   const dashscope = $('#dashscope-api-key')?.value.trim() || '';
   if (deepseek) payload.deepseek_api_key = deepseek;
   if (dashscope) payload.dashscope_api_key = dashscope;
+  const volcFields = [
+    ['volcengine_api_key', '#volcengine-api-key'],
+    ['volcengine_access_key_id', '#volcengine-access-key-id'],
+    ['volcengine_secret_access_key', '#volcengine-secret-access-key'],
+    ['volcengine_tos_bucket', '#volcengine-tos-bucket'],
+    ['volcengine_tos_region', '#volcengine-tos-region'],
+  ];
+  volcFields.forEach(([key, selector]) => {
+    const value = $(selector)?.value.trim() || '';
+    if (value) payload[key] = value;
+  });
   if (clearKeys) payload.clear_keys = true;
 
   const data = await api('/api/settings', {
@@ -595,6 +627,7 @@ async function saveApiSettings(clearKeys = false) {
   state.bootstrap.environment = data.environment;
   $('#deepseek-api-key').value = '';
   $('#dashscope-api-key').value = '';
+  volcFields.forEach(([, selector]) => { if ($(selector)) $(selector).value = ''; });
   renderApiSettings(data.settings);
   renderEnvironment(data.environment);
   window.lucide?.createIcons();

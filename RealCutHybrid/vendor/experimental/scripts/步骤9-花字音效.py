@@ -472,6 +472,14 @@ for ti, sidx, sfx_key in huazi_items:
 
         sfx_orig_dur = sfx_obj['duration']
 
+        remaining_draft_dur = max(0, int(draft.get('duration', 0) or 0) - seg_start)
+
+        sfx_dur = min(sfx_orig_dur, seg_dur, remaining_draft_dur)
+
+        if sfx_dur <= 0:
+
+            continue
+
         sfx_seg = {
 
             'caption_info': None, 'cartoon': False, 'clip': None,
@@ -504,11 +512,11 @@ for ti, sidx, sfx_key in huazi_items:
 
             'reverse': False,
 
-            'source_timerange': {'duration': sfx_orig_dur, 'start': 0},
+            'source_timerange': {'duration': sfx_dur, 'start': 0},
 
             'speed': 1.0,
 
-            'target_timerange': {'duration': sfx_orig_dur, 'start': seg_start},
+            'target_timerange': {'duration': sfx_dur, 'start': seg_start},
 
             'template_id': '', 'template_scene': '',
 

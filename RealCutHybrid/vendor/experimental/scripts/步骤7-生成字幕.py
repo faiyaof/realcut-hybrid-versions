@@ -773,6 +773,176 @@ def ai_review_transcript(sentences, glossary=None):
         return None
 
 
+def parse_ai_transcript_batch(content, sentences, glossary=None, max_chars=10,
+                              review_enabled=True):
+    """解析批量审校/断句响应；单句异常时仅对该句回退本地断句。"""
+    glossary = glossary or {}
+    try:
+        content = (content or '').strip()
+        if content.startswith('```'):
+            content = re.sub(r'^```\w*\n?|\n?```$', '', content)
+        payload = json.loads(content)
+        if isinstance(payload, dict):
+            batch = None
+            for key in ('items', 'sentences', 'results', 'data'):
+                if key in payload:
+                    batch = payload[key]
+                    break
+            if batch is None and any(key in payload for key in ('index', 'text', 'sentence', 'segments')):
+                batch = [payload]
+            payload = batch
+        elif isinstance(payload, str):
+            payload = [payload]
+        if not isinstance(payload, list):
+            return None
+
+        item_by_index = {}
+        without_index = []
+        sentence_count = len(sentences)
+        for position, item in enumerate(payload):
+            if isinstance(item, str):
+                without_index.append((position, {'text': item}))
+                continue
+            if not isinstance(item, dict):
+                continue
+            item_index = item.get('index')
+            try:
+                item_index = int(item_index) if item_index is not None else None
+            except (TypeError, ValueError):
+                item_index = None
+            if item_index is not None and 1 <= item_index <= sentence_count:
+                item_by_index.setdefault(item_index - 1, item)
+            else:
+                without_index.append((position, item))
+
+        free_indexes = [i for i in range(sentence_count) if i not in item_by_index]
+        for position, item in without_index:
+            if position < sentence_count and position not in item_by_index:
+                target_index = position
+                if target_index in free_indexes:
+                    free_indexes.remove(target_index)
+            elif free_indexes:
+                target_index = free_indexes.pop(0)
+            else:
+                break
+            item_by_index[target_index] = item
+
+        results = []
+        for i in range(sentence_count):
+            item = item_by_index.get(i, {})
+            original = str(sentences[i].get('text', '') or '').strip()
+            candidate = str(item.get('text') or item.get('sentence') or '').strip()
+            review_reason = ''
+            if review_enabled:
+                accepted, reason = validate_review_candidate(original, candidate, glossary)
+                if accepted:
+                    final_text = candidate
+                    review_reason = reason
+                else:
+                    final_text = original
+            else:
+                final_text = original
+
+            raw_segments = item.get('segments') or []
+            segments = ([str(seg).strip() for seg in raw_segments if str(seg).strip()]
+                        if isinstance(raw_segments, list) else [])
+            segments_valid = bool(segments)
+            if segments_valid:
+                joined = ''.join(segments)
+                segments_valid, _ = validate_review_candidate(final_text, joined, glossary)
+
+            if segments_valid:
+                normalized_segments = []
+                for segment in segments:
+                    if len(segment) <= max_chars:
+                        normalized_segments.append(segment)
+                    else:
+                        normalized_segments.extend(split_text_only(segment))
+                segments = normalized_segments
+                segments_valid = bool(segments)
+
+            keywords = item.get('keywords') or []
+            if segments_valid and isinstance(keywords, list):
+                keywords = [str(keyword).strip() for keyword in keywords if str(keyword).strip()]
+            else:
+                segments = split_text_only(final_text)
+                keywords = []
+
+            results.append({
+                'text': final_text,
+                'segments': segments,
+                'keywords': keywords,
+                'review_reason': review_reason,
+                'used_local_split': not segments_valid,
+            })
+        return results
+    except Exception:
+        return None
+
+
+def ai_review_segment_transcript(sentences, glossary=None, max_chars=10,
+                                 review_enabled=True):
+    """一次 LLM 请求完成整段审校、逐句断句和关键词提取。"""
+    glossary = glossary or {}
+    if not sentences:
+        return None
+    preserve = [str(x) for x in glossary.get('preserve', []) if x]
+    replace_entries = [
+        entry for entry in glossary.get('replace', [])
+        if isinstance(entry, dict) and entry.get('wrong') and entry.get('right')
+    ]
+    numbered = '\n'.join(f'{i + 1}. {sent.get("text", "")}'
+                         for i, sent in enumerate(sentences))
+    if review_enabled:
+        review_instruction = (
+            'text 字段只允许修正明显错别字、把口语数字转成阿拉伯数字、调整明显不通顺的词序；'
+            '不得增删内容、不得改变原意。'
+        )
+    else:
+        review_instruction = 'text 字段必须逐字复制对应输入，不做任何修正。'
+    prompt = (
+        '你是一位拥有多年电商直播话术编辑经验的字幕编辑。请一次性处理下面所有编号句子。\n'
+        f'1. 审校：{review_instruction}\n'
+        f'2. 断句：为每个 text 生成 segments，每段不超过{max_chars}个字；必须保留 text 的全部文字和顺序，'
+        '不得跨编号合并。\n'
+        '3. 关键词：每句提取0-4个最值得标黄的价格、面料、卖点或互动词，必须出现在该句 text 中；'
+        '不要单字虚词。\n'
+        '4. 合规：不得输出“南沙港”“中检仓”“泰国”等违禁词，也不得输出“最”“第一”“绝对”'
+        '“必买”“秒杀”等过于绝对的词。\n'
+        '只输出 JSON，不要解释。items 数量、index 和顺序必须与输入完全一致：\n'
+        '{"items":[{"index":1,"text":"审校后的整句","segments":["短句1","短句2"],'
+        '"keywords":["关键词"]}]}\n'
+    )
+    if preserve:
+        prompt += '领域保护词必须原样保留：' + '、'.join(preserve) + '\n'
+    if replace_entries:
+        prompt += '固定替换必须执行：' + '、'.join(
+            f'{entry["wrong"]}→{entry["right"]}' for entry in replace_entries
+        ) + '\n'
+    prompt += '待处理文本：\n' + numbered
+
+    from _llm import llm_text_with_provider
+    content, provider = llm_text_with_provider(
+        prompt,
+        temperature=0.1,
+        json_mode=True,
+        deepseek_timeout=30,
+        deepseek_max_retries=0,
+    )
+    if not content:
+        print('  [AI] 批量字幕处理 LLM 不可用，全部回退本地断句')
+        return None
+    items = parse_ai_transcript_batch(
+        content, sentences, glossary, max_chars=max_chars,
+        review_enabled=review_enabled,
+    )
+    if items is None:
+        print('  [AI] 批量字幕响应无效，全部回退本地断句')
+        return None
+    print(f'  [AI] 批量字幕模型: {provider}（1次请求处理{len(items)}句）')
+    return items, provider
+
+
 def generate_subs_from_full_audio(dp, draft, review_enabled=True):
     """v4 主路径：完整语音轨 ASR → 整段审核 → 按最终时间轴断句生成字幕。"""
     full_path, fingerprint = build_full_voice_audio(dp, draft)
@@ -801,12 +971,13 @@ def generate_subs_from_full_audio(dp, draft, review_enabled=True):
         sent['text'], _glossary_changes = apply_glossary(sent['text'], glossary)
         sent['text'] = chinese_num_to_arabic(sent['text'])
         sent['_after_glossary'] = sent['text']
-    ai_result = ai_review_transcript(full_sentences, glossary) if review_enabled else None
-    reviewed = None
-    review_reasons = {}
+    batch_result = ai_review_segment_transcript(
+        full_sentences, glossary, review_enabled=review_enabled,
+    )
+    batch_items = None
     review_provider = ''
-    if ai_result is not None:
-        reviewed, review_reasons, review_provider = ai_result
+    if batch_result is not None:
+        batch_items, review_provider = batch_result
     subs = []
     ai_keywords_all = []
     review_items = []
@@ -817,8 +988,9 @@ def generate_subs_from_full_audio(dp, draft, review_enabled=True):
         if s_end <= s_start:
             continue
         s_text = sent.get('text', '').strip()
-        if reviewed and idx < len(reviewed) and reviewed[idx]:
-            fixed_text = reviewed[idx].strip()
+        batch_item = batch_items[idx] if batch_items and idx < len(batch_items) else None
+        if batch_item and batch_item.get('text'):
+            fixed_text = batch_item['text'].strip()
             if fixed_text and fixed_text != s_text:
                 print(f'  [AI] 句子{idx + 1}: "{s_text}" -> "{fixed_text}"')
                 s_text = fixed_text
@@ -837,7 +1009,7 @@ def generate_subs_from_full_audio(dp, draft, review_enabled=True):
         text = chinese_num_to_arabic(text)
         final_text = text
         needs_review = False
-        reason = review_reasons.get(idx, '')
+        reason = batch_item.get('review_reason', '') if batch_item else ''
         if reason:
             needs_review = True
         suspicious_hits = [s for s in glossary.get('suspicious', []) if s and (s in final_text or s in sent.get('_after_glossary', ''))]
@@ -857,12 +1029,14 @@ def generate_subs_from_full_audio(dp, draft, review_enabled=True):
 
         sent_words = [w for w in full_words if w['end'] > s_start and w['start'] < s_end]
         known_pieces = split_with_known_golden_quote(text)
-        ai_kws = []
+        ai_kws = batch_item.get('keywords', []) if batch_item else []
         if known_pieces:
             pieces = known_pieces
+        elif batch_item and batch_item.get('text') == text:
+            pieces = batch_item.get('segments') or split_text_only(text)
         else:
-            ai_pieces, ai_kws = ai_segment_text(text)
-            pieces = ai_pieces if ai_pieces else split_text_only(text)
+            pieces = split_text_only(text)
+            ai_kws = []
         if ai_kws:
             ai_keywords_all.extend(ai_kws)
         if not pieces:
@@ -893,7 +1067,8 @@ def generate_subs_from_full_audio(dp, draft, review_enabled=True):
             print(f'  字幕: {pt_clean} ({abs_s / 1000:.1f}s-{abs_e / 1000:.1f}s)')
 
     if review_enabled:
-        write_subtitle_review(dp, review_items, ai_available=reviewed is not None, ai_provider=review_provider)
+        write_subtitle_review(dp, review_items, ai_available=batch_items is not None,
+                              ai_provider=review_provider)
     return subs, ai_keywords_all
 
 
@@ -919,7 +1094,7 @@ def generate_subs_legacy(dp, draft):
 
         # ── 获取文本 ──
         text = ''
-        if source_type == 'asr' and meta.get('text'):
+        if source_type in ('asr', 'asr_filler') and meta.get('text'):
             text = meta['text']
 
         file_asr_words = None
@@ -1043,7 +1218,7 @@ def generate_subs_legacy(dp, draft):
             continue
 
         # ── 分配时间戳 ──
-        use_asr_timing = source_type == 'asr' or (source_type == 'file' and file_asr_sentences)
+        use_asr_timing = source_type in ('asr', 'asr_filler') or (source_type == 'file' and file_asr_sentences)
         if use_asr_timing:
             if source_type == 'file':
                 seg_words = file_asr_words or []
