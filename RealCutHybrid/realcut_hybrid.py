@@ -1034,6 +1034,7 @@ def check_environment() -> int:
         found = shutil.which(exe) is not None
         checks.append((f"命令 {exe}", found, str(shutil.which(exe) or exe)))
     checks.append(("DEEPSEEK_API_KEY 或 DASHSCOPE_API_KEY", bool(os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("DASHSCOPE_API_KEY")), "环境变量；DeepSeek 优先，qwen 兜底"))
+    checks.append(("OPENAI_API_KEY（OpenAI 兼容，可选）", bool(os.environ.get("OPENAI_API_KEY")), f"{os.environ.get('OPENAI_BASE_URL', 'https://api.openai.com/v1')} · {os.environ.get('OPENAI_MODEL', 'gpt-5.5')}"))
     volc_names = (
         "VOLCENGINE_API_KEY",
         "VOLCENGINE_ACCESS_KEY_ID",
@@ -1138,7 +1139,7 @@ def add_common_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--phase2", action="store_true", help="只跑音频平滑+字幕阶段+风格后处理；需要 --draft 或已有任务状态")
     parser.add_argument("--start-from", type=float, help="从指定步骤开始，例如 4")
     parser.add_argument("--stop-after", type=float, help="只跑到指定步骤，例如 6")
-    parser.add_argument("--bgm", type=int, default=10, help="BGM 序号；0 表示关闭，默认 10")
+    parser.add_argument("--bgm", type=int, default=13, help="BGM 序号；0 表示关闭，默认 13（爱的魔法）")
     parser.add_argument("--style", help="完成 12 步后套用指定风格模板")
     parser.add_argument("--enable-flower-text", action="store_true", help="启用步骤9花字音效")
     parser.add_argument("--watermark", action="store_true", help="启用步骤11水印")

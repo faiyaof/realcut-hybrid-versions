@@ -61,7 +61,9 @@ class LlmFallbackTests(unittest.TestCase):
         self.assertEqual(requests.calls, 2)
 
     def test_provider_forwards_deepseek_timeout_and_retry_controls(self):
-        with mock.patch.object(_llm, "_deepseek_text", return_value=None) as deepseek, mock.patch.object(
+        with mock.patch.object(_llm, "_openai_text", return_value=None) as openai, mock.patch.object(
+            _llm, "_deepseek_text", return_value=None
+        ) as deepseek, mock.patch.object(
             _llm, "_qwen_text", return_value="qwen result"
         ):
             result = _llm.llm_text_with_provider(
@@ -72,6 +74,14 @@ class LlmFallbackTests(unittest.TestCase):
             )
 
         self.assertEqual(result, ("qwen result", f"qwen:{_llm.QWEN_FALLBACK_MODEL}"))
+        openai.assert_called_once_with(
+            "test",
+            system=None,
+            temperature=0.1,
+            json_mode=True,
+            timeout=30,
+            max_retries=0,
+        )
         deepseek.assert_called_once_with(
             "test",
             system=None,
@@ -84,6 +94,8 @@ class LlmFallbackTests(unittest.TestCase):
     def test_timeout_does_not_repeat_when_provider_retries_are_disabled(self):
         requests = _TimeoutRequests()
         with mock.patch.dict(os.environ, {"DEEPSEEK_API_KEY": "test-key"}), mock.patch.object(
+            _llm, "_openai_text", return_value=None
+        ), mock.patch.object(
             _llm, "import_external", return_value=requests
         ), mock.patch.object(_llm, "_qwen_text", return_value="fallback"):
             result = _llm.llm_text_with_provider(
@@ -95,6 +107,17 @@ class LlmFallbackTests(unittest.TestCase):
         self.assertEqual(requests.calls, 1)
         self.assertEqual(requests.timeouts, [30])
         self.assertEqual(result, ("fallback", f"qwen:{_llm.QWEN_FALLBACK_MODEL}"))
+
+    def test_provider_prefers_openai_compatible_endpoint(self):
+        with mock.patch.object(_llm, "_openai_text", return_value="openai result") as openai, mock.patch.object(
+            _llm, "_deepseek_text"
+        ) as deepseek, mock.patch.object(_llm, "_qwen_text") as qwen:
+            result = _llm.llm_text_with_provider("test")
+
+        self.assertEqual(result, ("openai result", f"openai:{_llm.OPENAI_MODEL}"))
+        openai.assert_called_once()
+        deepseek.assert_not_called()
+        qwen.assert_not_called()
 
 
 if __name__ == "__main__":

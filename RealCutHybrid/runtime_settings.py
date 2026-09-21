@@ -15,7 +15,10 @@ from typing import Any, MutableMapping
 
 SCHEMA_VERSION = 1
 DEFAULT_DEEPSEEK_MODEL = "deepseek-chat"
+DEFAULT_OPENAI_BASE_URL = "https://api.openai.com/v1"
+DEFAULT_OPENAI_MODEL = "gpt-5.5"
 _SECRET_FIELDS = {
+    "openai_api_key": "OPENAI_API_KEY",
     "deepseek_api_key": "DEEPSEEK_API_KEY",
     "dashscope_api_key": "DASHSCOPE_API_KEY",
     "volcengine_api_key": "VOLCENGINE_API_KEY",
@@ -24,7 +27,7 @@ _SECRET_FIELDS = {
     "volcengine_tos_bucket": "VOLCENGINE_TOS_BUCKET",
     "volcengine_tos_region": "VOLCENGINE_TOS_REGION",
 }
-_MANAGED_ENV = (*_SECRET_FIELDS.values(), "DEEPSEEK_MODEL")
+_MANAGED_ENV = (*_SECRET_FIELDS.values(), "DEEPSEEK_MODEL", "OPENAI_BASE_URL", "OPENAI_MODEL", "OPENAI_LLM_ENABLED")
 _INITIAL_ENV = {name: os.environ.get(name) for name in _MANAGED_ENV}
 _ENTROPY = b"RealCutHybrid/runtime-settings/v1"
 _CRYPTPROTECT_UI_FORBIDDEN = 0x01
@@ -166,6 +169,10 @@ def load_runtime_settings() -> dict[str, str]:
     model = document.get("deepseek_model")
     if isinstance(model, str) and model.strip():
         settings["deepseek_model"] = model.strip()
+    for field, default in (("openai_base_url", DEFAULT_OPENAI_BASE_URL), ("openai_model", DEFAULT_OPENAI_MODEL)):
+        value = document.get(field)
+        if isinstance(value, str) and value.strip():
+            settings[field] = value.strip()
     return settings
 
 
@@ -191,6 +198,17 @@ def _normalize_model(value: Any) -> str:
     return value
 
 
+def _normalize_base_url(value: Any) -> str:
+    if not isinstance(value, str):
+        raise ValueError("Base URL 必须是文本")
+    value = value.strip().rstrip("/")
+    if not value or len(value) > 500 or any(char in value for char in "\r\n\x00"):
+        raise ValueError("Base URL 格式无效")
+    if not (value.startswith("http://") or value.startswith("https://")):
+        raise ValueError("Base URL 必须以 http:// 或 https:// 开头")
+    return value
+
+
 def save_runtime_settings(settings: dict[str, str]) -> None:
     document: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
@@ -199,6 +217,10 @@ def save_runtime_settings(settings: dict[str, str]) -> None:
         "deepseek_model": _normalize_model(
             settings.get("deepseek_model", DEFAULT_DEEPSEEK_MODEL)
         ),
+        "openai_base_url": _normalize_base_url(
+            settings.get("openai_base_url", DEFAULT_OPENAI_BASE_URL)
+        ),
+        "openai_model": _normalize_model(settings.get("openai_model", DEFAULT_OPENAI_MODEL)),
     }
     for field in _SECRET_FIELDS:
         secret = _normalize_secret(settings.get(field, ""))
@@ -229,7 +251,13 @@ def update_runtime_settings(payload: dict[str, Any]) -> dict[str, str]:
                 settings[field] = secret
     if "deepseek_model" in payload:
         settings["deepseek_model"] = _normalize_model(payload["deepseek_model"])
+    if "openai_base_url" in payload:
+        settings["openai_base_url"] = _normalize_base_url(payload["openai_base_url"])
+    if "openai_model" in payload:
+        settings["openai_model"] = _normalize_model(payload["openai_model"])
     settings.setdefault("deepseek_model", DEFAULT_DEEPSEEK_MODEL)
+    settings.setdefault("openai_base_url", DEFAULT_OPENAI_BASE_URL)
+    settings.setdefault("openai_model", DEFAULT_OPENAI_MODEL)
     save_runtime_settings(settings)
     return settings
 
@@ -251,6 +279,13 @@ def apply_runtime_settings(
         or DEFAULT_DEEPSEEK_MODEL
     )
     target["DEEPSEEK_MODEL"] = model
+    target["OPENAI_BASE_URL"] = _normalize_base_url(
+        settings.get("openai_base_url") or _INITIAL_ENV.get("OPENAI_BASE_URL") or DEFAULT_OPENAI_BASE_URL
+    )
+    target["OPENAI_MODEL"] = _normalize_model(
+        settings.get("openai_model") or _INITIAL_ENV.get("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
+    )
+    target["OPENAI_LLM_ENABLED"] = "1" if settings.get("openai_api_key") else (_INITIAL_ENV.get("OPENAI_LLM_ENABLED") or "")
     return target
 
 
@@ -266,6 +301,7 @@ def masked_settings_payload() -> dict[str, Any]:
 
     payload = {
         "deepseek_api_key": status("deepseek_api_key", "DEEPSEEK_API_KEY"),
+        "openai_api_key": status("openai_api_key", "OPENAI_API_KEY"),
         "dashscope_api_key": status("dashscope_api_key", "DASHSCOPE_API_KEY"),
         "volcengine_api_key": status("volcengine_api_key", "VOLCENGINE_API_KEY"),
         "volcengine_access_key_id": status(
@@ -284,6 +320,16 @@ def masked_settings_payload() -> dict[str, Any]:
             settings.get("deepseek_model")
             or _INITIAL_ENV.get("DEEPSEEK_MODEL")
             or DEFAULT_DEEPSEEK_MODEL
+        ),
+        "openai_base_url": (
+            settings.get("openai_base_url")
+            or _INITIAL_ENV.get("OPENAI_BASE_URL")
+            or DEFAULT_OPENAI_BASE_URL
+        ),
+        "openai_model": (
+            settings.get("openai_model")
+            or _INITIAL_ENV.get("OPENAI_MODEL")
+            or DEFAULT_OPENAI_MODEL
         ),
         "storage": "Windows DPAPI（当前用户）",
     }

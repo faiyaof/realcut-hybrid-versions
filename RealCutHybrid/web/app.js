@@ -83,6 +83,7 @@ function renderEnvironment(environment = state.bootstrap?.environment) {
 function renderApiSettings(settings = state.bootstrap?.settings) {
   if (!settings) return;
   const providers = [
+    ['openai_api_key', '#openai-key-status', '#openai-api-key', '输入新的 API Key'],
     ['deepseek_api_key', '#deepseek-key-status', '#deepseek-api-key', '输入新的 API Key'],
     ['dashscope_api_key', '#dashscope-key-status', '#dashscope-api-key', '输入新的 API Key'],
     ['volcengine_api_key', '#volcengine-api-key-status', '#volcengine-api-key', '输入新的 API Key'],
@@ -105,6 +106,10 @@ function renderApiSettings(settings = state.bootstrap?.settings) {
   if (model && document.activeElement !== model) {
     model.value = settings.deepseek_model || 'deepseek-chat';
   }
+  const openaiBase = $('#openai-base-url');
+  if (openaiBase && document.activeElement !== openaiBase) openaiBase.value = settings.openai_base_url || 'https://api.openai.com/v1';
+  const openaiModel = $('#openai-model');
+  if (openaiModel && document.activeElement !== openaiModel) openaiModel.value = settings.openai_model || 'gpt-5.5';
   const volcOption = $('#job-asr-engine')?.querySelector('option[value="volc"]');
   if (volcOption) {
     const ready = settings.volcengine_asr?.configured === true;
@@ -413,7 +418,7 @@ function openJobModal() {
   $('#job-asr-engine').value = 'funasr';
   $('#job-draft').value = '';
   $('#job-style').value = state.bootstrap?.styles?.default || '';
-  $('#job-bgm').value = '10';
+  $('#job-bgm').value = '13';
   $('#job-snapshot').value = 'json';
   $('#job-max-attempts').value = '2';
   $('#job-recursive').checked = true;
@@ -601,7 +606,11 @@ async function saveQueueSettings() {
 async function saveApiSettings(clearKeys = false) {
   const payload = {
     deepseek_model: $('#deepseek-model')?.value.trim() || 'deepseek-chat',
+    openai_base_url: $('#openai-base-url')?.value.trim() || 'https://api.openai.com/v1',
+    openai_model: $('#openai-model')?.value.trim() || 'gpt-5.5',
   };
+  const openai = $('#openai-api-key')?.value.trim() || '';
+  if (openai) payload.openai_api_key = openai;
   const deepseek = $('#deepseek-api-key')?.value.trim() || '';
   const dashscope = $('#dashscope-api-key')?.value.trim() || '';
   if (deepseek) payload.deepseek_api_key = deepseek;
@@ -626,6 +635,7 @@ async function saveApiSettings(clearKeys = false) {
   state.bootstrap.settings = data.settings;
   state.bootstrap.environment = data.environment;
   $('#deepseek-api-key').value = '';
+  $('#openai-api-key').value = '';
   $('#dashscope-api-key').value = '';
   volcFields.forEach(([, selector]) => { if ($(selector)) $(selector).value = ''; });
   renderApiSettings(data.settings);

@@ -113,6 +113,16 @@
             </div>
             <form id="api-settings-form" class="api-settings-form">
               <div class="api-field-grid">
+                <label>OpenAI 兼容 API Key
+                  <span class="api-status" id="openai-key-status">未配置</span>
+                  <input id="openai-api-key" type="password" autocomplete="new-password" placeholder="输入新的 API Key" />
+                </label>
+                <label>OpenAI 兼容 Base URL
+                  <input id="openai-base-url" type="url" autocomplete="url" placeholder="https://api.openai.com/v1" />
+                </label>
+                <label>OpenAI 兼容模型
+                  <input id="openai-model" type="text" autocomplete="off" placeholder="gpt-5.5" />
+                </label>
                 <label>DeepSeek API Key
                   <span class="api-status" id="deepseek-key-status">未配置</span>
                   <input id="deepseek-api-key" type="password" autocomplete="new-password" placeholder="输入新的 API Key" />

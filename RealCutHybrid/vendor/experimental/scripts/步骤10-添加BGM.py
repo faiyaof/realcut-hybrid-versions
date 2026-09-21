@@ -161,14 +161,14 @@ def create_bgm_segments(mat_id, duration_us, total_dur_us):
     return segments, target_start
 
 
-def add_bgm(draft_path, bgm_track_idx=10):
+def add_bgm(draft_path, bgm_track_idx=13):
     """
     bgm_track_idx: 轨道索引
       6 → 水仙（模板）
       7 → Shadowed Whisper（模板）
       8 → Skipping Pebbles（模板）
       9 → 慵懒穿搭分享（模板）
-     10 → 时尚惬意驰放Positive Dream（模板，默认）
+     10 → 时尚惬意驰放Positive Dreamy（模板）
      11 → 悠闲（自定义）
      12 → 烟雨入画（自定义）
      13 → 爱的魔法（自定义）
@@ -257,8 +257,8 @@ def add_bgm(draft_path, bgm_track_idx=10):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='添加 BGM')
     parser.add_argument('draft_path', help='草稿目录路径')
-    parser.add_argument('--bgm', type=int, default=10, choices=[6,7,8,9,10,11,12,13],
-                        help='BGM: 6=水仙, 7=Shadowed Whisper, 8=Skipping Pebbles, 9=慵懒穿搭分享, 10=Positive Dreamy(默认), 11=悠闲, 12=烟雨入画, 13=爱的魔法')
+    parser.add_argument('--bgm', type=int, default=13, choices=[6,7,8,9,10,11,12,13],
+                        help='BGM: 6=水仙, 7=Shadowed Whisper, 8=Skipping Pebbles, 9=慵懒穿搭分享, 10=Positive Dreamy, 11=悠闲, 12=烟雨入画, 13=爱的魔法(默认)')
     args = parser.parse_args()
     success = add_bgm(args.draft_path, args.bgm)
     sys.exit(0 if success else 1)

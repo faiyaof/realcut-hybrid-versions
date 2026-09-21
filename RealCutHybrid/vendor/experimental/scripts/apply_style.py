@@ -69,6 +69,49 @@ def _style_search_roots(active_draft_root=None):
     return result
 
 
+def _match_by_suffix(candidates, style):
+    """候选全部落空时，按目录名后缀唯一匹配。
+
+    剪映草稿库里的模板常带前缀（如 "AI风格10·纸鹤慢递"），而调用方可能只写
+    了 "风格10·纸鹤慢递"。这里在候选根目录下找以该名字结尾且带 draft_content.json
+    的目录；唯一命中才返回，多个命中视为歧义、保持原失败行为。
+    """
+    wanted = _style_candidate_names(style)
+    if not wanted:
+        return None
+    roots = []
+    seen = set()
+    for cand in candidates:
+        key = os.path.normcase(os.path.abspath(str(cand.parent)))
+        if key not in seen:
+            seen.add(key)
+            roots.append(cand.parent)
+
+    matches = []
+    for root in roots:
+        if not root.is_dir():
+            continue
+        try:
+            entries = list(root.iterdir())
+        except OSError:
+            continue
+        for entry in entries:
+            if not entry.is_dir() or not (entry / 'draft_content.json').is_file():
+                continue
+            if any(entry.name.endswith(name) for name in wanted):
+                matches.append(entry)
+
+    if not matches:
+        return None
+    unique = {os.path.normcase(os.path.abspath(str(m))): m for m in matches}
+    if len(unique) > 1:
+        print('模板名有歧义，多个目录后缀相同:')
+        for m in unique.values():
+            print(f'  - {m}')
+        return None
+    return next(iter(unique.values()))
+
+
 def resolve_style_template_dir(style_name, active_draft_root=None):
     """兼容风格名、模板名和路径，并搜索当前成品所在的剪映草稿库。"""
     style = (style_name or '').strip()
@@ -86,6 +129,12 @@ def resolve_style_template_dir(style_name, active_draft_root=None):
     for cand in candidates:
         if (cand / 'draft_content.json').is_file():
             return cand
+
+    fallback = _match_by_suffix(candidates, style)
+    if fallback is not None:
+        print(f'[style] 别名匹配: {style} -> {fallback.name}')
+        return fallback
+
     return candidates[0] if candidates else _style_lib_path() / '模板'
 
 def get_text_plain(content):
